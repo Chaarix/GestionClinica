@@ -11,7 +11,7 @@ module com.losalerces.sistematurnos {
     requires java.desktop;
 
     opens com.losalerces.sistematurnos to javafx.fxml;
-    opens com.losalerces.sistematurnos.controladores to javafx.fxml;
+    opens com.losalerces.sistematurnos.Controladores to javafx.fxml;
 
     exports com.losalerces.sistematurnos;
 }
