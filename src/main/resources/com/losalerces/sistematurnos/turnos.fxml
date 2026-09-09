@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.losalerces.sistematurnos.controladores.controladorTurnos"
+      spacing="12"
+      styleClass="vista-base">
+
+    <padding>
+        <Insets top="10" right="10" bottom="10" left="10"/>
+    </padding>
+
+    <HBox alignment="CENTER_LEFT">
+
+        <VBox spacing="2">
+            <Label text="Agenda de hoy"
+                   styleClass="titulo-vista"/>
+
+            <Label text="Turnos programados para hoy"
+                   styleClass="subtitulo-vista"/>
+        </VBox>
+
+        <HBox HBox.hgrow="ALWAYS"/>
+
+        <Button fx:id="btnNuevoTurno"
+                text="+ Nuevo turno"
+                onAction="#nuevoTurno"
+                styleClass="boton-principal"/>
+
+    </HBox>
+
+    <TableView fx:id="tablaTurnos"
+               VBox.vgrow="ALWAYS"
+               styleClass="tabla">
+
+        <columns>
+
+            <TableColumn text="Hora"
+                         prefWidth="90"/>
+
+            <TableColumn text="Paciente"
+                         prefWidth="190"/>
+
+            <TableColumn text="Doctor"
+                         prefWidth="180"/>
+
+            <TableColumn text="Especialidad"
+                         prefWidth="170"/>
+
+            <TableColumn text="Estado"
+                         prefWidth="130"/>
+
+            <TableColumn text="Acciones"
+                         prefWidth="110"/>
+
+        </columns>
+
+    </TableView>
+
+</VBox>
