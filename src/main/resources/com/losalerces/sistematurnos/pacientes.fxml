@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.losalerces.sistematurnos.controladores.controladorPacientes"
+      spacing="12"
+      styleClass="vista-base">
+
+    <padding>
+        <Insets top="10" right="10" bottom="10" left="10"/>
+    </padding>
+
+    <HBox alignment="CENTER_LEFT">
+
+        <VBox spacing="2">
+
+            <Label text="Pacientes"
+                   styleClass="titulo-vista"/>
+
+            <Label text="Alta, baja y consulta de pacientes"
+                   styleClass="subtitulo-vista"/>
+
+        </VBox>
+
+        <HBox HBox.hgrow="ALWAYS"/>
+
+        <Button fx:id="btnAgregarPaciente"
+                text="+ Agregar paciente"
+                onAction="#agregarPaciente"
+                styleClass="boton-principal"/>
+
+    </HBox>
+
+    <TextField fx:id="txtBuscarPaciente"
+               promptText="Buscar paciente..."
+               onAction="#buscarPaciente"
+               styleClass="buscador"/>
+
+    <TableView fx:id="tablaPacientes"
+               VBox.vgrow="ALWAYS"
+               styleClass="tabla">
+
+        <columns>
+
+            <TableColumn text="Nombre"
+                         prefWidth="150"/>
+
+            <TableColumn text="Apellido"
+                         prefWidth="150"/>
+
+            <TableColumn text="Teléfono"
+                         prefWidth="140"/>
+
+            <TableColumn text="Email"
+                         prefWidth="210"/>
+
+            <TableColumn text="Obra social"
+                         prefWidth="150"/>
+
+            <TableColumn text="Acciones"
+                         prefWidth="100"/>
+
+        </columns>
+
+    </TableView>
+
+</VBox>

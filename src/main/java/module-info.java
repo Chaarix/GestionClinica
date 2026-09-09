@@ -1,16 +1,15 @@
 module com.losalerces.sistematurnos {
     requires javafx.controls;
     requires javafx.fxml;
-    requires javafx.swing;
-    requires javafx.media;
+    requires javafx.web;
 
     requires org.controlsfx.controls;
     requires com.dlsc.formsfx;
     requires net.synedra.validatorfx;
     requires org.kordamp.ikonli.javafx;
     requires org.kordamp.bootstrapfx.core;
+    requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
-    requires java.sql;
 
     opens com.losalerces.sistematurnos to javafx.fxml;
     exports com.losalerces.sistematurnos;

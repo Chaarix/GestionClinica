@@ -1,0 +1,209 @@
+.root-principal {
+    -fx-background-color: #F5F7F3;
+    -fx-font-family: "Georgia";
+}
+
+/* HEADER */
+.header {
+    -fx-background-color: #FCFCFA;
+    -fx-pref-height: 110px;
+    -fx-border-color: transparent transparent #DDE4DB transparent;
+    -fx-border-width: 0 0 1 0;
+}
+
+.fecha {
+    -fx-font-size: 13px;
+    -fx-text-fill: #274F47;
+    -fx-font-weight: normal;
+}
+
+.hora {
+    -fx-font-size: 15px;
+    -fx-text-fill: #0E332D;
+    -fx-font-weight: bold;
+}
+
+/* CUERPO */
+.contenido-principal {
+    -fx-background-color: #F5F7F3;
+}
+
+/* TARJETAS */
+.card-navegacion {
+    -fx-pref-height: 90px;
+    -fx-background-color: #FBFCFA;
+    -fx-background-radius: 16px;
+    -fx-border-radius: 16px;
+    -fx-border-color: #D9E1D8;
+    -fx-border-width: 1px;
+    -fx-padding: 12 16 12 16;
+    -fx-cursor: hand;
+}
+
+.card-navegacion:hover {
+    -fx-background-color: #F1F6F1;
+}
+
+.card-navegacion:pressed {
+    -fx-background-color: #E8F0E8;
+}
+
+.titulo-card {
+    -fx-font-size: 21px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #0E554D;
+}
+
+.descripcion-card {
+    -fx-font-size: 11px;
+    -fx-text-fill: #45635E;
+}
+
+.icono-card {
+    -fx-font-size: 16px;
+    -fx-text-fill: #0E6B66;
+}
+
+.flecha-card {
+    -fx-font-size: 24px;
+    -fx-text-fill: #0E6B66;
+}
+
+/* PANEL GRANDE */
+.contenedor-vistas {
+    -fx-background-color: #FBFCFA;
+    -fx-background-radius: 18px;
+    -fx-border-radius: 18px;
+    -fx-border-color: #D9E1D8;
+    -fx-border-width: 1px;
+    -fx-padding: 16px;
+}
+
+.titulo-agenda {
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #0E554D;
+}
+
+.subtitulo-agenda {
+    -fx-font-size: 14px;
+    -fx-text-fill: #617672;
+}
+/* ============================= */
+/* VISTAS INTERNAS */
+/* ============================= */
+
+.vista-base {
+    -fx-background-color: transparent;
+}
+
+.titulo-vista {
+    -fx-font-family: "Georgia";
+    -fx-font-size: 23px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #0E554D;
+}
+
+.subtitulo-vista {
+    -fx-font-family: "Georgia";
+    -fx-font-size: 13px;
+    -fx-text-fill: #617672;
+}
+
+
+/* BOTÓN PRINCIPAL */
+
+.boton-principal {
+    -fx-background-color: #E7F1EA;
+
+    -fx-text-fill: #174C43;
+
+    -fx-font-family: "Georgia";
+    -fx-font-size: 13px;
+
+    -fx-background-radius: 9px;
+    -fx-border-radius: 9px;
+
+    -fx-border-color: #C5D7CB;
+
+    -fx-padding: 8px 14px;
+
+    -fx-cursor: hand;
+}
+
+.boton-principal:hover {
+    -fx-background-color: #DCEBE1;
+}
+
+
+/* BUSCADOR */
+
+.buscador {
+    -fx-pref-height: 34px;
+
+    -fx-background-color: #FFFFFF;
+
+    -fx-background-radius: 8px;
+    -fx-border-radius: 8px;
+
+    -fx-border-color: #D9E1D8;
+
+    -fx-font-family: "Georgia";
+    -fx-font-size: 13px;
+
+    -fx-padding: 5px 10px;
+}
+
+
+/* TABLA */
+
+.tabla {
+    -fx-background-color: transparent;
+
+    -fx-border-color: #D9E1D8;
+    -fx-border-radius: 8px;
+
+    -fx-background-radius: 8px;
+}
+
+.tabla .column-header-background {
+    -fx-background-color: #E7F1EA;
+
+    -fx-background-radius: 8px 8px 0 0;
+}
+
+.tabla .column-header {
+    -fx-background-color: transparent;
+
+    -fx-font-family: "Georgia";
+    -fx-font-size: 13px;
+
+    -fx-text-fill: #174C43;
+}
+
+.tabla .table-cell {
+    -fx-font-family: "Georgia";
+    -fx-font-size: 12px;
+
+    -fx-text-fill: #334F49;
+
+    -fx-border-color:
+        transparent
+        #EDF1ED
+        #EDF1ED
+        transparent;
+
+    -fx-padding: 7px;
+}
+
+.tabla .table-row-cell {
+    -fx-background-color: #FFFFFF;
+}
+
+.tabla .table-row-cell:odd {
+    -fx-background-color: #FAFCFA;
+}
+
+.tabla .table-row-cell:selected {
+    -fx-background-color: #E5F1E9;
+}
