@@ -1,4 +1,4 @@
-package com.losalerces.sistematurnos.Controladores;
+package com.losalerces.sistematurnos.controladores;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
