@@ -158,7 +158,7 @@
                       maxWidth="Infinity"
                       styleClass="card-navegacion">
 
-                    <Label text="♟"
+                    <Label text="👤"
                            styleClass="icono-card"/>
 
                     <VBox spacing="3">

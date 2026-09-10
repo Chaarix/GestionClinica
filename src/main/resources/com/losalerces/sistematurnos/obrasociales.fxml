@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.losalerces.sistematurnos.Controladores.ControladorObraSocial"
+      spacing="14"
+      stylesheets="@style.css"
+      styleClass="vista-obras"
+      prefWidth="520"
+      prefHeight="430">
+
+    <padding>
+        <Insets top="20"
+                right="20"
+                bottom="20"
+                left="20"/>
+    </padding>
+
+    <!-- TÍTULO -->
+
+    <VBox spacing="2">
+
+        <Label text="Obras Sociales"
+               styleClass="titulo-vista"/>
+
+        <Label text="Agregar, modificar o eliminar obras sociales"
+               styleClass="subtitulo-vista"/>
+
+    </VBox>
+
+
+    <!-- NOMBRE -->
+
+    <VBox spacing="5">
+
+        <Label text="Nombre de la obra social"
+               styleClass="label-campo"/>
+
+        <TextField fx:id="txtNombre"
+                   promptText="Ej. PAMI, OSDE..."
+                   maxWidth="Infinity"/>
+
+    </VBox>
+
+
+    <!-- BOTONES -->
+
+    <HBox spacing="8"
+          alignment="CENTER_LEFT">
+
+        <!-- Este botón sirve para AGREGAR y MODIFICAR -->
+        <Button fx:id="btnGuardar"
+                text="Guardar / Modificar"
+                onAction="#accionGuardar"
+                styleClass="boton-principal"/>
+
+        <Button fx:id="btnEliminar"
+                text="Eliminar"
+                onAction="#accionEliminar"
+                styleClass="boton-eliminar"/>
+
+        <Button text="Cancelar"
+                onAction="#accionCancelar"
+                styleClass="boton-secundario"/>
+
+    </HBox>
+
+
+    <!-- TABLA -->
+
+    <TableView fx:id="tblObrasSociales"
+               VBox.vgrow="ALWAYS"
+               styleClass="tabla-agenda">
+
+        <columns>
+
+            <TableColumn fx:id="colId"
+                         text="ID"
+                         prefWidth="80"/>
+
+            <TableColumn fx:id="colNombre"
+                         text="Obra Social"
+                         prefWidth="380"/>
+
+        </columns>
+
+    </TableView>
+
+    <Label text="Seleccioná una fila para modificarla o eliminarla."
+           styleClass="texto-ayuda"/>
+
+</VBox>

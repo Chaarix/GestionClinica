@@ -2,21 +2,27 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
 <VBox xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.losalerces.sistematurnos.Controladores.controladorPacientes"
-      spacing="12"
+      spacing="14"
       styleClass="vista-base">
 
     <padding>
-        <Insets top="10" right="10" bottom="10" left="10"/>
+        <Insets top="8" right="8" bottom="8" left="8"/>
     </padding>
+
+
+    <!-- ENCABEZADO -->
 
     <HBox alignment="CENTER_LEFT">
 
@@ -25,48 +31,205 @@
             <Label text="Pacientes"
                    styleClass="titulo-vista"/>
 
-            <Label text="Alta, baja y consulta de pacientes"
+            <Label text="Registro y administración de pacientes"
                    styleClass="subtitulo-vista"/>
 
         </VBox>
 
-        <HBox HBox.hgrow="ALWAYS"/>
+    </HBox>
 
-        <Button fx:id="btnAgregarPaciente"
-                text="+ Agregar paciente"
-                onAction="#agregarPaciente"
-                styleClass="boton-principal"/>
+
+    <!-- FORMULARIO -->
+
+    <VBox spacing="12"
+          styleClass="panel-formulario">
+
+        <Label text="Datos del paciente"
+               styleClass="titulo-seccion"/>
+
+
+        <GridPane hgap="14"
+                  vgap="10">
+
+
+            <!-- NOMBRE -->
+
+            <Label text="Nombre"
+                   styleClass="label-campo"
+                   GridPane.columnIndex="0"
+                   GridPane.rowIndex="0"/>
+
+            <TextField fx:id="txtNombre"
+                       promptText="Nombre"
+                       GridPane.columnIndex="0"
+                       GridPane.rowIndex="1"/>
+
+
+            <!-- APELLIDO -->
+
+            <Label text="Apellido"
+                   styleClass="label-campo"
+                   GridPane.columnIndex="1"
+                   GridPane.rowIndex="0"/>
+
+            <TextField fx:id="txtApellido"
+                       promptText="Apellido"
+                       GridPane.columnIndex="1"
+                       GridPane.rowIndex="1"/>
+
+
+            <!-- FECHA -->
+
+            <Label text="Fecha de nacimiento"
+                   styleClass="label-campo"
+                   GridPane.columnIndex="2"
+                   GridPane.rowIndex="0"/>
+
+            <DatePicker fx:id="dpFechaNacimiento"
+                        maxWidth="Infinity"
+                        GridPane.columnIndex="2"
+                        GridPane.rowIndex="1"/>
+
+
+            <!-- TELÉFONO -->
+
+            <Label text="Teléfono"
+                   styleClass="label-campo"
+                   GridPane.columnIndex="0"
+                   GridPane.rowIndex="2"/>
+
+            <TextField fx:id="txtTelefono"
+                       promptText="Teléfono"
+                       GridPane.columnIndex="0"
+                       GridPane.rowIndex="3"/>
+
+
+            <!-- EMAIL -->
+
+            <Label text="Email"
+                   styleClass="label-campo"
+                   GridPane.columnIndex="1"
+                   GridPane.rowIndex="2"/>
+
+            <TextField fx:id="txtEmail"
+                       promptText="correo@ejemplo.com"
+                       GridPane.columnIndex="1"
+                       GridPane.rowIndex="3"/>
+
+
+            <!-- OBRA SOCIAL -->
+
+            <Label text="Obra social"
+                   styleClass="label-campo"
+                   GridPane.columnIndex="2"
+                   GridPane.rowIndex="2"/>
+
+            <ComboBox fx:id="cmbObraSocial"
+                      promptText="Seleccionar obra social"
+                      maxWidth="Infinity"
+                      GridPane.columnIndex="2"
+                      GridPane.rowIndex="3"/>
+
+
+            <!-- DURACIÓN CONSULTA -->
+
+            <Label text="Duración de consulta"
+                   styleClass="label-campo"
+                   GridPane.columnIndex="0"
+                   GridPane.rowIndex="4"/>
+
+            <ComboBox fx:id="cmbDuracionConsulta"
+                      promptText="Seleccionar duración"
+                      maxWidth="Infinity"
+                      GridPane.columnIndex="0"
+                      GridPane.rowIndex="5"/>
+
+        </GridPane>
+
+
+        <!-- BOTONES -->
+
+        <HBox spacing="10"
+              alignment="CENTER_RIGHT">
+
+            <Button text="Limpiar"
+                    onAction="#limpiarFormulario"
+                    styleClass="boton-secundario"/>
+
+            <Button fx:id="btnModificar"
+                    text="Modificar"
+                    onAction="#modificarPaciente"
+                    styleClass="boton-secundario"/>
+
+            <Button text="Guardar paciente"
+                    onAction="#guardarPaciente"
+                    styleClass="boton-principal"/>
+
+        </HBox>
+
+    </VBox>
+
+
+    <!-- BUSCADOR -->
+
+    <HBox spacing="10"
+          alignment="CENTER_LEFT">
+
+        <TextField fx:id="txtBuscar"
+                   promptText="Buscar por nombre o apellido..."
+                   HBox.hgrow="ALWAYS"
+                   styleClass="buscador"/>
+
+        <Button text="Buscar"
+                onAction="#buscarPaciente"
+                styleClass="boton-secundario"/>
 
     </HBox>
 
-    <TextField fx:id="txtBuscarPaciente"
-               promptText="Buscar paciente..."
-               onAction="#buscarPaciente"
-               styleClass="buscador"/>
+
+    <!-- TABLA -->
 
     <TableView fx:id="tablaPacientes"
                VBox.vgrow="ALWAYS"
-               styleClass="tabla">
+               styleClass="tabla-agenda">
 
         <columns>
 
-            <TableColumn text="Nombre"
-                         prefWidth="150"/>
+            <TableColumn fx:id="colId"
+                         text="ID"
+                         prefWidth="45"/>
 
-            <TableColumn text="Apellido"
-                         prefWidth="150"/>
+            <TableColumn fx:id="colNombre"
+                         text="Nombre"
+                         prefWidth="110"/>
 
-            <TableColumn text="Teléfono"
-                         prefWidth="140"/>
+            <TableColumn fx:id="colApellido"
+                         text="Apellido"
+                         prefWidth="110"/>
 
-            <TableColumn text="Email"
-                         prefWidth="210"/>
-
-            <TableColumn text="Obra social"
-                         prefWidth="150"/>
-
-            <TableColumn text="Acciones"
+            <TableColumn fx:id="colFechaNacimiento"
+                         text="Nacimiento"
                          prefWidth="100"/>
+
+            <TableColumn fx:id="colTelefono"
+                         text="Teléfono"
+                         prefWidth="105"/>
+
+            <TableColumn fx:id="colEmail"
+                         text="Email"
+                         prefWidth="150"/>
+
+            <TableColumn fx:id="colObraSocial"
+                         text="Obra Social"
+                         prefWidth="110"/>
+
+            <TableColumn fx:id="colDuracion"
+                         text="Duración"
+                         prefWidth="90"/>
+
+            <TableColumn fx:id="colAcciones"
+                         text="Acciones"
+                         prefWidth="90"/>
 
         </columns>
 

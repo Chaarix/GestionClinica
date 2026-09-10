@@ -9,9 +9,10 @@ module com.losalerces.sistematurnos {
     requires org.kordamp.bootstrapfx.core;
     requires com.almasb.fxgl.all;
     requires java.desktop;
+    requires java.sql;
 
     opens com.losalerces.sistematurnos to javafx.fxml;
-    opens com.losalerces.sistematurnos.controladores to javafx.fxml;
+    opens com.losalerces.sistematurnos.Controladores to javafx.fxml;
 
     exports com.losalerces.sistematurnos;
 }
