@@ -1,4 +1,4 @@
-package com.losalerces.sistematurnos.controladores;
+package com.losalerces.sistematurnos.Controladores;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
