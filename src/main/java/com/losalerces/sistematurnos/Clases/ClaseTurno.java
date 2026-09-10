@@ -8,19 +8,15 @@ public class ClaseTurno {
     private int idTurno;
     private int idPaciente;
     private int idDoctor;
-    private LocalDate fecha;
-    private LocalTime hora;
-    private String estado;
-    private String motivo;
+    private LocalDate fechaTurno;
+    private LocalTime horaTurno;
 
-    public ClaseTurno(int idTurno, int idPaciente, int idDoctor, LocalDate fecha, LocalTime hora, String estado, String motivo) {
+    public ClaseTurno(int idTurno, int idPaciente, int idDoctor, LocalDate fechaTurno, LocalTime horaTurno) {
         this.idTurno = idTurno;
         this.idPaciente = idPaciente;
         this.idDoctor = idDoctor;
-        this.fecha = fecha;
-        this.hora = hora;
-        this.estado = estado;
-        this.motivo = motivo;
+        this.fechaTurno = fechaTurno;
+        this.horaTurno = horaTurno;
     }
 
     public int idTurno() {
@@ -50,39 +46,21 @@ public class ClaseTurno {
         return this;
     }
 
-    public LocalDate fecha() {
-        return fecha;
+    public LocalDate fechaTurno() {
+        return fechaTurno;
     }
 
-    public ClaseTurno setFecha(LocalDate fecha) {
-        this.fecha = fecha;
+    public ClaseTurno setFechaTurno(LocalDate fechaTurno) {
+        this.fechaTurno = fechaTurno;
         return this;
     }
 
-    public LocalTime hora() {
-        return hora;
+    public LocalTime horaTurno() {
+        return horaTurno;
     }
 
-    public ClaseTurno setHora(LocalTime hora) {
-        this.hora = hora;
-        return this;
-    }
-
-    public String estado() {
-        return estado;
-    }
-
-    public ClaseTurno setEstado(String estado) {
-        this.estado = estado;
-        return this;
-    }
-
-    public String motivo() {
-        return motivo;
-    }
-
-    public ClaseTurno setMotivo(String motivo) {
-        this.motivo = motivo;
+    public ClaseTurno setHoraTurno(LocalTime horaTurno) {
+        this.horaTurno = horaTurno;
         return this;
     }
 }
