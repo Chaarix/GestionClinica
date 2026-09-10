@@ -1,6 +1,28 @@
 package com.losalerces.sistematurnos.Clases;
 
 public class ClasePaciente {
+
+   private int idPaciente;
+   private String nombre;
+   private String apellido;
+   private String fechaNacimiento;
+   private String telefono;
+   private String email;
+   private int idObraSocial;
+
+    public ClasePaciente(int idPaciente, String nombre, String apellido, String fechaNacimiento, String telefono, String email, int idObraSocial) {
+        this.idPaciente = idPaciente;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.fechaNacimiento = fechaNacimiento;
+        this.telefono = telefono;
+        this.email = email;
+        this.idObraSocial = idObraSocial;
+    }
+
+    public ClasePaciente() {
+    }
+
     public int idPaciente() {
         return idPaciente;
     }
@@ -28,12 +50,12 @@ public class ClasePaciente {
         return this;
     }
 
-    public String dni() {
-        return dni;
+    public String fechaNacimiento() {
+        return fechaNacimiento;
     }
 
-    public ClasePaciente setDni(String dni) {
-        this.dni = dni;
+    public ClasePaciente setFechaNacimiento(String fechaNacimiento) {
+        this.fechaNacimiento = fechaNacimiento;
         return this;
     }
 
@@ -46,44 +68,21 @@ public class ClasePaciente {
         return this;
     }
 
-    public String correo() {
-        return correo;
+    public String email() {
+        return email;
     }
 
-    public ClasePaciente setCorreo(String correo) {
-        this.correo = correo;
+    public ClasePaciente setEmail(String email) {
+        this.email = email;
         return this;
     }
 
-    public String direccion() {
-        return direccion;
+    public int idObraSocial() {
+        return idObraSocial;
     }
 
-    public ClasePaciente setDireccion(String direccion) {
-        this.direccion = direccion;
+    public ClasePaciente setIdObraSocial(int idObraSocial) {
+        this.idObraSocial = idObraSocial;
         return this;
-    }
-
-    private int idPaciente;
-    private String nombre;
-    private String apellido;
-    private String dni;
-    private String telefono;
-    private String correo;
-    private String direccion;
-
-    public ClasePaciente() {
-    }
-
-    public ClasePaciente(int idPaciente, String nombre, String apellido,
-                    String dni, String telefono, String correo,
-                    String direccion) {
-        this.idPaciente = idPaciente;
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.dni = dni;
-        this.telefono = telefono;
-        this.correo = correo;
-        this.direccion = direccion;
     }
 }
