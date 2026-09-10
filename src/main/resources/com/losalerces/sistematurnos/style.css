@@ -356,3 +356,174 @@
 
     -fx-border-radius: 8px;
 }
+/* ============================= */
+/* VISTA TURNOS */
+/* ============================= */
+
+.panel-formulario {
+    -fx-background-color: #F8FAF8;
+
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+
+    -fx-border-color: #DEE7E1;
+
+    -fx-padding: 10px;
+}
+
+.label-campo {
+    -fx-font-size: 12px;
+    -fx-text-fill: #5A716A;
+}
+
+.dato-destacado {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #174C43;
+    -fx-padding: 8px 0 0 0;
+}
+
+.titulo-seccion {
+    -fx-font-size: 19px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #174C43;
+}
+
+.boton-secundario {
+    -fx-background-color: #FFFFFF;
+    -fx-text-fill: #355C54;
+
+    -fx-background-radius: 8px;
+    -fx-border-radius: 8px;
+
+    -fx-border-color: #C8D7CE;
+
+    -fx-padding: 7px 13px;
+    -fx-cursor: hand;
+}
+
+.boton-secundario:hover {
+    -fx-background-color: #EEF5F0;
+}
+
+.boton-mini {
+    -fx-background-color: #FFFFFF;
+
+    -fx-border-color: #CDDAD2;
+
+    -fx-background-radius: 7px;
+    -fx-border-radius: 7px;
+
+    -fx-text-fill: #24574E;
+
+    -fx-padding: 5px 10px;
+
+    -fx-cursor: hand;
+}
+
+.boton-mini:hover {
+    -fx-background-color: #EDF5F0;
+}
+
+.date-picker,
+.combo-box {
+    -fx-background-color: #FFFFFF;
+
+    -fx-border-color: #D7E1DA;
+
+    -fx-border-radius: 7px;
+    -fx-background-radius: 7px;
+}
+/* ======================================= */
+/* PACIENTES */
+/* ======================================= */
+
+.panel-formulario {
+    -fx-background-color: #F8FAF8;
+
+    -fx-background-radius: 12px;
+    -fx-border-radius: 12px;
+
+    -fx-border-color: #DEE7E1;
+
+    -fx-padding: 14px;
+}
+
+
+.label-campo {
+    -fx-font-size: 12px;
+    -fx-text-fill: #5A716A;
+}
+
+
+.text-field,
+.date-picker,
+.combo-box {
+    -fx-background-color: #FFFFFF;
+
+    -fx-background-radius: 7px;
+    -fx-border-radius: 7px;
+
+    -fx-border-color: #D7E1DA;
+
+    -fx-pref-height: 34px;
+}
+
+
+.boton-eliminar {
+    -fx-background-color: #FBEAEA;
+
+    -fx-text-fill: #A24646;
+
+    -fx-background-radius: 7px;
+    -fx-border-radius: 7px;
+
+    -fx-border-color: #E7C9C9;
+
+    -fx-font-size: 11px;
+
+    -fx-padding: 4px 9px;
+
+    -fx-cursor: hand;
+}
+
+
+.boton-eliminar:hover {
+    -fx-background-color: #F6DADA;
+}
+.check-box {
+    -fx-font-family: "Georgia";
+    -fx-font-size: 12px;
+    -fx-text-fill: #405F58;
+}
+
+.check-box .box {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #BFD0C5;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+}
+
+.check-box:selected .mark {
+    -fx-background-color: #FFFFFF;
+}
+
+.check-box:selected .box {
+    -fx-background-color: #26705F;
+}
+.vista-obras {
+    -fx-background-color: #F7F9F6;
+    -fx-font-family: "Georgia";
+}
+
+.texto-ayuda {
+    -fx-font-size: 11px;
+    -fx-text-fill: #71827D;
+}
+
+.vista-obras .table-view {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #D9E3DC;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+}
