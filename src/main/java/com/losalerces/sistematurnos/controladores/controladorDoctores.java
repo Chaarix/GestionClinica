@@ -1,4 +1,4 @@
-package com.losalerces.sistematurnos.Controladores;
+package com.losalerces.sistematurnos.controladores;
 
 import com.losalerces.sistematurnos.Clases.ClaseObraSocial;
 import com.losalerces.sistematurnos.DAO.ObraSocialDAO;
