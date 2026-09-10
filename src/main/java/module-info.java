@@ -12,6 +12,9 @@ module com.losalerces.sistematurnos {
     requires com.almasb.fxgl.all;
     requires java.sql;
 
+    //opens com.losalerces.sistematurnos to javafx.fxml;
     opens com.losalerces.sistematurnos to javafx.fxml;
+    opens com.losalerces.sistematurnos.Controladores to javafx.fxml;
+    opens com.losalerces.sistematurnos.Clases to javafx.fxml;
     exports com.losalerces.sistematurnos;
 }
