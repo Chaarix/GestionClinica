@@ -1,5 +1,7 @@
-package com.losalerces.sistematurnos.controladores;
+package com.losalerces.sistematurnos.Controladores;
 
+import com.losalerces.sistematurnos.Clases.ClasePaciente;
+import com.losalerces.sistematurnos.DAO.PacienteDAO;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -8,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class controladorPacientes {
 
@@ -37,7 +40,6 @@ public class controladorPacientes {
 
     @FXML
     private Button btnModificar;
-
 
     @FXML
     private TableView<PacienteFila> tablaPacientes;
@@ -69,30 +71,22 @@ public class controladorPacientes {
     @FXML
     private TableColumn<PacienteFila, Void> colAcciones;
 
-
-    private final ObservableList<PacienteFila> pacientes =
-            FXCollections.observableArrayList();
+    private final ObservableList<PacienteFila> pacientes = FXCollections.observableArrayList();
 
     private PacienteFila pacienteSeleccionado;
 
+    private final PacienteDAO pacienteDAO = new PacienteDAO();
 
     @FXML
     public void initialize() {
-
         configurarTabla();
-
         cargarObrasSociales();
-
         cargarDuraciones();
-
-        cargarDatosDePrueba();
-
+        cargarPacientesDesdeBD();
         btnModificar.setDisable(true);
     }
 
-
     private void cargarDuraciones() {
-
         cmbDuracionConsulta.getItems().addAll(
                 "15 minutos",
                 "20 minutos",
@@ -103,9 +97,7 @@ public class controladorPacientes {
         );
     }
 
-
     private void cargarObrasSociales() {
-
         cmbObraSocial.getItems().addAll(
                 "PAMI",
                 "OSDE",
@@ -115,55 +107,37 @@ public class controladorPacientes {
         );
     }
 
-
     private void configurarTabla() {
-
         colId.setCellValueFactory(
-                dato -> new SimpleIntegerProperty(
-                        dato.getValue().getId()
-                ).asObject()
+                dato -> new SimpleIntegerProperty(dato.getValue().getId()).asObject()
         );
 
         colNombre.setCellValueFactory(
-                dato -> new SimpleStringProperty(
-                        dato.getValue().getNombre()
-                )
+                dato -> new SimpleStringProperty(dato.getValue().getNombre())
         );
 
         colApellido.setCellValueFactory(
-                dato -> new SimpleStringProperty(
-                        dato.getValue().getApellido()
-                )
+                dato -> new SimpleStringProperty(dato.getValue().getApellido())
         );
 
         colFechaNacimiento.setCellValueFactory(
-                dato -> new SimpleStringProperty(
-                        dato.getValue().getFechaNacimientoTexto()
-                )
+                dato -> new SimpleStringProperty(dato.getValue().getFechaNacimientoTexto())
         );
 
         colTelefono.setCellValueFactory(
-                dato -> new SimpleStringProperty(
-                        dato.getValue().getTelefono()
-                )
+                dato -> new SimpleStringProperty(dato.getValue().getTelefono())
         );
 
         colEmail.setCellValueFactory(
-                dato -> new SimpleStringProperty(
-                        dato.getValue().getEmail()
-                )
+                dato -> new SimpleStringProperty(dato.getValue().getEmail())
         );
 
         colObraSocial.setCellValueFactory(
-                dato -> new SimpleStringProperty(
-                        dato.getValue().getObraSocial()
-                )
+                dato -> new SimpleStringProperty(dato.getValue().getObraSocial())
         );
 
         colDuracion.setCellValueFactory(
-                dato -> new SimpleStringProperty(
-                        dato.getValue().getDuracionConsulta()
-                )
+                dato -> new SimpleStringProperty(dato.getValue().getDuracionConsulta())
         );
 
         configurarAcciones();
@@ -173,50 +147,81 @@ public class controladorPacientes {
         tablaPacientes.getSelectionModel()
                 .selectedItemProperty()
                 .addListener((obs, anterior, seleccionado) -> {
-
                     if (seleccionado != null) {
                         seleccionarPaciente(seleccionado);
                     }
                 });
     }
 
-
     @FXML
     private void guardarPaciente() {
-
         if (!validarCampos()) {
             return;
         }
 
-        int nuevoId = pacientes.size() + 1;
+        ClasePaciente nuevoPaciente = new ClasePaciente(
+                0,
+                txtNombre.getText().trim(),
+                txtApellido.getText().trim(),
+                dpFechaNacimiento.getValue() != null ? dpFechaNacimiento.getValue().toString() : "",
+                txtTelefono.getText().trim(),
+                txtEmail.getText().trim(),
+                obtenerIdObraSocial(cmbObraSocial.getValue())
+        );
 
-        PacienteFila paciente =
-                new PacienteFila(
-                        nuevoId,
-                        txtNombre.getText().trim(),
-                        txtApellido.getText().trim(),
-                        dpFechaNacimiento.getValue(),
-                        txtTelefono.getText().trim(),
-                        txtEmail.getText().trim(),
-                        cmbObraSocial.getValue(),
-                        cmbDuracionConsulta.getValue()
-                );
+        boolean exito = pacienteDAO.guardar(nuevoPaciente);
 
-        pacientes.add(paciente);
-
-        limpiarFormulario();
+        if (exito) {
+            cargarPacientesDesdeBD();
+            limpiarFormulario();
+        } else {
+            mostrarAdvertencia("No se pudo guardar el paciente en la base de datos.");
+        }
     }
 
+    private void cargarPacientesDesdeBD() {
+        pacientes.clear();
+        List<ClasePaciente> listaDAO = pacienteDAO.listar();
+
+        for (ClasePaciente p : listaDAO) {
+            pacientes.add(new PacienteFila(
+                    p.idPaciente(),
+                    p.nombre(),
+                    p.apellido(),
+                    p.fechaNacimiento() != null && !p.fechaNacimiento().isEmpty() ? LocalDate.parse(p.fechaNacimiento()) : null,
+                    p.telefono(),
+                    p.email(),
+                    obtenerNombreObraSocial(p.idObraSocial()),
+                    cmbDuracionConsulta.getItems().isEmpty() ? "30 minutos" : cmbDuracionConsulta.getItems().get(0)
+            ));
+        }
+    }
+
+    private String obtenerNombreObraSocial(int id) {
+        switch (id) {
+            case 1: return "PAMI";
+            case 2: return "OSDE";
+            case 3: return "Swiss Medical";
+            case 4: return "Sancor Salud";
+            default: return "Particular";
+        }
+    }
+
+    private int obtenerIdObraSocial(String nombre) {
+        if (nombre == null) return 5;
+        switch (nombre) {
+            case "PAMI": return 1;
+            case "OSDE": return 2;
+            case "Swiss Medical": return 3;
+            case "Sancor Salud": return 4;
+            default: return 5;
+        }
+    }
 
     @FXML
     private void modificarPaciente() {
-
         if (pacienteSeleccionado == null) {
-
-            mostrarAdvertencia(
-                    "Seleccioná un paciente."
-            );
-
+            mostrarAdvertencia("Seleccioná un paciente.");
             return;
         }
 
@@ -224,63 +229,40 @@ public class controladorPacientes {
             return;
         }
 
-        pacienteSeleccionado.setNombre(
-                txtNombre.getText().trim()
+        ClasePaciente pacienteActualizado = new ClasePaciente(
+                pacienteSeleccionado.getId(),
+                txtNombre.getText().trim(),
+                txtApellido.getText().trim(),
+                dpFechaNacimiento.getValue() != null ? dpFechaNacimiento.getValue().toString() : "",
+                txtTelefono.getText().trim(),
+                txtEmail.getText().trim(),
+                obtenerIdObraSocial(cmbObraSocial.getValue())
         );
 
-        pacienteSeleccionado.setApellido(
-                txtApellido.getText().trim()
-        );
+        boolean exito = pacienteDAO.actualizar(pacienteActualizado);
 
-        pacienteSeleccionado.setFechaNacimiento(
-                dpFechaNacimiento.getValue()
-        );
-
-        pacienteSeleccionado.setTelefono(
-                txtTelefono.getText().trim()
-        );
-
-        pacienteSeleccionado.setEmail(
-                txtEmail.getText().trim()
-        );
-
-        pacienteSeleccionado.setObraSocial(
-                cmbObraSocial.getValue()
-        );
-
-        pacienteSeleccionado.setDuracionConsulta(
-                cmbDuracionConsulta.getValue()
-        );
-
-        tablaPacientes.refresh();
-
-        limpiarFormulario();
+        if (exito) {
+            cargarPacientesDesdeBD();
+            limpiarFormulario();
+        } else {
+            mostrarAdvertencia("No se pudo actualizar el paciente en la base de datos.");
+        }
     }
-
 
     @FXML
     private void buscarPaciente() {
-
-        String buscar =
-                txtBuscar.getText()
-                        .trim()
-                        .toLowerCase();
+        String buscar = txtBuscar.getText().trim().toLowerCase();
 
         if (buscar.isEmpty()) {
-
             tablaPacientes.setItems(pacientes);
-
             return;
         }
 
-        ObservableList<PacienteFila> resultado =
-                FXCollections.observableArrayList();
+        ObservableList<PacienteFila> resultado = FXCollections.observableArrayList();
 
         for (PacienteFila paciente : pacientes) {
-
             if (paciente.getNombre().toLowerCase().contains(buscar)
                     || paciente.getApellido().toLowerCase().contains(buscar)) {
-
                 resultado.add(paciente);
             }
         }
@@ -288,229 +270,104 @@ public class controladorPacientes {
         tablaPacientes.setItems(resultado);
     }
 
-
-    private void seleccionarPaciente(
-            PacienteFila paciente
-    ) {
-
+    private void seleccionarPaciente(PacienteFila paciente) {
         pacienteSeleccionado = paciente;
 
-        txtNombre.setText(
-                paciente.getNombre()
-        );
-
-        txtApellido.setText(
-                paciente.getApellido()
-        );
-
-        dpFechaNacimiento.setValue(
-                paciente.getFechaNacimiento()
-        );
-
-        txtTelefono.setText(
-                paciente.getTelefono()
-        );
-
-        txtEmail.setText(
-                paciente.getEmail()
-        );
-
-        cmbObraSocial.setValue(
-                paciente.getObraSocial()
-        );
-
-        cmbDuracionConsulta.setValue(
-                paciente.getDuracionConsulta()
-        );
+        txtNombre.setText(paciente.getNombre());
+        txtApellido.setText(paciente.getApellido());
+        dpFechaNacimiento.setValue(paciente.getFechaNacimiento());
+        txtTelefono.setText(paciente.getTelefono());
+        txtEmail.setText(paciente.getEmail());
+        cmbObraSocial.setValue(paciente.getObraSocial());
+        cmbDuracionConsulta.setValue(paciente.getDuracionConsulta());
 
         btnModificar.setDisable(false);
     }
 
-
     private void configurarAcciones() {
-
         colAcciones.setCellFactory(
                 columna -> new TableCell<>() {
-
-                    private final Button btnEliminar =
-                            new Button("Eliminar");
+                    private final Button btnEliminar = new Button("Eliminar");
 
                     {
-                        btnEliminar
-                                .getStyleClass()
-                                .add("boton-eliminar");
+                        btnEliminar.getStyleClass().add("boton-eliminar");
 
                         btnEliminar.setOnAction(event -> {
-
-                            PacienteFila paciente =
-                                    getTableView()
-                                            .getItems()
-                                            .get(getIndex());
-
+                            PacienteFila paciente = getTableView().getItems().get(getIndex());
                             eliminarPaciente(paciente);
                         });
                     }
 
                     @Override
-                    protected void updateItem(
-                            Void item,
-                            boolean empty
-                    ) {
-
+                    protected void updateItem(Void item, boolean empty) {
                         super.updateItem(item, empty);
-
-                        setGraphic(
-                                empty
-                                        ? null
-                                        : btnEliminar
-                        );
+                        setGraphic(empty ? null : btnEliminar);
                     }
                 }
         );
     }
 
-
-    private void eliminarPaciente(
-            PacienteFila paciente
-    ) {
-
-        Alert confirmacion =
-                new Alert(
-                        Alert.AlertType.CONFIRMATION
-                );
-
+    private void eliminarPaciente(PacienteFila paciente) {
+        Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
         confirmacion.setHeaderText(null);
+        confirmacion.setContentText("¿Deseás eliminar a " + paciente.getNombre() + " " + paciente.getApellido() + "?");
 
-        confirmacion.setContentText(
-                "¿Deseás eliminar a "
-                        + paciente.getNombre()
-                        + " "
-                        + paciente.getApellido()
-                        + "?"
-        );
+        confirmacion.showAndWait().ifPresent(respuesta -> {
+            if (respuesta == ButtonType.OK) {
+                boolean exito = pacienteDAO.eliminar(paciente.getId());
 
-        confirmacion.showAndWait()
-                .ifPresent(respuesta -> {
-
-                    if (respuesta == ButtonType.OK) {
-
-                        pacientes.remove(paciente);
-
-                        limpiarFormulario();
-                    }
-                });
+                if (exito) {
+                    cargarPacientesDesdeBD();
+                    limpiarFormulario();
+                } else {
+                    mostrarAdvertencia("No se pudo eliminar el paciente de la base de datos.");
+                }
+            }
+        });
     }
-
 
     @FXML
     private void limpiarFormulario() {
-
         txtNombre.clear();
         txtApellido.clear();
-
         dpFechaNacimiento.setValue(null);
-
         txtTelefono.clear();
         txtEmail.clear();
-
         cmbObraSocial.setValue(null);
-
         cmbDuracionConsulta.setValue(null);
 
         pacienteSeleccionado = null;
-
-        tablaPacientes
-                .getSelectionModel()
-                .clearSelection();
-
+        tablaPacientes.getSelectionModel().clearSelection();
         btnModificar.setDisable(true);
     }
 
-
     private boolean validarCampos() {
-
-        if (txtNombre.getText().isBlank()
-                || txtApellido.getText().isBlank()) {
-
-            mostrarAdvertencia(
-                    "Nombre y apellido son obligatorios."
-            );
-
+        if (txtNombre.getText().isBlank() || txtApellido.getText().isBlank()) {
+            mostrarAdvertencia("Nombre y apellido son obligatorios.");
             return false;
         }
 
-        if (dpFechaNacimiento.getValue() != null
-                && dpFechaNacimiento.getValue()
-                .isAfter(LocalDate.now())) {
-
-            mostrarAdvertencia(
-                    "La fecha de nacimiento no puede ser futura."
-            );
-
+        if (dpFechaNacimiento.getValue() != null || dpFechaNacimiento.getValue().isAfter(LocalDate.now())) {
+            mostrarAdvertencia("La fecha de nacimiento no puede ser futura.");
             return false;
         }
 
         if (cmbDuracionConsulta.getValue() == null) {
-
-            mostrarAdvertencia(
-                    "Seleccioná la duración de la consulta."
-            );
-
+            mostrarAdvertencia("Seleccioná la duración de la consulta.");
             return false;
         }
 
         return true;
     }
 
-
-    private void mostrarAdvertencia(
-            String mensaje
-    ) {
-
-        Alert alerta =
-                new Alert(
-                        Alert.AlertType.WARNING
-                );
-
+    private void mostrarAdvertencia(String mensaje) {
+        Alert alerta = new Alert(Alert.AlertType.WARNING);
         alerta.setHeaderText(null);
-
         alerta.setContentText(mensaje);
-
         alerta.showAndWait();
     }
 
-
-    private void cargarDatosDePrueba() {
-
-        pacientes.addAll(
-
-                new PacienteFila(
-                        1,
-                        "Ana",
-                        "Ruiz",
-                        LocalDate.of(1985, 5, 12),
-                        "2945123456",
-                        "ana@gmail.com",
-                        "PAMI",
-                        "30 minutos"
-                ),
-
-                new PacienteFila(
-                        2,
-                        "Carlos",
-                        "Méndez",
-                        LocalDate.of(1992, 10, 7),
-                        "2945234567",
-                        "carlos@gmail.com",
-                        "OSDE",
-                        "20 minutos"
-                )
-        );
-    }
-
-
     public static class PacienteFila {
-
         private int id;
         private String nombre;
         private String apellido;
@@ -519,7 +376,6 @@ public class controladorPacientes {
         private String email;
         private String obraSocial;
         private String duracionConsulta;
-
 
         public PacienteFila(
                 int id,
@@ -531,7 +387,6 @@ public class controladorPacientes {
                 String obraSocial,
                 String duracionConsulta
         ) {
-
             this.id = id;
             this.nombre = nombre;
             this.apellido = apellido;
@@ -542,80 +397,23 @@ public class controladorPacientes {
             this.duracionConsulta = duracionConsulta;
         }
 
-
-        public int getId() {
-            return id;
-        }
-
-        public String getNombre() {
-            return nombre;
-        }
-
-        public void setNombre(String nombre) {
-            this.nombre = nombre;
-        }
-
-        public String getApellido() {
-            return apellido;
-        }
-
-        public void setApellido(String apellido) {
-            this.apellido = apellido;
-        }
-
-        public LocalDate getFechaNacimiento() {
-            return fechaNacimiento;
-        }
-
-        public void setFechaNacimiento(
-                LocalDate fechaNacimiento
-        ) {
-            this.fechaNacimiento = fechaNacimiento;
-        }
-
+        public int getId() { return id; }
+        public String getNombre() { return nombre; }
+        public void setNombre(String nombre) { this.nombre = nombre; }
+        public String getApellido() { return apellido; }
+        public void setApellido(String apellido) { this.apellido = apellido; }
+        public LocalDate getFechaNacimiento() { return fechaNacimiento; }
+        public void setFechaNacimiento(LocalDate fechaNacimiento) { this.fechaNacimiento = fechaNacimiento; }
         public String getFechaNacimientoTexto() {
-
-            if (fechaNacimiento == null) {
-                return "";
-            }
-
-            return fechaNacimiento.toString();
+            return fechaNacimiento == null ? "" : fechaNacimiento.toString();
         }
-
-        public String getTelefono() {
-            return telefono;
-        }
-
-        public void setTelefono(String telefono) {
-            this.telefono = telefono;
-        }
-
-        public String getEmail() {
-            return email;
-        }
-
-        public void setEmail(String email) {
-            this.email = email;
-        }
-
-        public String getObraSocial() {
-            return obraSocial;
-        }
-
-        public void setObraSocial(
-                String obraSocial
-        ) {
-            this.obraSocial = obraSocial;
-        }
-
-        public String getDuracionConsulta() {
-            return duracionConsulta;
-        }
-
-        public void setDuracionConsulta(
-                String duracionConsulta
-        ) {
-            this.duracionConsulta = duracionConsulta;
-        }
+        public String getTelefono() { return telefono; }
+        public void setTelefono(String telefono) { this.telefono = telefono; }
+        public String getEmail() { return email; }
+        public void setEmail(String email) { this.email = email; }
+        public String getObraSocial() { return obraSocial; }
+        public void setObraSocial(String obraSocial) { this.obraSocial = obraSocial; }
+        public String getDuracionConsulta() { return duracionConsulta; }
+        public void setDuracionConsulta(String duracionConsulta) { this.duracionConsulta = duracionConsulta; }
     }
 }
