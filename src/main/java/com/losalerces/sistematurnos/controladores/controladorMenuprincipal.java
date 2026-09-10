@@ -1,4 +1,4 @@
-package com.losalerces.sistematurnos.controladores;
+package com.losalerces.sistematurnos.Controladores;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -58,7 +58,7 @@ public class controladorMenuprincipal implements Initializable {
 
     @FXML
     private void mostrarDoctores() {
-        cargarVista("doctores.fxml");
+        cargarVista("doctor.fxml");
     }
 
 

@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 
 <VBox xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.losalerces.sistematurnos.controladores.controladorDoctores"
+      fx:controller="com.losalerces.sistematurnos.Controladores.controladorDoctores"
       spacing="12"
       styleClass="vista-base">
 

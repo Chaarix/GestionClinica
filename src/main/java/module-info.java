@@ -13,5 +13,6 @@ module com.losalerces.sistematurnos {
     requires java.sql;
 
     opens com.losalerces.sistematurnos to javafx.fxml;
+    opens com.losalerces.sistematurnos.Controladores to javafx.fxml;
     exports com.losalerces.sistematurnos;
 }

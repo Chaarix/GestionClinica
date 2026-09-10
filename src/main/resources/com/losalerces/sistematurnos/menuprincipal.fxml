@@ -10,7 +10,7 @@
 
 <?import javafx.scene.image.ImageView?>
 <BorderPane xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.losalerces.sistematurnos.controladores.controladorMenuprincipal"
+            fx:controller="com.losalerces.sistematurnos.Controladores.controladorMenuprincipal"
             prefWidth="950"
             prefHeight="620"
             stylesheets="@style.css"

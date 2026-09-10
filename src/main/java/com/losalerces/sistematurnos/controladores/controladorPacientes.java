@@ -1,8 +1,9 @@
-package com.losalerces.sistematurnos.controladores;
+package com.losalerces.sistematurnos.Controladores;
 
 import javafx.event.ActionEvent;
 
 public class controladorPacientes {
+
     public void agregarPaciente(ActionEvent actionEvent) {
     }
 
