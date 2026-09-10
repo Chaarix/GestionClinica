@@ -90,7 +90,7 @@ public class controladorMenuprincipal implements Initializable {
 
         java.io.InputStream stream = getClass().getResourceAsStream("/imagen/logo_clinica.png");
 
-        if (stream != null) {
+        if (stream != null && iv!=null) {
             iv.setImage(new Image(stream));
         } else {
             System.err.println("Error crítico: No se encontró el archivo");
