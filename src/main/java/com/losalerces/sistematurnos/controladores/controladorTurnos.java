@@ -1,4 +1,4 @@
-package com.losalerces.sistematurnos.controladores;
+package com.losalerces.sistematurnos.Controladores;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
