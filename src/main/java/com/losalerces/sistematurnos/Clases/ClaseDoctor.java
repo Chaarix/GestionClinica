@@ -81,4 +81,32 @@ public class ClaseDoctor {
         this.especialidad = especialidad;
         return this;
     }
+
+    public String getEspecialidad() {
+        return especialidad;
+    }
+
+    public String getCorreo() {
+        return correo;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public String getDni() {
+        return dni;
+    }
+
+    public String getApellido() {
+        return apellido;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public int getIdDoctor() {
+        return idDoctor;
+    }
 }
