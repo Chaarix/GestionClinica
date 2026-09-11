@@ -1,4 +1,4 @@
-package com.losalerces.sistematurnos.Controladores;
+package com.losalerces.sistematurnos.controladores;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -8,12 +8,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
 import java.io.IOException;
@@ -26,16 +23,6 @@ import java.util.ResourceBundle;
 
 public class controladorMenuprincipal implements Initializable {
 
-    public ImageView imageView;
-    public VBox panelAgenda;
-    public Label lblFechaAgenda;
-    public TableView tablaAgenda;
-    public TableColumn colHora;
-    public TableColumn colPaciente;
-    public TableColumn colDoctor;
-    public TableColumn colEspecialidad;
-    public TableColumn colEstado;
-    public TableColumn colAcciones;
     @FXML
     private StackPane contenedorPrincipal;
 
@@ -64,6 +51,15 @@ public class controladorMenuprincipal implements Initializable {
         lblHora.setText(LocalTime.now().format(formatoHora));
     }
 
+    @FXML
+    private void mostrarTurnos() {
+        cargarVista("turnos.fxml");
+    }
+
+    @FXML
+    private void mostrarDoctores() {
+        cargarVista("doctores.fxml");
+    }
 
 
 
@@ -94,26 +90,13 @@ public class controladorMenuprincipal implements Initializable {
 
         java.io.InputStream stream = getClass().getResourceAsStream("/imagen/logo_clinica.png");
 
-        URL imageUrl = getClass().getResource("/imagen/logo_clinica.png");
-        if (imageUrl != null && iv != null) {
-            iv.setImage(new Image(imageUrl.toExternalForm()));
+        if (stream != null) {
+            iv.setImage(new Image(stream));
         } else {
-            System.err.println("Aviso: No se encontró el logo en /imagen/logo_clinica.png, continuando sin él.");
+            System.err.println("Error crítico: No se encontró el archivo");
         }
     }
 
-    @FXML
-    private void mostrarTurnos(javafx.event.Event event) {
-        cargarVista("turnos.fxml");
-    }
-
-    @FXML
-    private void mostrarDoctores(javafx.event.Event event) {
-        cargarVista("AbmDoctorView.fxml");
-    }
-
-    @FXML
-    public void mostrarPacientes(javafx.event.Event event) {
-        cargarVista("pacientes.fxml");
+    public void mostrarPacientes(ActionEvent actionEvent) {
     }
 }
