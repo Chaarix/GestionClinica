@@ -1,38 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<VBox xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.losalerces.sistematurnos.Controladores.ControladorObraSocial"
-      spacing="14"
-      stylesheets="@style.css"
-      styleClass="vista-obras"
-      prefWidth="520"
-      prefHeight="430">
+<VBox prefHeight="430" prefWidth="520" spacing="14" styleClass="vista-obras" stylesheets="@style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.losalerces.sistematurnos.Controladores.ControladorObraSocial">
 
     <padding>
-        <Insets top="20"
-                right="20"
-                bottom="20"
-                left="20"/>
+        <Insets bottom="20" left="20" right="20" top="20" />
     </padding>
 
     <!-- TÍTULO -->
 
     <VBox spacing="2">
 
-        <Label text="Obras Sociales"
-               styleClass="titulo-vista"/>
+        <Label styleClass="titulo-vista" text="Obras Sociales" />
 
-        <Label text="Agregar, modificar o eliminar obras sociales"
-               styleClass="subtitulo-vista"/>
+        <Label styleClass="subtitulo-vista" text="Agregar, modificar o eliminar obras sociales" />
 
     </VBox>
 
@@ -41,60 +25,39 @@
 
     <VBox spacing="5">
 
-        <Label text="Nombre de la obra social"
-               styleClass="label-campo"/>
+        <Label styleClass="label-campo" text="Nombre de la obra social" />
 
-        <TextField fx:id="txtNombre"
-                   promptText="Ej. PAMI, OSDE..."
-                   maxWidth="Infinity"/>
+        <TextField fx:id="txtNombre" maxWidth="Infinity" promptText="Ej. PAMI, OSDE..." />
 
     </VBox>
 
 
     <!-- BOTONES -->
 
-    <HBox spacing="8"
-          alignment="CENTER_LEFT">
+    <HBox alignment="CENTER_LEFT" spacing="8">
 
-        <!-- Este botón sirve para AGREGAR y MODIFICAR -->
-        <Button fx:id="btnGuardar"
-                text="Guardar / Modificar"
-                onAction="#accionGuardar"
-                styleClass="boton-principal"/>
+        <Button fx:id="btnGuardar" onAction="#accionGuardar" styleClass="boton-principal" text="Guardar / Modificar" />
 
-        <Button fx:id="btnEliminar"
-                text="Eliminar"
-                onAction="#accionEliminar"
-                styleClass="boton-eliminar"/>
+        <Button fx:id="btnEliminar" onAction="#accionEliminar" prefHeight="31.0" prefWidth="64.0" styleClass="boton-eliminar" text="Eliminar" />
 
-        <Button text="Cancelar"
-                onAction="#accionCancelar"
-                styleClass="boton-secundario"/>
-
+        <Button onAction="#accionCancelar" styleClass="boton-secundario" text="Cancelar" />
     </HBox>
 
 
     <!-- TABLA -->
 
-    <TableView fx:id="tblObrasSociales"
-               VBox.vgrow="ALWAYS"
-               styleClass="tabla-agenda">
+    <TableView fx:id="tblObrasSociales" styleClass="tabla-agenda" VBox.vgrow="ALWAYS">
 
         <columns>
 
-            <TableColumn fx:id="colId"
-                         text="ID"
-                         prefWidth="80"/>
+            <TableColumn fx:id="colId" prefWidth="80" text="ID" />
 
-            <TableColumn fx:id="colNombre"
-                         text="Obra Social"
-                         prefWidth="380"/>
+            <TableColumn fx:id="colNombre" prefWidth="380" text="Obra Social" />
 
         </columns>
 
     </TableView>
 
-    <Label text="Seleccioná una fila para modificarla o eliminarla."
-           styleClass="texto-ayuda"/>
+    <Label styleClass="texto-ayuda" text="Seleccioná una fila para modificarla o eliminarla." />
 
 </VBox>

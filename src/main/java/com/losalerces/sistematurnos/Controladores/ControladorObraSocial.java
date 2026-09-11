@@ -63,14 +63,23 @@ public class ControladorObraSocial {
 
     private void asignarIcono(javafx.stage.Stage stage) {
         try {
+            // 1. Carga del icono de la montaña
             java.io.InputStream streamImagen = getClass().getResourceAsStream("/imagen/montaña_clinica.png");
             if (streamImagen != null) {
                 stage.getIcons().add(new javafx.scene.image.Image(streamImagen));
             }
+
+            // 2. LE AGREGAMOS EL CSS A LA ALERTA (Ruta de tu carpeta de recursos)
+            if (stage.getScene() != null) {
+                String urlCss = getClass().getResource("/com/losalerces/sistematurnos/style.css").toExternalForm();
+                stage.getScene().getStylesheets().add(urlCss);
+            }
+
         } catch (Exception e) {
-            System.out.println("[Icono] Error al cargar la imagen: " + e.getMessage());
+            System.out.println("[Icono/CSS] Error al cargar los recursos de la alerta: " + e.getMessage());
         }
     }
+
 
     @FXML
     private void accionGuardar() {
@@ -127,10 +136,18 @@ public class ControladorObraSocial {
         confirmacion.setHeaderText("¿Está seguro de eliminar esta Obra Social?");
         confirmacion.setContentText("Vas a borrar '" + obraSocialSeleccionada.nombre() + "' de forma permanente.");
 
+        // LE APLICAMOS EL CSS DIRECTAMENTE AL DIALOG PANE (Ruta de tu carpeta de recursos)
+        try {
+            String urlCss = getClass().getResource("/com/losalerces/sistematurnos/style.css").toExternalForm();
+            confirmacion.getDialogPane().getStylesheets().add(urlCss);
+        } catch (Exception e) {
+            System.out.println("[Confirmación] No se pudo aplicar el archivo style.css: " + e.getMessage());
+        }
+
         // 2. Le inyectamos el icono usando el método único
         asignarIcono((javafx.stage.Stage) confirmacion.getDialogPane().getScene().getWindow());
 
-        // 3. Botones en español limpios (Usamos CANCEL para evitar fallos de ButtonData)
+        // 3. Botones en español limpios
         ButtonType btnSi = new ButtonType("Sí, eliminar");
         ButtonType btnNo = ButtonType.CANCEL;
         confirmacion.getButtonTypes().setAll(btnSi, btnNo);
@@ -176,14 +193,22 @@ public class ControladorObraSocial {
     }
 
     private void mostrarAlerta(String titulo, String encabezado, String mensaje, Alert.AlertType tipo) {
-        Alert alerta = new Alert(tipo);
-        alerta.setTitle(titulo);
-        alerta.setHeaderText(encabezado);
-        alerta.setContentText(mensaje);
+            Alert alerta = new Alert(tipo);
+            alerta.setTitle(titulo);
+            alerta.setHeaderText(encabezado);
+            alerta.setContentText(mensaje);
 
-        // LLAMAMOS AL MÉTODO ÚNICO PASÁNDOLE LA VENTANA DE LA ALERTA
-        asignarIcono((javafx.stage.Stage) alerta.getDialogPane().getScene().getWindow());
+            // 1. LE APLICAMOS EL CSS DIRECTAMENTE AL DIALOG PANE (Ruta de tu carpeta de recursos)
+            try {
+                String urlCss = getClass().getResource("/com/losalerces/sistematurnos/style.css").toExternalForm();
+                alerta.getDialogPane().getStylesheets().add(urlCss);
+            } catch (Exception e) {
+                System.out.println("[Alerta] No se pudo aplicar el archivo style.css: " + e.getMessage());
+            }
 
-        alerta.showAndWait();
+            // 2. LLAMAMOS A TU MÉTODO PARA PONERLE EL ICONO DE LA MONTAÑA
+            asignarIcono((javafx.stage.Stage) alerta.getDialogPane().getScene().getWindow());
+
+            alerta.showAndWait();
+        }
     }
-}
