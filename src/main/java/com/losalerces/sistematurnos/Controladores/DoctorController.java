@@ -15,7 +15,6 @@ import java.util.List;
 
 public class DoctorController {
     @FXML private TableView<ClaseDoctor> tblDoctores;
-    @FXML private TableColumn<ClaseDoctor, String> colDni;
     @FXML private TableColumn<ClaseDoctor, String> colNombre;
     @FXML private TableColumn<ClaseDoctor, String> colApellido;
     @FXML private TableColumn<ClaseDoctor, String> colEspecialidad;
@@ -24,9 +23,6 @@ public class DoctorController {
     @FXML private TextField txtBuscar;
     @FXML private TextField txtNombre;
     @FXML private TextField txtApellido;
-    @FXML private TextField txtDni;
-    @FXML private TextField txtTelefono;
-    @FXML private TextField txtCorreo;
     @FXML private ComboBox<String> cmbEspecialidad;
 
     @FXML private Label lblTituloForm;
@@ -44,7 +40,6 @@ public class DoctorController {
         cmbEspecialidad.getItems().addAll("Cardiología", "Pediatría", "Traumatología", "Clínica Médica");
 
         // 1. Vincular columnas usando la sintaxis de tus métodos getter
-        colDni.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().dni()));
         colNombre.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().nombre()));
         colApellido.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().apellido()));
         colEspecialidad.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().especialidad()));
@@ -58,7 +53,7 @@ public class DoctorController {
             filteredData.setPredicate(doctor -> {
                 if (newVal == null || newVal.isEmpty()) return true;
                 String filter = newVal.toLowerCase();
-                return doctor.apellido().toLowerCase().contains(filter) || doctor.dni().contains(filter);
+                return doctor.apellido().toLowerCase().contains(filter);
             });
         });
         tblDoctores.setItems(filteredData);
@@ -76,7 +71,6 @@ public class DoctorController {
         btnGuardar.disableProperty().bind(
                 txtNombre.textProperty().isEmpty()
                         .or(txtApellido.textProperty().isEmpty())
-                        .or(txtDni.textProperty().isEmpty())
                         .or(cmbEspecialidad.valueProperty().isNull())
         );
     }
@@ -99,9 +93,6 @@ public class DoctorController {
     private void llenarFormulario(ClaseDoctor doc) {
         txtNombre.setText(doc.getNombre());
         txtApellido.setText(doc.getApellido());
-        txtDni.setText(doc.getDni());
-        txtTelefono.setText(doc.getTelefono());
-        txtCorreo.setText(doc.getCorreo());
         cmbEspecialidad.setValue(doc.getEspecialidad());
         lblTituloForm.setText("Modificar Doctor (ID: " + doc.idDoctor() + ")");
     }
@@ -110,7 +101,7 @@ public class DoctorController {
     private void handleGuardar() {
         if (doctorSeleccionado == null) {
             // ---- ALTA ----
-            ClaseDoctor nuevoDoc = new ClaseDoctor(0, txtNombre.getText(), txtApellido.getText(), txtDni.getText(), txtTelefono.getText(), txtCorreo.getText(), cmbEspecialidad.getValue());
+            ClaseDoctor nuevoDoc = new ClaseDoctor(0, txtNombre.getText(), txtApellido.getText(),cmbEspecialidad.getValue());
             Task<Void> task = new Task<>() {
                 @Override
                 protected Void call() throws Exception {
@@ -129,9 +120,6 @@ public class DoctorController {
             // ---- MODIFICACIÓN ----
             doctorSeleccionado.setNombre(txtNombre.getText())
                     .setApellido(txtApellido.getText())
-                    .setDni(txtDni.getText())
-                    .setTelefono(txtTelefono.getText())
-                    .setCorreo(txtCorreo.getText())
                     .setEspecialidad(cmbEspecialidad.getValue());
 
             Task<Void> task = new Task<>() {
@@ -182,9 +170,6 @@ public class DoctorController {
         tblDoctores.getSelectionModel().clearSelection();
         txtNombre.clear();
         txtApellido.clear();
-        txtDni.clear();
-        txtTelefono.clear();
-        txtCorreo.clear();
         cmbEspecialidad.setValue(null);
         lblTituloForm.setText("Registrar Nuevo Doctor");
     }

@@ -4,18 +4,12 @@ public class ClaseDoctor {
     private int idDoctor;
     private String nombre;
     private String apellido;
-    private String dni;
-    private String telefono;
-    private String correo;
     private String especialidad;
 
-    public ClaseDoctor(int idDoctor, String nombre, String apellido, String dni, String telefono, String correo, String especialidad) {
+    public ClaseDoctor(int idDoctor, String nombre, String apellido, String especialidad) {
         this.idDoctor = idDoctor;
         this.nombre = nombre;
         this.apellido = apellido;
-        this.dni = dni;
-        this.telefono = telefono;
-        this.correo = correo;
         this.especialidad = especialidad;
     }
 
@@ -46,32 +40,6 @@ public class ClaseDoctor {
         return this;
     }
 
-    public String dni() {
-        return dni;
-    }
-
-    public ClaseDoctor setDni(String dni) {
-        this.dni = dni;
-        return this;
-    }
-
-    public String telefono() {
-        return telefono;
-    }
-
-    public ClaseDoctor setTelefono(String telefono) {
-        this.telefono = telefono;
-        return this;
-    }
-
-    public String correo() {
-        return correo;
-    }
-
-    public ClaseDoctor setCorreo(String correo) {
-        this.correo = correo;
-        return this;
-    }
 
     public String especialidad() {
         return especialidad;
@@ -86,17 +54,7 @@ public class ClaseDoctor {
         return especialidad;
     }
 
-    public String getCorreo() {
-        return correo;
-    }
 
-    public String getTelefono() {
-        return telefono;
-    }
-
-    public String getDni() {
-        return dni;
-    }
 
     public String getApellido() {
         return apellido;

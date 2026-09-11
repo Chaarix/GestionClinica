@@ -3,8 +3,9 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<SplitPane dividerPositions="0.55" prefHeight="600.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.losalerces.sistematurnos.Controladores.DoctorController">
+<SplitPane dividerPositions="0.45" prefHeight="600.0" prefWidth="950.0" xmlns="http://javafx.com" xmlns:fx="http://javafx.com" fx:controller="com.losalerces.sistematurnos.Controladores.DoctorController">
     <items>
         <!-- SECCIÓN IZQUIERDA: BUSCADOR Y TABLA -->
         <VBox spacing="10.0">
@@ -18,7 +19,6 @@
 
             <TableView fx:id="tblDoctores" VBox.vgrow="ALWAYS">
                 <columns>
-                    <TableColumn fx:id="colDni" prefWidth="100.0" text="DNI" />
                     <TableColumn fx:id="colApellido" prefWidth="130.0" text="Apellido" />
                     <TableColumn fx:id="colNombre" prefWidth="130.0" text="Nombre" />
                     <TableColumn fx:id="colEspecialidad" prefWidth="140.0" text="Especialidad" />
@@ -35,58 +35,48 @@
         </VBox>
 
         <!-- SECCIÓN DERECHA: FORMULARIO COMPLETO -->
-        <VBox spacing="15.0" style="-fx-background-color: #fcfcfc;">
+        <VBox spacing="15.0" style="-fx-background-color: #fcfcfc;" HBox.hgrow="ALWAYS">
             <padding>
                 <Insets bottom="20" left="20" right="20" top="20" />
             </padding>
-            <Label fx:id="lblTituloForm" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #333333;" text="Registrar Nuevo Doctor" />
+            <!-- Título principal -->
+            <Label fx:id="lblTituloForm" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #333333;" text="Registrar Nuevo Doctor" />
 
-            <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-background-insets: 0;" VBox.vgrow="ALWAYS">
-                <GridPane hgap="15" vgap="14">
+            <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-background-insets: 0; -fx-padding: 0;" VBox.vgrow="ALWAYS">
+                <GridPane hgap="15" vgap="20">
                     <columnConstraints>
-                        <ColumnConstraints minWidth="80" prefWidth="95" />
-                        <ColumnConstraints hgrow="ALWAYS" />
+                        <!-- Se le da un ancho fijo adecuado a las etiquetas de texto -->
+                        <ColumnConstraints minWidth="120.0" prefWidth="130.0" />
+                        <!-- Se obliga a la segunda columna (los cuadros) a estirarse por completo -->
+                        <ColumnConstraints hgrow="ALWAYS" minWidth="200.0" />
                     </columnConstraints>
 
-                    <!-- Campo DNI -->
-                    <Label text="DNI *:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                    <TextField fx:id="txtDni" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="204.0" promptText="Número de documento" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-
                     <!-- Campo Nombre -->
-                    <Label text="Nombre *:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                    <TextField fx:id="txtNombre" maxWidth="1.7976931348623157E308" promptText="Nombres" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                    <Label style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Nombre *:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                    <TextField fx:id="txtNombre" maxWidth="Infinity" promptText="Nombres" style="-fx-font-size: 16px; -fx-pref-height: 38px;" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.hgrow="ALWAYS" />
 
                     <!-- Campo Apellido -->
-                    <Label text="Apellido *:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-                    <TextField fx:id="txtApellido" maxWidth="1.7976931348623157E308" promptText="Apellidos" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-
-                    <!-- Campo Teléfono -->
-                    <Label text="Teléfono:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-                    <TextField fx:id="txtTelefono" maxWidth="1.7976931348623157E308" promptText="Ej: +54 2945..." GridPane.columnIndex="1" GridPane.rowIndex="3" />
-
-                    <!-- Campo Correo -->
-                    <Label text="Correo:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-                    <TextField fx:id="txtCorreo" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="233.0" promptText="ejemplo@correo.com" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                    <Label style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Apellido *:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                    <TextField fx:id="txtApellido" maxWidth="Infinity" promptText="Apellidos" style="-fx-font-size: 16px; -fx-pref-height: 38px;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
                     <!-- Campo Especialidad -->
-                    <Label text="Especialidad *:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
-                    <ComboBox fx:id="cmbEspecialidad" maxWidth="1.7976931348623157E308" prefWidth="Infinity" promptText="Seleccione una..." GridPane.columnIndex="1" GridPane.rowIndex="5" />
-               <rowConstraints>
-                  <RowConstraints />
-                  <RowConstraints />
-                  <RowConstraints />
-                  <RowConstraints />
-                  <RowConstraints />
-                  <RowConstraints />
-               </rowConstraints>
+                    <Label style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Especialidad *:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                    <ComboBox fx:id="cmbEspecialidad" maxWidth="Infinity" promptText="Seleccione una..." style="-fx-font-size: 16px; -fx-pref-height: 38px;" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.hgrow="ALWAYS" />
+
+                    <rowConstraints>
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                    </rowConstraints>
                 </GridPane>
             </ScrollPane>
 
             <Separator />
 
             <HBox alignment="CENTER_RIGHT" spacing="12">
-                <Button onAction="#handleLimpiarFormulario" text="Limpiar / Nuevo" />
-                <Button fx:id="btnGuardar" onAction="#handleGuardar" style="-fx-base: #2e7d32; -fx-text-fill: white; -fx-font-weight: bold;" text="Guardar Doctor" />
+                <Button onAction="#handleLimpiarFormulario" style="-fx-font-size: 14px; -fx-pref-height: 38px; -fx-padding: 0 15 0 15;" text="Limpiar / Nuevo" />
+                <Button fx:id="btnGuardar" onAction="#handleGuardar" style="-fx-base: #2e7d32; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14px; -fx-pref-height: 38px; -fx-padding: 0 20 0 20;" text="Guardar Doctor" />
             </HBox>
         </VBox>
     </items>
