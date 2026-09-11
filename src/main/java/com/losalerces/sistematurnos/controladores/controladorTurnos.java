@@ -1,7 +1,11 @@
 package com.losalerces.sistematurnos.Controladores;
 
+import com.losalerces.sistematurnos.Clases.ClaseDoctor;
+import com.losalerces.sistematurnos.Clases.ClaseObraSocial;
 import com.losalerces.sistematurnos.Clases.ClasePaciente;
 import com.losalerces.sistematurnos.Clases.ClaseTurno;
+import com.losalerces.sistematurnos.DAO.DoctorDAOImpl;
+import com.losalerces.sistematurnos.DAO.ObraSocialDAO;
 import com.losalerces.sistematurnos.DAO.PacienteDAO;
 import com.losalerces.sistematurnos.DAO.TurnoDAO;
 import javafx.beans.property.SimpleStringProperty;
@@ -10,6 +14,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.HashMap;
@@ -67,17 +72,26 @@ public class controladorTurnos {
 
     private final TurnoDAO turnoDAO = new TurnoDAO();
     private final PacienteDAO pacienteDAO = new PacienteDAO();
+    private final ObraSocialDAO obraSocialDAO = new ObraSocialDAO();
+    private final DoctorDAOImpl doctorDAO = new DoctorDAOImpl(); // Instancia del DAO de doctores provisto
 
-    // Mapas para relacionar el nombre seleccionado en el ComboBox con su ID en la BD
+    // Mapas para pacientes
     private final Map<String, Integer> mapaPacientes = new HashMap<>();
-    private final Map<String, Integer> mapaDoctores = new HashMap<>();
+
+    // Mapas para traducir Obras Sociales de ID a Nombre de forma dinámica
+    private final Map<Integer, String> mapaObrasSocialesIdANombre = new HashMap<>();
+
+    // Mapas dinámicos para doctores basados en los datos reales de la BD
+    private final Map<String, Integer> mapaDoctoresNombreAId = new HashMap<>();
+    private final Map<Integer, String> mapaDoctoresIdANombre = new HashMap<>();
+    private final Map<String, String> mapaDoctoresEspecialidad = new HashMap<>();
 
     @FXML
     public void initialize() {
         dpFecha.setValue(LocalDate.now());
         actualizarFechaAgenda();
 
-        // Configuración de seguridad para el DatePicker (evita que explote si escriben texto inválido)
+        // Configuración de seguridad para el DatePicker
         dpFecha.setConverter(new javafx.util.converter.LocalDateStringConverter() {
             @Override
             public LocalDate fromString(String text) {
@@ -93,11 +107,12 @@ public class controladorTurnos {
         });
 
         configurarTabla();
-        cargarDoctores();
+        cargarMapaObrasSociales();
+        cargarDoctoresDesdeBD(); // Carga los doctores reales usando DoctorDAOImpl
         cargarPacientes();
         cargarTurnosDesdeBD();
 
-        // Listener para actualizar los turnos si cambia la fecha en el selector de arriba
+        // Listener para actualizar los turnos si cambia la fecha
         dpFecha.valueProperty().addListener((obs, viejo, nuevo) -> {
             actualizarFechaAgenda();
             cargarTurnosDesdeBD();
@@ -116,15 +131,36 @@ public class controladorTurnos {
         tablaTurnos.setItems(listaTurnos);
     }
 
-    private void cargarDoctores() {
-        cmbDoctor.getItems().clear();
-        mapaDoctores.clear();
+    private void cargarMapaObrasSociales() {
+        mapaObrasSocialesIdANombre.clear();
+        List<ClaseObraSocial> listaBD = obraSocialDAO.listarTodos();
+        for (ClaseObraSocial os : listaBD) {
+            mapaObrasSocialesIdANombre.put(os.idObraSocial(), os.nombre());
+        }
+    }
 
-        // Datos simulados de doctores vinculados a IDs fijos (puedes pasarlo a un DoctorDAO luego)
-        cmbDoctor.getItems().addAll("Dr. López", "Dra. Pérez", "Dra. Fernández");
-        mapaDoctores.put("Dr. López", 1);
-        mapaDoctores.put("Dra. Pérez", 2);
-        mapaDoctores.put("Dra. Fernández", 3);
+    private void cargarDoctoresDesdeBD() {
+        cmbDoctor.getItems().clear();
+        mapaDoctoresNombreAId.clear();
+        mapaDoctoresIdANombre.clear();
+        mapaDoctoresEspecialidad.clear();
+
+        try {
+            List<ClaseDoctor> doctoresBD = doctorDAO.listarTodos();
+            for (ClaseDoctor d : doctoresBD) {
+                String nombreCompleto = "Dr/a. " + d.nombre() + " " + d.apellido(); // O puedes usar solo d.nombre() segun prefieras
+                // Nota: Asegúrate de alinear el formato del nombre si en tu BD viene separado o completo.
+                // Si 'd.nombre()' ya incluye el título, úsalo directo. Aquí asumimos formato estándar:
+                String nombreFormateado = d.nombre() + " " + d.apellido();
+
+                cmbDoctor.getItems().add(nombreFormateado);
+                mapaDoctoresNombreAId.put(nombreFormateado, d.idDoctor());
+                mapaDoctoresIdANombre.put(d.idDoctor(), nombreFormateado);
+                mapaDoctoresEspecialidad.put(nombreFormateado, d.especialidad());
+            }
+        } catch (SQLException e) {
+            mostrarAlerta("Error de BD", "No se pudieron cargar los doctores desde la base de datos: " + e.getMessage());
+        }
     }
 
     private void cargarPacientes() {
@@ -153,37 +189,27 @@ public class controladorTurnos {
     }
 
     private void actualizarDatosDoctor() {
-        String doctor = cmbDoctor.getValue();
-        if (doctor == null) {
+        String doctorSeleccionado = cmbDoctor.getValue();
+        if (doctorSeleccionado == null) {
             return;
         }
 
-        switch (doctor) {
-            case "Dr. López" -> {
-                lblEspecialidad.setText("Clínica Médica");
-                lblObraSocial.setText("PAMI / OSDE");
-            }
-            case "Dra. Pérez" -> {
-                lblEspecialidad.setText("Cardiología");
-                lblObraSocial.setText("PAMI");
-            }
-            case "Dra. Fernández" -> {
-                lblEspecialidad.setText("Pediatría");
-                lblObraSocial.setText("OSDE");
-            }
-        }
+        String especialidad = mapaDoctoresEspecialidad.getOrDefault(doctorSeleccionado, "General");
+        lblEspecialidad.setText(especialidad);
+
+        // Opcional o genérico para las obras sociales que atiende el doctor
+        lblObraSocial.setText("Varias / Particular");
     }
 
     @FXML
     private void guardarTurno() {
         if (dpFecha.getValue() == null || cmbDoctor.getValue() == null || cmbHorario.getValue() == null || cmbPaciente.getValue() == null) {
-
             mostrarAlerta("Datos incompletos", "Completá todos los campos del turno.");
             return;
         }
 
         int idPaciente = mapaPacientes.getOrDefault(cmbPaciente.getValue(), 0);
-        int idDoctor = mapaDoctores.getOrDefault(cmbDoctor.getValue(), 0);
+        int idDoctor = mapaDoctoresNombreAId.getOrDefault(cmbDoctor.getValue(), 0);
 
         if (idPaciente == 0 || idDoctor == 0) {
             mostrarAlerta("Error", "Debe seleccionar un paciente y un doctor válidos.");
@@ -191,7 +217,7 @@ public class controladorTurnos {
         }
 
         ClaseTurno nuevoTurno = new ClaseTurno(
-                0, // ID autoincremental en BD
+                0,
                 idPaciente,
                 idDoctor,
                 dpFecha.getValue(),
@@ -219,17 +245,20 @@ public class controladorTurnos {
         LocalDate fechaSeleccionada = dpFecha.getValue();
 
         for (ClaseTurno t : turnosDB) {
-            // Opcional: filtrar por la fecha seleccionada en la vista principal de agenda
             if (fechaSeleccionada != null && !t.fechaTurno().equals(fechaSeleccionada)) {
                 continue;
             }
 
-            // Buscamos datos complementarios para mostrar en la tabla de forma amigable
             ClasePaciente pac = pacienteDAO.buscarPorId(t.idPaciente());
             String nombrePac = pac != null ? pac.nombre() + " " + pac.apellido() : "Desconocido";
 
-            String nombreDoc = obtenerNombreDoctor(t.idDoctor());
-            String espDoc = obtenerEspecialidadDoctor(t.idDoctor());
+            String nombreObraSocial = "Particular";
+            if (pac != null) {
+                nombreObraSocial = mapaObrasSocialesIdANombre.getOrDefault(pac.idObraSocial(), "Particular");
+            }
+
+            String nombreDoc = mapaDoctoresIdANombre.getOrDefault(t.idDoctor(), "Desconocido");
+            String espDoc = mapaDoctoresEspecialidad.getOrDefault(nombreDoc, "General");
 
             listaTurnos.add(new TurnoFila(
                     t.idTurno(),
@@ -240,28 +269,10 @@ public class controladorTurnos {
                     nombrePac,
                     nombreDoc,
                     espDoc,
-                    "Particular", // O la obra social que corresponda
+                    nombreObraSocial,
                     "Confirmado"
             ));
         }
-    }
-
-    private String obtenerNombreDoctor(int idDoctor) {
-        return switch (idDoctor) {
-            case 1 -> "Dr. López";
-            case 2 -> "Dra. Pérez";
-            case 3 -> "Dra. Fernández";
-            default -> "Desconocido";
-        };
-    }
-
-    private String obtenerEspecialidadDoctor(int idDoctor) {
-        return switch (idDoctor) {
-            case 1 -> "Clínica Médica";
-            case 2 -> "Cardiología";
-            case 3 -> "Pediatría";
-            default -> "General";
-        };
     }
 
     private void configurarAcciones() {
@@ -342,7 +353,6 @@ public class controladorTurnos {
         alerta.showAndWait();
     }
 
-    // Clase interna para reflejar los datos amigables en la TableView de Turnos
     public static class TurnoFila {
         private final int idTurno;
         private final int idPaciente;

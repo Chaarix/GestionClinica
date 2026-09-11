@@ -1,6 +1,8 @@
 package com.losalerces.sistematurnos.Controladores;
 
+import com.losalerces.sistematurnos.Clases.ClaseObraSocial;
 import com.losalerces.sistematurnos.Clases.ClasePaciente;
+import com.losalerces.sistematurnos.DAO.ObraSocialDAO;
 import com.losalerces.sistematurnos.DAO.PacienteDAO;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -10,7 +12,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class controladorPacientes {
 
@@ -77,6 +81,11 @@ public class controladorPacientes {
 
     private final PacienteDAO pacienteDAO = new PacienteDAO();
 
+    private final ObraSocialDAO obraSocialDAO = new ObraSocialDAO();
+    private final Map<String, Integer> mapaObrasSociales = new HashMap<>();
+    private final Map<String, Integer> mapaObrasSocialesNombreAId = new HashMap<>();
+    private final Map<Integer, String> mapaObrasSocialesIdANombre = new HashMap<>();
+
     @FXML
     public void initialize() {
         configurarTabla();
@@ -98,13 +107,16 @@ public class controladorPacientes {
     }
 
     private void cargarObrasSociales() {
-        cmbObraSocial.getItems().addAll(
-                "PAMI",
-                "OSDE",
-                "Swiss Medical",
-                "Sancor Salud",
-                "Particular"
-        );
+        cmbObraSocial.getItems().clear();
+        mapaObrasSociales.clear();
+
+        // Traemos todas las obras sociales reales desde la base de datos
+        List<ClaseObraSocial> listaBD = obraSocialDAO.listarTodos();
+
+        for (ClaseObraSocial os : listaBD) {
+            cmbObraSocial.getItems().add(os.nombre());
+            mapaObrasSociales.put(os.nombre(), os.idObraSocial()); // Guardamos el nombre y su ID real
+        }
     }
 
     private void configurarTabla() {
@@ -198,24 +210,13 @@ public class controladorPacientes {
     }
 
     private String obtenerNombreObraSocial(int id) {
-        switch (id) {
-            case 1: return "PAMI";
-            case 2: return "OSDE";
-            case 3: return "Swiss Medical";
-            case 4: return "Sancor Salud";
-            default: return "Particular";
-        }
+        // Si encuentra la obra social por ID devuelve su nombre, de lo contrario devuelve "Particular" o "Desconocido"
+        return mapaObrasSocialesIdANombre.getOrDefault(id, "Particular");
     }
 
     private int obtenerIdObraSocial(String nombre) {
-        if (nombre == null) return 5;
-        switch (nombre) {
-            case "PAMI": return 1;
-            case "OSDE": return 2;
-            case "Swiss Medical": return 3;
-            case "Sancor Salud": return 4;
-            default: return 5;
-        }
+        if (nombre == null) return 0; // O el ID que corresponda por defecto en tu BD
+        return mapaObrasSocialesNombreAId.getOrDefault(nombre, 0);
     }
 
     @FXML
@@ -347,7 +348,7 @@ public class controladorPacientes {
             return false;
         }
 
-        if (dpFechaNacimiento.getValue() != null || dpFechaNacimiento.getValue().isAfter(LocalDate.now())) {
+        if (dpFechaNacimiento.getValue() != null && dpFechaNacimiento.getValue().isAfter(LocalDate.now())) {
             mostrarAdvertencia("La fecha de nacimiento no puede ser futura.");
             return false;
         }
