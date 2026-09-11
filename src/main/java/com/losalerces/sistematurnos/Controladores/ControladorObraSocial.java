@@ -7,12 +7,10 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 import java.util.List;
 import java.util.Optional;
@@ -63,6 +61,17 @@ public class ControladorObraSocial {
         actualizarTabla();
     }
 
+    private void asignarIcono(javafx.stage.Stage stage) {
+        try {
+            java.io.InputStream streamImagen = getClass().getResourceAsStream("/imagen/montaña_clinica.png");
+            if (streamImagen != null) {
+                stage.getIcons().add(new javafx.scene.image.Image(streamImagen));
+            }
+        } catch (Exception e) {
+            System.out.println("[Icono] Error al cargar la imagen: " + e.getMessage());
+        }
+    }
+
     @FXML
     private void accionGuardar() {
         String nombreStr = txtNombre.getText().trim();
@@ -108,34 +117,35 @@ public class ControladorObraSocial {
     @FXML
     private void accionEliminar() {
         if (obraSocialSeleccionada == null) {
-            mostrarAlerta("Selección requerida", "Fila no seleccionada", "Por favor, seleccione una fila de la tabla para poder eliminarla.", Alert.AlertType.WARNING);
+            mostrarAlerta("Selección requerida", "Fila no seleccionada", "Por favor, seleccione una fila.", Alert.AlertType.WARNING);
             return;
         }
 
-        // 1. Creamos una alerta de tipo CONFIRMATION (Pregunta al usuario)
+        // 1. Alerta de confirmación de JavaFX
         Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
         confirmacion.setTitle("Confirmar eliminación");
         confirmacion.setHeaderText("¿Está seguro de eliminar esta Obra Social?");
-        confirmacion.setContentText("Vas a borrar '" + obraSocialSeleccionada.nombre() + "' de forma permanente. Esta acción no se puede deshacer.");
+        confirmacion.setContentText("Vas a borrar '" + obraSocialSeleccionada.nombre() + "' de forma permanente.");
 
-        // 2. Personalizamos los botones en español para que quede más prolijo
+        // 2. Le inyectamos el icono usando el método único
+        asignarIcono((javafx.stage.Stage) confirmacion.getDialogPane().getScene().getWindow());
+
+        // 3. Botones en español limpios (Usamos CANCEL para evitar fallos de ButtonData)
         ButtonType btnSi = new ButtonType("Sí, eliminar");
-        ButtonType btnNo = new ButtonType("Cancelar", javafx.scene.control.ButtonBar.ButtonData.CANCEL_CLOSE);
+        ButtonType btnNo = ButtonType.CANCEL;
         confirmacion.getButtonTypes().setAll(btnSi, btnNo);
 
-        // 3. Esperamos a ver qué responde el usuario
-        Optional<ButtonType> resultado = confirmacion.showAndWait();
+        java.util.Optional<ButtonType> resultado = confirmacion.showAndWait();
 
         if (resultado.isPresent() && resultado.get() == btnSi) {
-            // Si el usuario confirmó presionando "Sí, eliminar"
             boolean eliminado = obraSocialDAO.eliminar(obraSocialSeleccionada.idObraSocial());
 
             if (eliminado) {
-                mostrarAlerta("Éxito", "Registro eliminado", "La Obra Social se eliminó correctamente de la base de datos.", Alert.AlertType.INFORMATION);
+                mostrarAlerta("Éxito", "Obra Social eliminada.", "El registro se borró correctamente.", Alert.AlertType.INFORMATION);
                 limpiarCampos();
                 actualizarTabla();
             } else {
-                mostrarAlerta("Error", "No se pudo eliminar", "Ocurrió un problema. Verifique que no esté asignada a ningún turno activo.", Alert.AlertType.ERROR);
+                mostrarAlerta("Error", "No se pudo eliminar.", "Ocurrió un problema en la base de datos.", Alert.AlertType.ERROR);
             }
         }
     }
@@ -147,6 +157,7 @@ public class ControladorObraSocial {
             limpiarCampos();
 
             System.out.println("[Controlador] Operación cancelada de forma limpia.");
+
         }
     }
 
@@ -169,6 +180,10 @@ public class ControladorObraSocial {
         alerta.setTitle(titulo);
         alerta.setHeaderText(encabezado);
         alerta.setContentText(mensaje);
+
+        // LLAMAMOS AL MÉTODO ÚNICO PASÁNDOLE LA VENTANA DE LA ALERTA
+        asignarIcono((javafx.stage.Stage) alerta.getDialogPane().getScene().getWindow());
+
         alerta.showAndWait();
     }
 }
