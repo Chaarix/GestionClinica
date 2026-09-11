@@ -163,6 +163,7 @@ public class DoctorController {
             }
         });
     }
+    //nada
 
     @FXML
     private void handleLimpiarFormulario() {
