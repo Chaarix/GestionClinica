@@ -99,4 +99,6 @@ public class controladorMenuprincipal implements Initializable {
             System.err.println("Error crítico: No se encontró el archivo");
         }
     }
+    //AAAAAAAAAAAAAAAAAAAA
+
 }
