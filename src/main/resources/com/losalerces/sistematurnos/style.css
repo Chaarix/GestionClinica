@@ -526,4 +526,73 @@
     -fx-border-color: #D9E3DC;
     -fx-border-radius: 8px;
     -fx-background-radius: 8px;
-}
+}/* ======================================================= */
+ /* ALERTAS Y CUADROS DE DIÁLOGO - CLINICA LOS ALERCES     */
+ /* ======================================================= */
+
+ /* El contenedor principal de toda la alerta */
+ .dialog-pane {
+     -fx-background-color: #F4F7F3; /* Mismo fondo verde suave de tu vista principal */
+     -fx-font-family: "Georgia";
+ }
+
+ /* El cuadro superior donde se aloja el Encabezado */
+ .dialog-pane .header-panel {
+     -fx-background-color: #EAF2ED; /* Verde claro estilo encabezado de tu tabla */
+     -fx-border-color: transparent transparent #DDE6DF transparent;
+     -fx-border-width: 0 0 1 0;
+     -fx-padding: 10px;
+ }
+
+ /* El texto en negrita del Encabezado */
+ .dialog-pane:header .header-panel .label {
+     -fx-font-size: 14px;
+     -fx-font-weight: bold;
+     -fx-text-fill: #124E45; /* El verde oscuro característico de tu clínica */
+ }
+
+ /* El recuadro del mensaje de descripción inferior */
+ .dialog-pane .content {
+     -fx-padding: 15px;
+ }
+
+ /* El texto de la descripción */
+ .dialog-pane .content .label {
+     -fx-font-size: 13px;
+     -fx-text-fill: #3D5752; /* Gris verdoso de tus textos de tabla */
+ }
+
+ /* El contenedor inferior donde se apoyan los botones */
+ .dialog-pane .button-bar {
+     -fx-background-color: #F4F7F3;
+     -fx-padding: 10px;
+ }
+
+ /* Estilo para los botones de las alertas (Aceptar, Sí eliminar, Cancelar) */
+ .dialog-pane .button {
+     -fx-background-color: #FFFFFF;
+     -fx-text-fill: #29564D;
+     -fx-background-radius: 8px;
+     -fx-border-radius: 8px;
+     -fx-border-color: #C8D7CE;
+     -fx-font-size: 12px;
+     -fx-padding: 6px 14px;
+     -fx-cursor: hand;
+ }
+
+ /* Cuando pasas el mouse por encima de los botones */
+ .dialog-pane .button:hover {
+     -fx-background-color: #EDF5F0;
+     -fx-border-color: #ADC8B8;
+ }
+
+ /* Estilo para el botón de Confirmación Principal (el que hace la acción) */
+ .dialog-pane .button:default {
+     -fx-background-color: #E8F1EB; /* Mismo verde institucional de tu botón principal */
+     -fx-text-fill: #174C43;
+     -fx-border-color: #C6D8CC;
+ }
+
+ .dialog-pane .button:default:hover {
+     -fx-background-color: #DCEBE1;
+ }
