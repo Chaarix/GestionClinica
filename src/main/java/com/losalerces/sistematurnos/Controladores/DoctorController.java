@@ -1,13 +1,13 @@
 package com.losalerces.sistematurnos.Controladores;
 
 import com.losalerces.sistematurnos.Clases.ClaseDoctor;
-import com.losalerces.sistematurnos.DAO.DoctorDAO;
 import com.losalerces.sistematurnos.DAO.DoctorDAOImpl;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.concurrent.Task;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
@@ -15,18 +15,13 @@ import java.util.List;
 
 public class DoctorController {
     @FXML private TableView<ClaseDoctor> tblDoctores;
-    @FXML private TableColumn<ClaseDoctor, String> colDni;
     @FXML private TableColumn<ClaseDoctor, String> colNombre;
     @FXML private TableColumn<ClaseDoctor, String> colApellido;
     @FXML private TableColumn<ClaseDoctor, String> colEspecialidad;
 
-
     @FXML private TextField txtBuscar;
     @FXML private TextField txtNombre;
     @FXML private TextField txtApellido;
-    @FXML private TextField txtDni;
-    @FXML private TextField txtTelefono;
-    @FXML private TextField txtCorreo;
     @FXML private ComboBox<String> cmbEspecialidad;
 
     @FXML private Label lblTituloForm;
@@ -35,16 +30,14 @@ public class DoctorController {
 
     private ObservableList<ClaseDoctor> listaDoctores;
     private ClaseDoctor doctorSeleccionado;
-    private final DoctorDAO doctorDAO = new DoctorDAOImpl();
-    //private final DoctorDAO doctorDAO = new DoctorDAO();
+    private final DoctorDAOImpl doctorDAO = new DoctorDAOImpl();
 
     @FXML
     public void initialize() {
         listaDoctores = FXCollections.observableArrayList();
         cmbEspecialidad.getItems().addAll("Cardiología", "Pediatría", "Traumatología", "Clínica Médica");
 
-        // 1. Vincular columnas usando la sintaxis de tus métodos getter
-        colDni.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().dni()));
+        // 1. Vincular columnas usando los métodos getter de ClaseDoctor
         colNombre.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().nombre()));
         colApellido.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().apellido()));
         colEspecialidad.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().especialidad()));
@@ -52,13 +45,15 @@ public class DoctorController {
         // 2. Carga inicial asíncrona
         cargarDoctores();
 
-        // 3. Filtro de búsqueda por Apellido o DNI
+        // 3. Filtro de búsqueda por Apellido
         FilteredList<ClaseDoctor> filteredData = new FilteredList<>(listaDoctores, p -> true);
         txtBuscar.textProperty().addListener((obs, oldVal, newVal) -> {
             filteredData.setPredicate(doctor -> {
                 if (newVal == null || newVal.isEmpty()) return true;
                 String filter = newVal.toLowerCase();
-                return doctor.apellido().toLowerCase().contains(filter) || doctor.dni().contains(filter);
+                return doctor.apellido().toLowerCase().contains(filter) ||
+                        doctor.nombre().toLowerCase().contains(filter) ||
+                        doctor.especialidad().toLowerCase().contains(filter);
             });
         });
         tblDoctores.setItems(filteredData);
@@ -76,7 +71,6 @@ public class DoctorController {
         btnGuardar.disableProperty().bind(
                 txtNombre.textProperty().isEmpty()
                         .or(txtApellido.textProperty().isEmpty())
-                        .or(txtDni.textProperty().isEmpty())
                         .or(cmbEspecialidad.valueProperty().isNull())
         );
     }
@@ -91,18 +85,12 @@ public class DoctorController {
         task.setOnSucceeded(e -> listaDoctores.setAll(task.getValue()));
         task.setOnFailed(e -> mostrarAlerta("Error", "Error al leer la base de datos.", Alert.AlertType.ERROR));
         new Thread(task).start();
-
-
-
     }
 
     private void llenarFormulario(ClaseDoctor doc) {
-        txtNombre.setText(doc.getNombre());
-        txtApellido.setText(doc.getApellido());
-        txtDni.setText(doc.getDni());
-        txtTelefono.setText(doc.getTelefono());
-        txtCorreo.setText(doc.getCorreo());
-        cmbEspecialidad.setValue(doc.getEspecialidad());
+        txtNombre.setText(doc.nombre());
+        txtApellido.setText(doc.apellido());
+        cmbEspecialidad.setValue(doc.especialidad());
         lblTituloForm.setText("Modificar Doctor (ID: " + doc.idDoctor() + ")");
     }
 
@@ -110,7 +98,7 @@ public class DoctorController {
     private void handleGuardar() {
         if (doctorSeleccionado == null) {
             // ---- ALTA ----
-            ClaseDoctor nuevoDoc = new ClaseDoctor(0, txtNombre.getText(), txtApellido.getText(), txtDni.getText(), txtTelefono.getText(), txtCorreo.getText(), cmbEspecialidad.getValue());
+            ClaseDoctor nuevoDoc = new ClaseDoctor(0, txtNombre.getText(), txtApellido.getText(), cmbEspecialidad.getValue());
             Task<Void> task = new Task<>() {
                 @Override
                 protected Void call() throws Exception {
@@ -122,17 +110,15 @@ public class DoctorController {
                 listaDoctores.add(nuevoDoc);
                 mostrarAlerta("Éxito", "Doctor registrado con éxito.", Alert.AlertType.INFORMATION);
                 handleLimpiarFormulario();
+                cargarDoctores(); // Recarga para asegurar el ID generado por la BD
             });
             task.setOnFailed(e -> mostrarAlerta("Error", "No se pudo insertar el doctor.", Alert.AlertType.ERROR));
             new Thread(task).start();
         } else {
             // ---- MODIFICACIÓN ----
-            doctorSeleccionado.setNombre(txtNombre.getText())
-                    .setApellido(txtApellido.getText())
-                    .setDni(txtDni.getText())
-                    .setTelefono(txtTelefono.getText())
-                    .setCorreo(txtCorreo.getText())
-                    .setEspecialidad(cmbEspecialidad.getValue());
+            doctorSeleccionado.setNombre(txtNombre.getText());
+            doctorSeleccionado.setApellido(txtApellido.getText());
+            doctorSeleccionado.setEspecialidad(cmbEspecialidad.getValue());
 
             Task<Void> task = new Task<>() {
                 @Override
@@ -142,7 +128,7 @@ public class DoctorController {
                 }
             };
             task.setOnSucceeded(e -> {
-                tblDoctores.refresh(); // Necesario porque el modelo no usa Properties de JavaFX
+                tblDoctores.refresh();
                 mostrarAlerta("Éxito", "Datos actualizados correctamente.", Alert.AlertType.INFORMATION);
                 handleLimpiarFormulario();
             });
@@ -182,9 +168,6 @@ public class DoctorController {
         tblDoctores.getSelectionModel().clearSelection();
         txtNombre.clear();
         txtApellido.clear();
-        txtDni.clear();
-        txtTelefono.clear();
-        txtCorreo.clear();
         cmbEspecialidad.setValue(null);
         lblTituloForm.setText("Registrar Nuevo Doctor");
     }
@@ -195,5 +178,10 @@ public class DoctorController {
         a.setHeaderText(null);
         a.setContentText(m);
         a.showAndWait();
+    }
+
+    @FXML
+    public void administrarObrasSociales(ActionEvent actionEvent) {
+        // Queda pendiente para después
     }
 }
