@@ -255,9 +255,29 @@ public class controladorDoctores {
         configurarAcciones();
 
 
-        tablaDoctores.setItems(
-                doctores
+        tablaDoctores.setItems(doctores);
+
+
+        // Hace que las columnas se adapten al ancho disponible
+        tablaDoctores.setColumnResizePolicy(
+                TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN
         );
+
+
+        tablaDoctores
+                .getSelectionModel()
+                .selectedItemProperty()
+                .addListener(
+                        (obs, anterior, seleccionado) -> {
+
+                            if (seleccionado != null) {
+
+                                seleccionarDoctor(
+                                        seleccionado
+                                );
+                            }
+                        }
+                );
 
 
         tablaDoctores

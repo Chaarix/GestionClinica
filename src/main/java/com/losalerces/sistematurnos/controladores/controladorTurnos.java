@@ -64,6 +64,10 @@ public class controladorTurnos {
 
         cargarPacientes();
 
+        tablaTurnos.setColumnResizePolicy(
+                TableView.CONSTRAINED_RESIZE_POLICY
+        );
+
         System.out.println("Vista Turnos cargada");
     }
 

@@ -19,7 +19,9 @@
 
     -fx-border-width: 0 0 1 0;
 
+    -fx-min-height: 82px;
     -fx-pref-height: 88px;
+    -fx-max-height: 95px;
 }
 
 
@@ -37,6 +39,26 @@
 
 
 /* ================================================= */
+/* SCROLL PRINCIPAL */
+/* ================================================= */
+
+.scroll-principal {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+    -fx-border-color: transparent;
+    -fx-padding: 0;
+}
+
+.scroll-principal > .viewport {
+    -fx-background-color: #F4F7F3;
+}
+
+.scroll-principal .corner {
+    -fx-background-color: #F4F7F3;
+}
+
+
+/* ================================================= */
 /* CONTENIDO */
 /* ================================================= */
 
@@ -50,6 +72,7 @@
 /* ================================================= */
 
 .card-navegacion {
+    -fx-min-height: 82px;
     -fx-pref-height: 88px;
 
     -fx-background-color: #FFFFFF;
@@ -152,11 +175,14 @@
     -fx-background-color: transparent;
 
     -fx-border-color: #DDE6DF;
+    -fx-border-width: 1px;
 
     -fx-border-radius: 10px;
     -fx-background-radius: 10px;
 
     -fx-fixed-cell-size: 38px;
+
+    -fx-min-height: 260px;
 }
 
 
@@ -336,6 +362,7 @@
 
 
 .buscador {
+    -fx-min-height: 33px;
     -fx-pref-height: 33px;
 
     -fx-background-color: #FFFFFF;
@@ -356,87 +383,11 @@
 
     -fx-border-radius: 8px;
 }
-/* ============================= */
+
+
+/* ================================================= */
 /* VISTA TURNOS */
-/* ============================= */
-
-.panel-formulario {
-    -fx-background-color: #F8FAF8;
-
-    -fx-background-radius: 10px;
-    -fx-border-radius: 10px;
-
-    -fx-border-color: #DEE7E1;
-
-    -fx-padding: 10px;
-}
-
-.label-campo {
-    -fx-font-size: 12px;
-    -fx-text-fill: #5A716A;
-}
-
-.dato-destacado {
-    -fx-font-size: 13px;
-    -fx-font-weight: bold;
-    -fx-text-fill: #174C43;
-    -fx-padding: 8px 0 0 0;
-}
-
-.titulo-seccion {
-    -fx-font-size: 19px;
-    -fx-font-weight: bold;
-    -fx-text-fill: #174C43;
-}
-
-.boton-secundario {
-    -fx-background-color: #FFFFFF;
-    -fx-text-fill: #355C54;
-
-    -fx-background-radius: 8px;
-    -fx-border-radius: 8px;
-
-    -fx-border-color: #C8D7CE;
-
-    -fx-padding: 7px 13px;
-    -fx-cursor: hand;
-}
-
-.boton-secundario:hover {
-    -fx-background-color: #EEF5F0;
-}
-
-.boton-mini {
-    -fx-background-color: #FFFFFF;
-
-    -fx-border-color: #CDDAD2;
-
-    -fx-background-radius: 7px;
-    -fx-border-radius: 7px;
-
-    -fx-text-fill: #24574E;
-
-    -fx-padding: 5px 10px;
-
-    -fx-cursor: hand;
-}
-
-.boton-mini:hover {
-    -fx-background-color: #EDF5F0;
-}
-
-.date-picker,
-.combo-box {
-    -fx-background-color: #FFFFFF;
-
-    -fx-border-color: #D7E1DA;
-
-    -fx-border-radius: 7px;
-    -fx-background-radius: 7px;
-}
-/* ======================================= */
-/* PACIENTES */
-/* ======================================= */
+/* ================================================= */
 
 .panel-formulario {
     -fx-background-color: #F8FAF8;
@@ -456,6 +407,65 @@
 }
 
 
+.dato-destacado {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #174C43;
+    -fx-padding: 8px 0 0 0;
+}
+
+
+.titulo-seccion {
+    -fx-font-size: 19px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #174C43;
+}
+
+
+.boton-secundario {
+    -fx-background-color: #FFFFFF;
+    -fx-text-fill: #355C54;
+
+    -fx-background-radius: 8px;
+    -fx-border-radius: 8px;
+
+    -fx-border-color: #C8D7CE;
+
+    -fx-padding: 7px 13px;
+    -fx-cursor: hand;
+}
+
+
+.boton-secundario:hover {
+    -fx-background-color: #EEF5F0;
+}
+
+
+.boton-mini {
+    -fx-background-color: #FFFFFF;
+
+    -fx-border-color: #CDDAD2;
+
+    -fx-background-radius: 7px;
+    -fx-border-radius: 7px;
+
+    -fx-text-fill: #24574E;
+
+    -fx-padding: 5px 10px;
+
+    -fx-cursor: hand;
+}
+
+
+.boton-mini:hover {
+    -fx-background-color: #EDF5F0;
+}
+
+
+/* ================================================= */
+/* CAMPOS */
+/* ================================================= */
+
 .text-field,
 .date-picker,
 .combo-box {
@@ -466,9 +476,14 @@
 
     -fx-border-color: #D7E1DA;
 
+    -fx-min-height: 34px;
     -fx-pref-height: 34px;
 }
 
+
+/* ================================================= */
+/* PACIENTES */
+/* ================================================= */
 
 .boton-eliminar {
     -fx-background-color: #FBEAEA;
@@ -491,11 +506,18 @@
 .boton-eliminar:hover {
     -fx-background-color: #F6DADA;
 }
+
+
+/* ================================================= */
+/* CHECKBOX */
+/* ================================================= */
+
 .check-box {
     -fx-font-family: "Georgia";
     -fx-font-size: 12px;
     -fx-text-fill: #405F58;
 }
+
 
 .check-box .box {
     -fx-background-color: #FFFFFF;
@@ -504,26 +526,65 @@
     -fx-background-radius: 4px;
 }
 
+
 .check-box:selected .mark {
     -fx-background-color: #FFFFFF;
 }
 
+
 .check-box:selected .box {
     -fx-background-color: #26705F;
 }
+
+
+/* ================================================= */
+/* OBRAS SOCIALES */
+/* ================================================= */
+
 .vista-obras {
     -fx-background-color: #F7F9F6;
     -fx-font-family: "Georgia";
 }
+
 
 .texto-ayuda {
     -fx-font-size: 11px;
     -fx-text-fill: #71827D;
 }
 
+
 .vista-obras .table-view {
     -fx-background-color: #FFFFFF;
+
     -fx-border-color: #D9E3DC;
+    -fx-border-width: 1px;
+
     -fx-border-radius: 8px;
     -fx-background-radius: 8px;
+}
+
+
+/* ================================================= */
+/* SCROLLBARS */
+/* ================================================= */
+
+.scroll-bar:vertical,
+.scroll-bar:horizontal {
+    -fx-background-color: transparent;
+}
+
+
+.scroll-bar .track {
+    -fx-background-color: transparent;
+}
+
+
+.scroll-bar .thumb {
+    -fx-background-color: #C7D6CD;
+    -fx-background-radius: 8px;
+}
+
+
+.scroll-bar .thumb:hover {
+    -fx-background-color: #AFC5B8;
 }

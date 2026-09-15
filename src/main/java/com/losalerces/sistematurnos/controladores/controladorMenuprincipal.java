@@ -15,6 +15,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 
+import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -119,40 +120,9 @@ public class controladorMenuprincipal {
 
     private void cargarLogo() {
 
-        var url = getClass().getResource(
-                "/com/losalerces/sistematurnos/imagen/logo_clinica.png"
-        );
-
-        if (url != null) {
-
-            Image imagen = new Image(url.toExternalForm());
-
-            imageView.setImage(imagen);
-
-            /*
-             * Tu imagen tiene bastante espacio blanco.
-             * Esto recorta visualmente ese borde.
-             */
-
-            if (imagen.getWidth() > 500 &&
-                    imagen.getHeight() > 300) {
-
-                imageView.setViewport(
-                        new Rectangle2D(
-                                35,
-                                35,
-                                imagen.getWidth() - 70,
-                                imagen.getHeight() - 70
-                        )
-                );
-            }
-
-        } else {
-
-            System.err.println(
-                    "No se encontró logo_clinica.png"
-            );
-        }
+        File archivo = new File("src/main/resources/imagen/logo_clinica.png");
+        Image imagen = new Image(archivo.toURI().toString());
+        imageView.setImage(imagen);
     }
 
 
@@ -621,35 +591,40 @@ public class controladorMenuprincipal {
     }
 
 
-    private void cargarVista(
-            String archivo
-    ) {
+    private void cargarVista(String archivo) {
 
         try {
 
-            FXMLLoader loader =
-                    new FXMLLoader(
-                            getClass().getResource(
-                                    "/com/losalerces/sistematurnos/"
-                                            + archivo
-                            )
-                    );
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource(
+                            "/com/losalerces/sistematurnos/" + archivo
+                    )
+            );
 
+            Parent vista = loader.load();
 
-            Parent vista =
-                    loader.load();
+            contenedorPrincipal.getChildren().clear();
 
+            if (vista instanceof javafx.scene.layout.Region region) {
 
-            contenedorPrincipal
-                    .getChildren()
-                    .setAll(vista);
+                region.setMinWidth(0);
+                region.setMinHeight(0);
 
+                region.setMaxWidth(Double.MAX_VALUE);
+                region.setMaxHeight(Double.MAX_VALUE);
+            }
+
+            StackPane.setAlignment(
+                    vista,
+                    javafx.geometry.Pos.TOP_LEFT
+            );
+
+            contenedorPrincipal.getChildren().add(vista);
 
         } catch (IOException e) {
 
             System.err.println(
-                    "Error cargando: "
-                            + archivo
+                    "Error cargando: " + archivo
             );
 
             e.printStackTrace();
