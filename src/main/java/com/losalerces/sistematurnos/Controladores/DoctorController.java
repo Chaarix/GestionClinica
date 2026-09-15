@@ -44,10 +44,10 @@ public class DoctorController {
         cmbEspecialidad.getItems().addAll("Cardiología", "Pediatría", "Traumatología", "Clínica Médica");
 
         // 1. Vincular columnas usando la sintaxis de tus métodos getter
-        colDni.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().dni()));
-        colNombre.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().nombre()));
-        colApellido.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().apellido()));
-        colEspecialidad.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().especialidad()));
+        colDni.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDni()));
+        colNombre.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNombre()));
+        colApellido.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getApellido()));
+        colEspecialidad.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getEspecialidad()));
 
         // 2. Carga inicial asíncrona
         cargarDoctores();
@@ -58,7 +58,7 @@ public class DoctorController {
             filteredData.setPredicate(doctor -> {
                 if (newVal == null || newVal.isEmpty()) return true;
                 String filter = newVal.toLowerCase();
-                return doctor.apellido().toLowerCase().contains(filter) || doctor.dni().contains(filter);
+                return doctor.getApellido().toLowerCase().contains(filter) || doctor.getDni().contains(filter);
             });
         });
         tblDoctores.setItems(filteredData);
@@ -103,7 +103,7 @@ public class DoctorController {
         txtTelefono.setText(doc.getTelefono());
         txtCorreo.setText(doc.getCorreo());
         cmbEspecialidad.setValue(doc.getEspecialidad());
-        lblTituloForm.setText("Modificar Doctor (ID: " + doc.idDoctor() + ")");
+        lblTituloForm.setText("Modificar Doctor (ID: " + doc.getIdDoctor() + ")");
     }
 
     @FXML
@@ -127,13 +127,12 @@ public class DoctorController {
             new Thread(task).start();
         } else {
             // ---- MODIFICACIÓN ----
-            doctorSeleccionado.setNombre(txtNombre.getText())
-                    .setApellido(txtApellido.getText())
-                    .setDni(txtDni.getText())
-                    .setTelefono(txtTelefono.getText())
-                    .setCorreo(txtCorreo.getText())
-                    .setEspecialidad(cmbEspecialidad.getValue());
-
+            doctorSeleccionado.setNombre(txtNombre.getText());
+            doctorSeleccionado.setApellido(txtApellido.getText());
+            doctorSeleccionado.setDni(txtDni.getText());
+            doctorSeleccionado.setTelefono(txtTelefono.getText());
+            doctorSeleccionado.setCorreo(txtCorreo.getText());
+            doctorSeleccionado.setEspecialidad(cmbEspecialidad.getValue());
             Task<Void> task = new Task<>() {
                 @Override
                 protected Void call() throws Exception {
@@ -156,13 +155,13 @@ public class DoctorController {
         ClaseDoctor aEliminar = tblDoctores.getSelectionModel().getSelectedItem();
         if (aEliminar == null) return;
 
-        Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION, "¿Dar de baja al Dr./Dra. " + aEliminar.apellido() + "?", ButtonType.YES, ButtonType.NO);
+        Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION, "¿Dar de baja al Dr./Dra. " + aEliminar.getApellido() + "?", ButtonType.YES, ButtonType.NO);
         confirmacion.showAndWait().ifPresent(res -> {
             if (res == ButtonType.YES) {
                 Task<Void> task = new Task<>() {
                     @Override
                     protected Void call() throws Exception {
-                        doctorDAO.eliminar(aEliminar.idDoctor());
+                        doctorDAO.eliminar(aEliminar.getIdDoctor());
                         return null;
                     }
                 };

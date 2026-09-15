@@ -24,9 +24,6 @@ public class ControladorObraSocial {
     private TableView<ClaseObraSocial> tblObrasSociales;
 
     @FXML
-    private TableColumn<ClaseObraSocial, Integer> colId;
-
-    @FXML
     private TableColumn<ClaseObraSocial, String> colNombre;
 
     @FXML
@@ -41,20 +38,16 @@ public class ControladorObraSocial {
 
     @FXML
     public void initialize() {
-        // Enlazamos las columnas de forma explícita adaptándonos a tus métodos
-        colId.setCellValueFactory(cellData ->
-                new SimpleIntegerProperty(cellData.getValue().idObraSocial()).asObject()
-        );
 
         colNombre.setCellValueFactory(cellData ->
-                new SimpleStringProperty(cellData.getValue().nombre())
+                new SimpleStringProperty(cellData.getValue().getNombre())
         );
 
         // Escuchamos cuando el usuario hace clic en una fila de la tabla
         tblObrasSociales.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
                 obraSocialSeleccionada = newSelection;
-                txtNombre.setText(obraSocialSeleccionada.nombre());
+                txtNombre.setText(obraSocialSeleccionada.getNombre());
             }
         });
 
@@ -102,7 +95,7 @@ public class ControladorObraSocial {
                 mostrarAlerta("Error", "No se pudo guardar", "Ocurrió un problema al intentar registrar en la base de datos.", Alert.AlertType.ERROR);
             }
         } else {
-            String nombreViejo = obraSocialSeleccionada.nombre();
+            String nombreViejo = obraSocialSeleccionada.getNombre();
 
             if (nombreStr.equalsIgnoreCase(nombreViejo)) {
                 mostrarAlerta("Atención", "Sin cambios detectados",
@@ -134,7 +127,7 @@ public class ControladorObraSocial {
         Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
         confirmacion.setTitle("Confirmar eliminación");
         confirmacion.setHeaderText("¿Está seguro de eliminar esta Obra Social?");
-        confirmacion.setContentText("Vas a borrar '" + obraSocialSeleccionada.nombre() + "' de forma permanente.");
+        confirmacion.setContentText("Vas a borrar '" + obraSocialSeleccionada.getNombre() + "' de forma permanente.");
 
         // LE APLICAMOS EL CSS DIRECTAMENTE AL DIALOG PANE (Ruta de tu carpeta de recursos)
         try {
@@ -155,7 +148,7 @@ public class ControladorObraSocial {
         java.util.Optional<ButtonType> resultado = confirmacion.showAndWait();
 
         if (resultado.isPresent() && resultado.get() == btnSi) {
-            boolean eliminado = obraSocialDAO.eliminar(obraSocialSeleccionada.idObraSocial());
+            boolean eliminado = obraSocialDAO.eliminar(obraSocialSeleccionada.getIdObraSocial());
 
             if (eliminado) {
                 mostrarAlerta("Éxito", "Obra Social eliminada.", "El registro se borró correctamente.", Alert.AlertType.INFORMATION);

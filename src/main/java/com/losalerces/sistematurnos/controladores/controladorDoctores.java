@@ -172,7 +172,7 @@ public class controladorDoctores {
 
             CheckBox checkBox =
                     new CheckBox(
-                            obra.nombre()
+                            obra.getNombre()
                     );
 
 
@@ -182,7 +182,7 @@ public class controladorDoctores {
              */
 
             checkBox.setUserData(
-                    obra.idObraSocial()
+                    obra.getIdObraSocial()
             );
 
 

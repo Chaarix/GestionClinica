@@ -20,7 +20,7 @@ public class ObraSocialDAO {
         try (Connection conn = BaseDatos.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            pstmt.setString(1, obraSocial.nombre());
+            pstmt.setString(1, obraSocial.getNombre());
 
             int filasAfectadas = pstmt.executeUpdate();
             return filasAfectadas > 0;
@@ -64,8 +64,8 @@ public class ObraSocialDAO {
         try (Connection conn = BaseDatos.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            pstmt.setString(1, obraSocial.nombre());
-            pstmt.setInt(2, obraSocial.idObraSocial());
+            pstmt.setString(1, obraSocial.getNombre());
+            pstmt.setInt(2, obraSocial.getIdObraSocial());
 
             return pstmt.executeUpdate() > 0;
 

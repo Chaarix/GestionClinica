@@ -43,12 +43,12 @@ public class DoctorDAOImpl extends DoctorDAO {
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-            stmt.setString(1, doctor.nombre());
-            stmt.setString(2, doctor.apellido());
-            stmt.setString(3, doctor.dni());
-            stmt.setString(4, doctor.telefono());
-            stmt.setString(5, doctor.correo());
-            stmt.setString(6, doctor.especialidad());
+            stmt.setString(1, doctor.getNombre());
+            stmt.setString(2, doctor.getApellido());
+            stmt.setString(3, doctor.getDni());
+            stmt.setString(4, doctor.getTelefono());
+            stmt.setString(5, doctor.getCorreo());
+            stmt.setString(6, doctor.getEspecialidad());
             stmt.executeUpdate();
 
             try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
@@ -65,13 +65,13 @@ public class DoctorDAOImpl extends DoctorDAO {
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setString(1, doctor.nombre());
-            stmt.setString(2, doctor.apellido());
-            stmt.setString(3, doctor.dni());
-            stmt.setString(4, doctor.telefono());
-            stmt.setString(5, doctor.correo());
-            stmt.setString(6, doctor.especialidad());
-            stmt.setInt(7, doctor.idDoctor());
+            stmt.setString(1, doctor.getNombre());
+            stmt.setString(2, doctor.getApellido());
+            stmt.setString(3, doctor.getDni());
+            stmt.setString(4, doctor.getTelefono());
+            stmt.setString(5, doctor.getCorreo());
+            stmt.setString(6, doctor.getEspecialidad());
+            stmt.setInt(7, doctor.getIdDoctor());
             stmt.executeUpdate();
         }
     }

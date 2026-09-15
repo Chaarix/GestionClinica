@@ -23,10 +23,10 @@ public class TurnoDAO {
         try (Connection conexion = BaseDatos.getConnection();
              PreparedStatement ps = conexion.prepareStatement(sql)) {
 
-            ps.setInt(1, turno.idPaciente());
-            ps.setInt(2, turno.idDoctor());
-            ps.setString(3, turno.fechaTurno().toString()); // O Date.valueOf(turno.fechaTurno())
-            ps.setString(4, turno.horaTurno().toString());  // O Time.valueOf(turno.horaTurno())
+            ps.setInt(1, turno.getIdPaciente());
+            ps.setInt(2, turno.getIdDoctor());
+            ps.setString(3, turno.getFechaTurno().toString()); // O Date.valueOf(turno.fechaTurno())
+            ps.setString(4, turno.getHoraTurno().toString());  // O Time.valueOf(turno.horaTurno())
 
             ps.executeUpdate();
             return true;
@@ -194,11 +194,11 @@ public class TurnoDAO {
         try (Connection conexion = BaseDatos.getConnection();
              PreparedStatement ps = conexion.prepareStatement(sql)) {
 
-            ps.setInt(1, turno.idPaciente());
-            ps.setInt(2, turno.idDoctor());
-            ps.setString(3, turno.fechaTurno().toString());
-            ps.setString(4, turno.horaTurno().toString());
-            ps.setInt(5, turno.idTurno()); // Corregido el índice a 5
+            ps.setInt(1, turno.getIdPaciente());
+            ps.setInt(2, turno.getIdDoctor());
+            ps.setString(3, turno.getFechaTurno().toString());
+            ps.setString(4, turno.getHoraTurno().toString());
+            ps.setInt(5, turno.getIdTurno()); // Corregido el índice a 5
 
             return ps.executeUpdate() > 0;
 

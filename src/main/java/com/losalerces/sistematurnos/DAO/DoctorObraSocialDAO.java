@@ -26,8 +26,8 @@ public class DoctorObraSocialDAO {
         try (Connection conexion = BaseDatos.getConnection();
              PreparedStatement ps = conexion.prepareStatement(sql)) {
 
-            ps.setInt(1, relacion.idDoctor());
-            ps.setInt(2, relacion.idObraSocial());
+            ps.setInt(1, relacion.getIdDoctor());
+            ps.setInt(2, relacion.getIdObraSocial());
 
             ps.executeUpdate();
 

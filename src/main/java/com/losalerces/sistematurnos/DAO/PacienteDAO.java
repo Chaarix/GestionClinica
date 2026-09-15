@@ -13,12 +13,12 @@ public class PacienteDAO {
         String sql = "INSERT INTO pacientes (nombre, apellido, fecha_nacimiento, telefono, email, id_obra_social) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection conn = BaseDatos.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, paciente.nombre());
-            pstmt.setString(2, paciente.apellido());
-            pstmt.setString(3, paciente.fechaNacimiento()); // O .toString() si manejas LocalDate
-            pstmt.setString(4, paciente.telefono());
-            pstmt.setString(5, paciente.email());
-            pstmt.setInt(6, paciente.idObraSocial());
+            pstmt.setString(1, paciente.getNombre());
+            pstmt.setString(2, paciente.getApellido());
+            pstmt.setString(3, paciente.getFechaNacimiento()); // O .toString() si manejas LocalDate
+            pstmt.setString(4, paciente.getTelefono());
+            pstmt.setString(5, paciente.getEmail());
+            pstmt.setInt(6, paciente.getIdObraSocial());
             return pstmt.executeUpdate() > 0;
         } catch (SQLException e) {
             System.err.println("Error al guardar paciente: " + e.getMessage());
@@ -66,13 +66,13 @@ public class PacienteDAO {
         String sql = "UPDATE pacientes SET nombre = ?, apellido = ?, fecha_nacimiento = ?, telefono = ?, email = ?, id_obra_social = ? WHERE id_paciente = ?";
         try (Connection conn = BaseDatos.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, paciente.nombre());
-            pstmt.setString(2, paciente.apellido());
-            pstmt.setString(3, paciente.fechaNacimiento());
-            pstmt.setString(4, paciente.telefono());
-            pstmt.setString(5, paciente.email());
-            pstmt.setInt(6, paciente.idObraSocial());
-            pstmt.setInt(7, paciente.idPaciente());
+            pstmt.setString(1, paciente.getNombre());
+            pstmt.setString(2, paciente.getApellido());
+            pstmt.setString(3, paciente.getFechaNacimiento());
+            pstmt.setString(4, paciente.getTelefono());
+            pstmt.setString(5, paciente.getEmail());
+            pstmt.setInt(6, paciente.getIdObraSocial());
+            pstmt.setInt(7, paciente.getIdPaciente());
             return pstmt.executeUpdate() > 0;
         } catch (SQLException e) {
             System.err.println("Error al actualizar paciente: " + e.getMessage());
