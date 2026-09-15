@@ -10,6 +10,8 @@ module com.losalerces.sistematurnos {
     requires com.almasb.fxgl.all;
     requires java.desktop;
     requires java.sql;
+    requires org.apache.poi.poi;
+    requires org.apache.poi.ooxml;
 
     opens com.losalerces.sistematurnos to javafx.fxml;
     opens com.losalerces.sistematurnos.controladores to javafx.fxml;
