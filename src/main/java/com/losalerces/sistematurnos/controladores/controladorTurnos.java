@@ -167,6 +167,7 @@ public class controladorTurnos {
             cmbPaciente.getItems().add(nombreCompleto);
             mapaPacientes.put(nombreCompleto, p.idPaciente());
         }
+
     }
 
     @FXML
@@ -204,15 +205,35 @@ public class controladorTurnos {
             return;
         }
 
+        ClasePaciente pacienteObj = pacienteDAO.buscarPorId(idPaciente);
+        String nombreObraSocial = "Particular";
+        if (pacienteObj != null) {
+            // CORRECCIÓN AQUÍ: pasamos el idObraSocial y el valor por defecto "Particular"
+            nombreObraSocial = mapaObrasSocialesIdANombre.getOrDefault(pacienteObj.idObraSocial(), "Particular");
+        }
+        String especialidadDoc = mapaDoctoresEspecialidad.getOrDefault(cmbDoctor.getValue(), "General");
+
+        // System.out.println solicitados
+        System.out.println("===== DATOS DEL NUEVO TURNO GUARDADO =====");
+        System.out.println("Tipo de Turno / Estado: Próximo");
+        System.out.println("Paciente: " + cmbPaciente.getValue() + " (ID: " + idPaciente + ")");
+        System.out.println("Obra Social del Paciente: " + nombreObraSocial);
+        System.out.println("Doctor: " + cmbDoctor.getValue() + " (ID: " + idDoctor + ")");
+        System.out.println("Especialidad del Doctor: " + especialidadDoc);
+        System.out.println("Fecha: " + dpFecha.getValue());
+        System.out.println("Hora: " + cmbHorario.getValue());
+        System.out.println("===========================================");
+
+        System.out.println("Obra Social del Paciente: " + nombreObraSocial + " (ID OS en BD: " + (pacienteObj != null ? pacienteObj.idObraSocial() : "N/A") + ")");
         // Al crear un nuevo turno, el estado inicial por defecto es "Próximo"
         ClaseTurno nuevoTurno = new ClaseTurno(
-                        0,
-                        idPaciente,
-                        idDoctor,
+                0,
+                idPaciente,
+                idDoctor,
                 "Próximo",
                 dpFecha.getValue(),
                 LocalTime.parse(cmbHorario.getValue())
-                );
+        );
 
         boolean exito = turnoDAO.agregar(nuevoTurno);
 
@@ -311,13 +332,13 @@ public class controladorTurnos {
         ClaseTurno turnoBD = turnoDAO.buscarPorId(turnoFila.getIdTurno());
         if (turnoBD != null) {
             ClaseTurno turnoModificado = new ClaseTurno(
-                                turnoBD.idTurno(),
-                                turnoBD.idPaciente(),
-                                turnoBD.idDoctor(),
+                    turnoBD.idTurno(),
+                    turnoBD.idPaciente(),
+                    turnoBD.idDoctor(),
                     nuevoEstado,
                     turnoBD.fechaTurno(),
                     turnoBD.horaTurno()
-                        );
+            );
 
             if (turnoDAO.modificar(turnoModificado)) {
                 cargarTurnosDesdeBD();

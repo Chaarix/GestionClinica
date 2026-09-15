@@ -64,7 +64,6 @@ public class controladorReportePami {
         listaReporte.clear();
         System.out.println(">>> Intentando cargar reporte PAMI...");
 
-        // Filtramos directamente por la obra social "PAMI" y el estado "Atendido"
         List<ClaseTurno> turnosPamiAtendidos = turnoDAO.listarPorObraSocialYEstado("PAMI", "Atendido");
 
         System.out.println(">>> Turnos encontrados en la BD: " + turnosPamiAtendidos.size());
@@ -73,14 +72,21 @@ public class controladorReportePami {
             ClasePaciente pac = pacienteDAO.buscarPorId(t.idPaciente());
             String nombrePac = pac != null ? pac.nombre() + " " + pac.apellido() : "Desconocido";
 
-            // Obtener nombre del doctor de forma segura
+            // Depuración de doctor
+            System.out.println(">>> Procesando turno ID: " + t.idTurno() + " | idDoctor asociado en BD: " + t.idDoctor());
+
             String nombreDoc = "Desconocido";
             try {
                 var doc = doctorDAO.buscarPorId(t.idDoctor());
                 if (doc != null) {
                     nombreDoc = doc.nombre() + " " + doc.apellido();
+                    System.out.println("    -> Doctor encontrado: " + nombreDoc);
+                } else {
+                    System.out.println("    -> ALERTA: doctorDAO.buscarPorId(" + t.idDoctor() + ") devolvió NULL.");
                 }
-            } catch (Exception ignored) {}
+            } catch (Exception e) {
+                System.out.println("    -> EXCEPCIÓN al buscar doctor: " + e.getMessage());
+            }
 
             listaReporte.add(new FilaReportePami(
                     t.fechaTurno() != null ? t.fechaTurno().toString() : "",

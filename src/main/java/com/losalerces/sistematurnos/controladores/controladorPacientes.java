@@ -88,14 +88,17 @@ public class controladorPacientes {
 
     @FXML
     public void initialize() {
+        System.out.println("[INIT] >>> Inicializando controladorPacientes...");
         configurarTabla();
         cargarObrasSociales();
         cargarDuraciones();
         cargarPacientesDesdeBD();
         btnModificar.setDisable(true);
+        System.out.println("[INIT] <<< controladorPacientes inicializado correctamente.");
     }
 
     private void cargarDuraciones() {
+        System.out.println("[DURACIONES] Cargando opciones predeterminadas de duración de consulta...");
         cmbDuracionConsulta.getItems().addAll(
                 "15 minutos",
                 "20 minutos",
@@ -104,22 +107,33 @@ public class controladorPacientes {
                 "45 minutos",
                 "60 minutos"
         );
+        System.out.println("[DURACIONES] Opciones cargadas exitosamente.");
     }
 
     private void cargarObrasSociales() {
+        System.out.println("[OBRAS SOCIALES] Conectando con BD (ObraSocialDAO) para listar todas las obras sociales...");
         cmbObraSocial.getItems().clear();
         mapaObrasSociales.clear();
+        mapaObrasSocialesNombreAId.clear();
+        mapaObrasSocialesIdANombre.clear();
 
-        // Traemos todas las obras sociales reales desde la base de datos
         List<ClaseObraSocial> listaBD = obraSocialDAO.listarTodos();
+        System.out.println("[OBRAS SOCIALES] Cantidad de obras sociales encontradas en BD: " + (listaBD != null ? listaBD.size() : 0));
 
-        for (ClaseObraSocial os : listaBD) {
-            cmbObraSocial.getItems().add(os.nombre());
-            mapaObrasSociales.put(os.nombre(), os.idObraSocial()); // Guardamos el nombre y su ID real
+        if (listaBD != null) {
+            for (ClaseObraSocial os : listaBD) {
+                System.out.println("[OBRAS SOCIALES] Procesando -> ID: " + os.idObraSocial() + " | Nombre: " + os.nombre());
+                cmbObraSocial.getItems().add(os.nombre());
+                mapaObrasSociales.put(os.nombre(), os.idObraSocial());
+                mapaObrasSocialesNombreAId.put(os.nombre(), os.idObraSocial());
+                mapaObrasSocialesIdANombre.put(os.idObraSocial(), os.nombre());
+            }
         }
+        System.out.println("[OBRAS SOCIALES] Mapeo completado.");
     }
 
     private void configurarTabla() {
+        System.out.println("[TABLA] Configurando factorías de celdas para tablaPacientes...");
         colId.setCellValueFactory(
                 dato -> new SimpleIntegerProperty(dato.getValue().getId()).asObject()
         );
@@ -160,16 +174,31 @@ public class controladorPacientes {
                 .selectedItemProperty()
                 .addListener((obs, anterior, seleccionado) -> {
                     if (seleccionado != null) {
+                        System.out.println("[TABLA EVENTO] Fila seleccionada en la tabla -> ID: " + seleccionado.getId() + ", Nombre: " + seleccionado.getNombre() + " " + seleccionado.getApellido());
                         seleccionarPaciente(seleccionado);
                     }
                 });
+        System.out.println("[TABLA] Configuración de tabla finalizada.");
     }
 
     @FXML
     private void guardarPaciente() {
+        System.out.println("\n[GUARDAR PACIENTE] Intentando guardar nuevo paciente...");
         if (!validarCampos()) {
+            System.out.println("[GUARDAR PACIENTE] Validación fallida. Operación cancelada.");
             return;
         }
+
+        String nombreOSSeleccionada = cmbObraSocial.getValue();
+        int idOSObtenido = obtenerIdObraSocial(nombreOSSeleccionada);
+
+        System.out.println("[GUARDAR PACIENTE] Datos capturados del formulario:");
+        System.out.println(" - Nombre: " + txtNombre.getText().trim());
+        System.out.println(" - Apellido: " + txtApellido.getText().trim());
+        System.out.println(" - Fecha Nacimiento: " + (dpFechaNacimiento.getValue() != null ? dpFechaNacimiento.getValue().toString() : "VACÍO"));
+        System.out.println(" - Teléfono: " + txtTelefono.getText().trim());
+        System.out.println(" - Email: " + txtEmail.getText().trim());
+        System.out.println(" - Obra Social Seleccionada: " + nombreOSSeleccionada + " (ID resuelto en mapa: " + idOSObtenido + ")");
 
         ClasePaciente nuevoPaciente = new ClasePaciente(
                 0,
@@ -178,10 +207,12 @@ public class controladorPacientes {
                 dpFechaNacimiento.getValue() != null ? dpFechaNacimiento.getValue().toString() : "",
                 txtTelefono.getText().trim(),
                 txtEmail.getText().trim(),
-                obtenerIdObraSocial(cmbObraSocial.getValue())
+                idOSObtenido
         );
 
+        System.out.println("[GUARDAR PACIENTE] Enviando objeto ClasePaciente a PacienteDAO.guardar()...");
         boolean exito = pacienteDAO.guardar(nuevoPaciente);
+        System.out.println("[GUARDAR PACIENTE] Resultado de la consulta DAO: " + (exito ? "ÉXITO" : "FALLO"));
 
         if (exito) {
             cargarPacientesDesdeBD();
@@ -192,55 +223,86 @@ public class controladorPacientes {
     }
 
     private void cargarPacientesDesdeBD() {
+        System.out.println("[BD PACIENTES] Consultando lista de pacientes desde PacienteDAO.listar()...");
         pacientes.clear();
         List<ClasePaciente> listaDAO = pacienteDAO.listar();
+        System.out.println("[BD PACIENTES] Cantidad de registros devueltos por la BD: " + (listaDAO != null ? listaDAO.size() : 0));
 
-        for (ClasePaciente p : listaDAO) {
-            pacientes.add(new PacienteFila(
-                    p.idPaciente(),
-                    p.nombre(),
-                    p.apellido(),
-                    p.fechaNacimiento() != null && !p.fechaNacimiento().isEmpty() ? LocalDate.parse(p.fechaNacimiento()) : null,
-                    p.telefono(),
-                    p.email(),
-                    obtenerNombreObraSocial(p.idObraSocial()),
-                    cmbDuracionConsulta.getItems().isEmpty() ? "30 minutos" : cmbDuracionConsulta.getItems().get(0)
-            ));
+        if (listaDAO != null) {
+            for (ClasePaciente p : listaDAO) {
+                String nombreOS = obtenerNombreObraSocial(p.idObraSocial());
+                System.out.println("[BD PACIENTES] -> Mapeando Paciente ID: " + p.idPaciente() + " | " + p.nombre() + " " + p.apellido() + " | ID Obra Social FK: " + p.idObraSocial() + " -> Nombre OS: " + nombreOS);
+
+                pacientes.add(new PacienteFila(
+                        p.idPaciente(),
+                        p.nombre(),
+                        p.apellido(),
+                        p.fechaNacimiento() != null && !p.fechaNacimiento().isEmpty() ? LocalDate.parse(p.fechaNacimiento()) : null,
+                        p.telefono(),
+                        p.email(),
+                        nombreOS,
+                        cmbDuracionConsulta.getItems().isEmpty() ? "30 minutos" : cmbDuracionConsulta.getItems().get(0)
+                ));
+            }
         }
+        System.out.println("[BD PACIENTES] Tabla recargada con éxito en la interfaz.");
     }
 
     private String obtenerNombreObraSocial(int id) {
-        // Si encuentra la obra social por ID devuelve su nombre, de lo contrario devuelve "Particular" o "Desconocido"
-        return mapaObrasSocialesIdANombre.getOrDefault(id, "Particular");
+        String nombreResuelto = mapaObrasSocialesIdANombre.getOrDefault(id, "Particular");
+        System.out.println("[MAPA OS] Buscando nombre para ID Obra Social [" + id + "] -> Resultado: " + nombreResuelto);
+        return nombreResuelto;
     }
 
     private int obtenerIdObraSocial(String nombre) {
-        if (nombre == null) return 0; // O el ID que corresponda por defecto en tu BD
-        return mapaObrasSocialesNombreAId.getOrDefault(nombre, 0);
+        if (nombre == null) {
+            System.out.println("[MAPA OS] El nombre de obra social recibido es nulo. Retornando ID por defecto: 0");
+            return 0;
+        }
+        int idResuelto = mapaObrasSocialesNombreAId.getOrDefault(nombre, mapaObrasSociales.getOrDefault(nombre, 0));
+        System.out.println("[MAPA OS] Buscando ID para nombre de Obra Social [" + nombre + "] -> Resultado ID: " + idResuelto);
+        return idResuelto;
     }
 
     @FXML
     private void modificarPaciente() {
+        System.out.println("\n[MODIFICAR PACIENTE] Intentando actualizar paciente seleccionado...");
         if (pacienteSeleccionado == null) {
+            System.out.println("[MODIFICAR PACIENTE] No hay ningún paciente seleccionado para modificar.");
             mostrarAdvertencia("Seleccioná un paciente.");
             return;
         }
 
         if (!validarCampos()) {
+            System.out.println("[MODIFICAR PACIENTE] Validación de campos fallida.");
             return;
         }
 
+        int idPacienteActualizar = pacienteSeleccionado.getId();
+        String nombreOSSeleccionada = cmbObraSocial.getValue();
+        int idOSObtenido = obtenerIdObraSocial(nombreOSSeleccionada);
+
+        System.out.println("[MODIFICAR PACIENTE] Datos nuevos para ID " + idPacienteActualizar + ":");
+        System.out.println(" - Nombre: " + txtNombre.getText().trim());
+        System.out.println(" - Apellido: " + txtApellido.getText().trim());
+        System.out.println(" - Fecha Nacimiento: " + (dpFechaNacimiento.getValue() != null ? dpFechaNacimiento.getValue().toString() : "VACÍO"));
+        System.out.println(" - Teléfono: " + txtTelefono.getText().trim());
+        System.out.println(" - Email: " + txtEmail.getText().trim());
+        System.out.println(" - Obra Social: " + nombreOSSeleccionada + " (ID: " + idOSObtenido + ")");
+
         ClasePaciente pacienteActualizado = new ClasePaciente(
-                pacienteSeleccionado.getId(),
+                idPacienteActualizar,
                 txtNombre.getText().trim(),
                 txtApellido.getText().trim(),
                 dpFechaNacimiento.getValue() != null ? dpFechaNacimiento.getValue().toString() : "",
                 txtTelefono.getText().trim(),
                 txtEmail.getText().trim(),
-                obtenerIdObraSocial(cmbObraSocial.getValue())
+                idOSObtenido
         );
 
+        System.out.println("[MODIFICAR PACIENTE] Enviando a PacienteDAO.actualizar()...");
         boolean exito = pacienteDAO.actualizar(pacienteActualizado);
+        System.out.println("[MODIFICAR PACIENTE] Resultado de actualización DAO: " + (exito ? "ÉXITO" : "FALLO"));
 
         if (exito) {
             cargarPacientesDesdeBD();
@@ -253,8 +315,10 @@ public class controladorPacientes {
     @FXML
     private void buscarPaciente() {
         String buscar = txtBuscar.getText().trim().toLowerCase();
+        System.out.println("[BUSCAR PACIENTE] Término de búsqueda ingresado: '" + buscar + "'");
 
         if (buscar.isEmpty()) {
+            System.out.println("[BUSCAR PACIENTE] Campo de búsqueda vacío. Mostrando lista completa.");
             tablaPacientes.setItems(pacientes);
             return;
         }
@@ -268,11 +332,13 @@ public class controladorPacientes {
             }
         }
 
+        System.out.println("[BUSCAR PACIENTE] Coincidencias encontradas: " + resultado.size());
         tablaPacientes.setItems(resultado);
     }
 
     private void seleccionarPaciente(PacienteFila paciente) {
         pacienteSeleccionado = paciente;
+        System.out.println("[SELECCIÓN] Cargando datos del paciente ID " + paciente.id + " en los campos del formulario...");
 
         txtNombre.setText(paciente.getNombre());
         txtApellido.setText(paciente.getApellido());
@@ -283,9 +349,11 @@ public class controladorPacientes {
         cmbDuracionConsulta.setValue(paciente.getDuracionConsulta());
 
         btnModificar.setDisable(false);
+        System.out.println("[SELECCIÓN] Formulario poblado y botón 'Modificar' habilitado.");
     }
 
     private void configurarAcciones() {
+        System.out.println("[ACCIONES TABLA] Configurando botón de eliminar en la columna de acciones...");
         colAcciones.setCellFactory(
                 columna -> new TableCell<>() {
                     private final Button btnEliminar = new Button("Eliminar");
@@ -295,6 +363,7 @@ public class controladorPacientes {
 
                         btnEliminar.setOnAction(event -> {
                             PacienteFila paciente = getTableView().getItems().get(getIndex());
+                            System.out.println("[ACCIÓN ELIMINAR] Botón presionado para paciente ID: " + paciente.getId() + " (" + paciente.getNombre() + " " + paciente.getApellido() + ")");
                             eliminarPaciente(paciente);
                         });
                     }
@@ -309,13 +378,16 @@ public class controladorPacientes {
     }
 
     private void eliminarPaciente(PacienteFila paciente) {
+        System.out.println("[ELIMINAR PACIENTE] Solicitando confirmación de eliminación para ID: " + paciente.getId());
         Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
         confirmacion.setHeaderText(null);
         confirmacion.setContentText("¿Deseás eliminar a " + paciente.getNombre() + " " + paciente.getApellido() + "?");
 
         confirmacion.showAndWait().ifPresent(respuesta -> {
             if (respuesta == ButtonType.OK) {
+                System.out.println("[ELIMINAR PACIENTE] Usuario confirmó eliminación. Ejecutando PacienteDAO.eliminar(" + paciente.getId() + ")...");
                 boolean exito = pacienteDAO.eliminar(paciente.getId());
+                System.out.println("[ELIMINAR PACIENTE] Resultado de eliminación DAO: " + (exito ? "ÉXITO" : "FALLO"));
 
                 if (exito) {
                     cargarPacientesDesdeBD();
@@ -323,12 +395,15 @@ public class controladorPacientes {
                 } else {
                     mostrarAdvertencia("No se pudo eliminar el paciente de la base de datos.");
                 }
+            } else {
+                System.out.println("[ELIMINAR PACIENTE] Eliminación cancelada por el usuario.");
             }
         });
     }
 
     @FXML
     private void limpiarFormulario() {
+        System.out.println("[LIMPIAR] Limpiando campos del formulario y reseteando estado...");
         txtNombre.clear();
         txtApellido.clear();
         dpFechaNacimiento.setValue(null);
@@ -340,28 +415,35 @@ public class controladorPacientes {
         pacienteSeleccionado = null;
         tablaPacientes.getSelectionModel().clearSelection();
         btnModificar.setDisable(true);
+        System.out.println("[LIMPIAR] Formulario limpio y botón 'Modificar' deshabilitado.");
     }
 
     private boolean validarCampos() {
+        System.out.println("[VALIDACIÓN] Validando campos del formulario...");
         if (txtNombre.getText().isBlank() || txtApellido.getText().isBlank()) {
+            System.out.println("[VALIDACIÓN ERROR] Nombre o apellido están vacíos.");
             mostrarAdvertencia("Nombre y apellido son obligatorios.");
             return false;
         }
 
         if (dpFechaNacimiento.getValue() != null && dpFechaNacimiento.getValue().isAfter(LocalDate.now())) {
+            System.out.println("[VALIDACIÓN ERROR] La fecha de nacimiento es posterior a la fecha actual.");
             mostrarAdvertencia("La fecha de nacimiento no puede ser futura.");
             return false;
         }
 
         if (cmbDuracionConsulta.getValue() == null) {
+            System.out.println("[VALIDACIÓN ERROR] No se seleccionó la duración de la consulta.");
             mostrarAdvertencia("Seleccioná la duración de la consulta.");
             return false;
         }
 
+        System.out.println("[VALIDACIÓN] ¡Validación exitosa!");
         return true;
     }
 
     private void mostrarAdvertencia(String mensaje) {
+        System.out.println("[ALERTA VISUAL] Mostrando advertencia emergente: " + mensaje);
         Alert alerta = new Alert(Alert.AlertType.WARNING);
         alerta.setHeaderText(null);
         alerta.setContentText(mensaje);

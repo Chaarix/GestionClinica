@@ -7,8 +7,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DoctorDAOImpl{
-
+public class DoctorDAOImpl {
 
     public List<ClaseDoctor> listarTodos() throws SQLException {
         List<ClaseDoctor> doctores = new ArrayList<>();
@@ -30,7 +29,6 @@ public class DoctorDAOImpl{
         return doctores;
     }
 
-
     public void insertar(ClaseDoctor doctor) throws SQLException {
         String sql = "INSERT INTO doctores (nombre, apellido, especialidad) VALUES (?, ?, ?)";
         try (Connection conn = BaseDatos.getConnection();
@@ -49,7 +47,6 @@ public class DoctorDAOImpl{
         }
     }
 
-
     public void actualizar(ClaseDoctor doctor) throws SQLException {
         String sql = "UPDATE doctores SET nombre = ?, apellido = ?, especialidad = ? WHERE id_doctor = ?";
         try (Connection conn = BaseDatos.getConnection();
@@ -63,7 +60,6 @@ public class DoctorDAOImpl{
         }
     }
 
-
     public void eliminar(int idDoctor) throws SQLException {
         String sql = "DELETE FROM doctores WHERE id_doctor = ?";
         try (Connection conn = BaseDatos.getConnection();
@@ -72,8 +68,10 @@ public class DoctorDAOImpl{
             stmt.executeUpdate();
         }
     }
+
     public ClaseDoctor buscarPorId(int idDoctor) {
-        String sql = "SELECT id_doctor, nombre, apellido FROM doctores WHERE id_doctor = ?";
+        // CORREGIDO: Se agregó 'especialidad' a la consulta SQL
+        String sql = "SELECT id_doctor, nombre, apellido, especialidad FROM doctores WHERE id_doctor = ?";
 
         try (Connection conexion = BaseDatos.getConnection();
              PreparedStatement ps = conexion.prepareStatement(sql)) {
@@ -82,7 +80,6 @@ public class DoctorDAOImpl{
 
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    // Aquí adaptas según cómo tengas construida tu clase ClaseDoctor
                     return new ClaseDoctor(
                             rs.getInt("id_doctor"),
                             rs.getString("nombre"),
