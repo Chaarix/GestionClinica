@@ -1,5 +1,29 @@
 package com.losalerces.sistematurnos.Controladores;
 
+/*
+import com.losalerces.sistematurnos.Clases.ClaseDoctor;
+import com.losalerces.sistematurnos.Clases.ClaseObraSocial;
+import com.losalerces.sistematurnos.Clases.ClasePaciente;
+import com.losalerces.sistematurnos.Clases.ClaseTurno;
+import com.losalerces.sistematurnos.DAO.DoctorDAOImpl;
+import com.losalerces.sistematurnos.DAO.ObraSocialDAO;
+import com.losalerces.sistematurnos.DAO.PacienteDAO;
+import com.losalerces.sistematurnos.DAO.TurnoDAO;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
+import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
+
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+ */
 import com.losalerces.sistematurnos.Clases.ClaseDoctor;
 import com.losalerces.sistematurnos.Clases.ClaseObraSocial;
 import com.losalerces.sistematurnos.Clases.ClasePaciente;
