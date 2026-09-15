@@ -434,6 +434,9 @@ public class controladorTurnos {
         String estadoSeleccionado = cmbFiltroEstado.getValue();
         if (estadoSeleccionado != null) {
             // Ejemplo: filtrar tu lista observable en base a 'estadoSeleccionado'
+
+
+            //AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
         }
     }
 }
