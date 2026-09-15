@@ -1,187 +1,364 @@
 package com.losalerces.sistematurnos.Controladores;
 
-import com.losalerces.sistematurnos.Clases.ClaseDoctor;
-import com.losalerces.sistematurnos.DAO.DoctorDAOImpl;
+import com.losalerces.sistematurnos.Clases.ClaseObraSocial;
+import com.losalerces.sistematurnos.DAO.ObraSocialDAO;
+
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.FlowPane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DoctorController {
-    @FXML private TableView<ClaseDoctor> tblDoctores;
-    @FXML private TableColumn<ClaseDoctor, String> colNombre;
-    @FXML private TableColumn<ClaseDoctor, String> colApellido;
-    @FXML private TableColumn<ClaseDoctor, String> colEspecialidad;
 
-    @FXML private TextField txtBuscar;
     @FXML private TextField txtNombre;
     @FXML private TextField txtApellido;
-    @FXML private ComboBox<String> cmbEspecialidad;
+    @FXML private TextField txtEspecialidad;
+    @FXML private ComboBox<String> cmbDuracion;
+    @FXML private TextField txtBuscar;
+    @FXML private Button btnModificar;
+    @FXML private FlowPane contenedorObrasSociales;
 
-    @FXML private Label lblTituloForm;
-    @FXML private Button btnEliminar;
-    @FXML private Button btnGuardar;
+    @FXML private TableView<DoctorFila> tablaDoctores;
+    @FXML private TableColumn<DoctorFila, Integer> colId;
+    @FXML private TableColumn<DoctorFila, String> colNombre;
+    @FXML private TableColumn<DoctorFila, String> colApellido;
+    @FXML private TableColumn<DoctorFila, String> colEspecialidad;
+    @FXML private TableColumn<DoctorFila, String> colDuracion;
+    @FXML private TableColumn<DoctorFila, String> colObrasSociales;
+    @FXML private TableColumn<DoctorFila, Void> colAcciones;
 
-    private ObservableList<ClaseDoctor> listaDoctores;
-    private ClaseDoctor doctorSeleccionado;
-    private final DoctorDAOImpl doctorDAO = new DoctorDAOImpl();
+    private final ObservableList<DoctorFila> doctores = FXCollections.observableArrayList();
+    private DoctorFila doctorSeleccionado;
+    private final ObraSocialDAO obraSocialDAO = new ObraSocialDAO();
+    private final List<CheckBox> checksObrasSociales = new ArrayList<>();
 
     @FXML
     public void initialize() {
-        listaDoctores = FXCollections.observableArrayList();
-        cmbEspecialidad.getItems().addAll("Cardiología", "Pediatría", "Traumatología", "Clínica Médica");
-
-        // 1. Vincular columnas usando los métodos getter de ClaseDoctor
-        colNombre.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().nombre()));
-        colApellido.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().apellido()));
-        colEspecialidad.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().especialidad()));
-
-        // 2. Carga inicial asíncrona
-        cargarDoctores();
-
-        // 3. Filtro de búsqueda por Apellido
-        FilteredList<ClaseDoctor> filteredData = new FilteredList<>(listaDoctores, p -> true);
-        txtBuscar.textProperty().addListener((obs, oldVal, newVal) -> {
-            filteredData.setPredicate(doctor -> {
-                if (newVal == null || newVal.isEmpty()) return true;
-                String filter = newVal.toLowerCase();
-                return doctor.apellido().toLowerCase().contains(filter) ||
-                        doctor.nombre().toLowerCase().contains(filter) ||
-                        doctor.especialidad().toLowerCase().contains(filter);
-            });
-        });
-        tblDoctores.setItems(filteredData);
-
-        // 4. Oyente de selección de fila
-        tblDoctores.getSelectionModel().selectedItemProperty().addListener((obs, oldSel, newSel) -> {
-            if (newSel != null) {
-                doctorSeleccionado = newSel;
-                llenarFormulario(newSel);
-            }
-        });
-
-        // 5. Validaciones de botones con Bindings
-        btnEliminar.disableProperty().bind(tblDoctores.getSelectionModel().selectedItemProperty().isNull());
-        btnGuardar.disableProperty().bind(
-                txtNombre.textProperty().isEmpty()
-                        .or(txtApellido.textProperty().isEmpty())
-                        .or(cmbEspecialidad.valueProperty().isNull())
-        );
+        cargarDuraciones();
+        cargarObrasSocialesDesdeBD();
+        configurarTabla();
+        cargarDatosDePrueba();
+        btnModificar.setDisable(true);
     }
 
-    private void cargarDoctores() {
-        Task<List<ClaseDoctor>> task = new Task<>() {
-            @Override
-            protected List<ClaseDoctor> call() throws Exception {
-                return doctorDAO.listarTodos();
-            }
-        };
-        task.setOnSucceeded(e -> listaDoctores.setAll(task.getValue()));
-        task.setOnFailed(e -> mostrarAlerta("Error", "Error al leer la base de datos.", Alert.AlertType.ERROR));
-        new Thread(task).start();
+    private void cargarDuraciones() {
+
     }
 
-    private void llenarFormulario(ClaseDoctor doc) {
-        txtNombre.setText(doc.nombre());
-        txtApellido.setText(doc.apellido());
-        cmbEspecialidad.setValue(doc.especialidad());
-        lblTituloForm.setText("Modificar Doctor (ID: " + doc.idDoctor() + ")");
+    private void cargarObrasSocialesDesdeBD() {
+        contenedorObrasSociales.getChildren().clear();
+        checksObrasSociales.clear();
+
+        List<ClaseObraSocial> obras = obraSocialDAO.listarTodos();
+
+        if (obras == null || obras.isEmpty()) {
+            Label mensaje = new Label("No hay obras sociales registradas.");
+            mensaje.getStyleClass().add("texto-ayuda");
+            contenedorObrasSociales.getChildren().add(mensaje);
+            return;
+        }
+
+        for (ClaseObraSocial obra : obras) {
+            CheckBox checkBox = new CheckBox(obra.nombre());
+            checkBox.setUserData(obra.idObraSocial());
+            checksObrasSociales.add(checkBox);
+            contenedorObrasSociales.getChildren().add(checkBox);
+        }
+    }
+
+    private void configurarTabla() {
+        colId.setCellValueFactory(dato -> new SimpleIntegerProperty(dato.getValue().getId()).asObject());
+        colNombre.setCellValueFactory(dato -> new SimpleStringProperty(dato.getValue().getNombre()));
+        colApellido.setCellValueFactory(dato -> new SimpleStringProperty(dato.getValue().getApellido()));
+        colEspecialidad.setCellValueFactory(dato -> new SimpleStringProperty(dato.getValue().getEspecialidad()));
+        colDuracion.setCellValueFactory(dato -> new SimpleStringProperty(dato.getValue().getDuracion()));
+        colObrasSociales.setCellValueFactory(dato -> new SimpleStringProperty(dato.getValue().getObrasSociales()));
+
+        configurarAcciones();
+        tablaDoctores.setItems(doctores);
+
+        tablaDoctores.getSelectionModel().selectedItemProperty().addListener((obs, anterior, seleccionado) -> {
+            if (seleccionado != null) {
+                seleccionarDoctor(seleccionado);
+            }
+        });
     }
 
     @FXML
-    private void handleGuardar() {
-        if (doctorSeleccionado == null) {
-            // ---- ALTA ----
-            ClaseDoctor nuevoDoc = new ClaseDoctor(0, txtNombre.getText(), txtApellido.getText(), cmbEspecialidad.getValue());
-            Task<Void> task = new Task<>() {
-                @Override
-                protected Void call() throws Exception {
-                    doctorDAO.insertar(nuevoDoc);
-                    return null;
-                }
-            };
-            task.setOnSucceeded(e -> {
-                listaDoctores.add(nuevoDoc);
-                mostrarAlerta("Éxito", "Doctor registrado con éxito.", Alert.AlertType.INFORMATION);
-                handleLimpiarFormulario();
-                cargarDoctores(); // Recarga para asegurar el ID generado por la BD
-            });
-            task.setOnFailed(e -> mostrarAlerta("Error", "No se pudo insertar el doctor.", Alert.AlertType.ERROR));
-            new Thread(task).start();
-        } else {
-            // ---- MODIFICACIÓN ----
-            doctorSeleccionado.setNombre(txtNombre.getText());
-            doctorSeleccionado.setApellido(txtApellido.getText());
-            doctorSeleccionado.setEspecialidad(cmbEspecialidad.getValue());
+    private void guardarDoctor() {
+        if (!validarCampos()) return;
 
-            Task<Void> task = new Task<>() {
-                @Override
-                protected Void call() throws Exception {
-                    doctorDAO.actualizar(doctorSeleccionado);
-                    return null;
+        int nuevoId = doctores.size() + 1;
+        DoctorFila doctor = new DoctorFila(
+                nuevoId,
+                txtNombre.getText().trim(),
+                txtApellido.getText().trim(),
+                txtEspecialidad.getText().trim(),
+                cmbDuracion.getValue(),
+                obtenerObrasSocialesSeleccionadas()
+        );
+
+        doctores.add(doctor);
+        mostrarMensaje("Doctor guardado", "El médico fue registrado correctamente.");
+        limpiarFormulario();
+    }
+
+    @FXML
+    private void modificarDoctor() {
+        if (doctorSeleccionado == null) {
+            mostrarAdvertencia("Seleccioná un doctor.");
+            return;
+        }
+
+        if (!validarCampos()) return;
+
+        doctorSeleccionado.setNombre(txtNombre.getText().trim());
+        doctorSeleccionado.setApellido(txtApellido.getText().trim());
+        doctorSeleccionado.setEspecialidad(txtEspecialidad.getText().trim());
+        doctorSeleccionado.setDuracion(cmbDuracion.getValue());
+        doctorSeleccionado.setObrasSociales(obtenerObrasSocialesSeleccionadas());
+
+        tablaDoctores.refresh();
+        mostrarMensaje("Doctor modificado", "Los datos fueron actualizados.");
+        limpiarFormulario();
+    }
+
+    @FXML
+    private void buscarDoctor() {
+        String buscar = txtBuscar.getText().trim().toLowerCase();
+
+        if (buscar.isEmpty()) {
+            tablaDoctores.setItems(doctores);
+            return;
+        }
+
+        ObservableList<DoctorFila> resultado = FXCollections.observableArrayList();
+        for (DoctorFila doctor : doctores) {
+            if (doctor.getNombre().toLowerCase().contains(buscar) ||
+                    doctor.getApellido().toLowerCase().contains(buscar) ||
+                    doctor.getEspecialidad().toLowerCase().contains(buscar)) {
+                resultado.add(doctor);
+            }
+        }
+        tablaDoctores.setItems(resultado);
+    }
+
+    private void seleccionarDoctor(DoctorFila doctor) {
+        doctorSeleccionado = doctor;
+        txtNombre.setText(doctor.getNombre());
+        txtApellido.setText(doctor.getApellido());
+        txtEspecialidad.setText(doctor.getEspecialidad());
+        cmbDuracion.setValue(doctor.getDuracion());
+        seleccionarObrasSociales(doctor.getObrasSociales());
+        btnModificar.setDisable(false);
+    }
+
+    private String obtenerObrasSocialesSeleccionadas() {
+        StringBuilder resultado = new StringBuilder();
+        for (CheckBox checkBox : checksObrasSociales) {
+            if (checkBox.isSelected()) {
+                if (!resultado.isEmpty()) {
+                    resultado.append(", ");
                 }
-            };
-            task.setOnSucceeded(e -> {
-                tblDoctores.refresh();
-                mostrarAlerta("Éxito", "Datos actualizados correctamente.", Alert.AlertType.INFORMATION);
-                handleLimpiarFormulario();
-            });
-            task.setOnFailed(e -> mostrarAlerta("Error", "No se pudo actualizar el registro.", Alert.AlertType.ERROR));
-            new Thread(task).start();
+                resultado.append(checkBox.getText());
+            }
+        }
+        return resultado.toString();
+    }
+
+    public List<Integer> obtenerIdsObrasSocialesSeleccionadas() {
+        List<Integer> ids = new ArrayList<>();
+        for (CheckBox checkBox : checksObrasSociales) {
+            if (checkBox.isSelected()) {
+                Object dato = checkBox.getUserData();
+                if (dato instanceof Integer) {
+                    ids.add((Integer) dato);
+                }
+            }
+        }
+        return ids;
+    }
+
+    private void seleccionarObrasSociales(String obrasDoctor) {
+        limpiarChecks();
+        if (obrasDoctor == null || obrasDoctor.isBlank()) return;
+
+        String[] nombres = obrasDoctor.split(",");
+        for (String nombre : nombres) {
+            String nombreLimpio = nombre.trim();
+            for (CheckBox checkBox : checksObrasSociales) {
+                if (checkBox.getText().equalsIgnoreCase(nombreLimpio)) {
+                    checkBox.setSelected(true);
+                }
+            }
         }
     }
 
     @FXML
-    private void handleEliminar() {
-        ClaseDoctor aEliminar = tblDoctores.getSelectionModel().getSelectedItem();
-        if (aEliminar == null) return;
+    private void administrarObrasSociales() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/losalerces/sistematurnos/obrasociales.fxml"));
+            Parent root = loader.load();
+            Stage ventana = new Stage();
+            ventana.setTitle("Administrar Obras Sociales");
+            ventana.setScene(new Scene(root, 520, 430));
+            ventana.initModality(Modality.APPLICATION_MODAL);
+            ventana.setResizable(false);
+            ventana.showAndWait();
 
-        Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION, "¿Dar de baja al Dr./Dra. " + aEliminar.apellido() + "?", ButtonType.YES, ButtonType.NO);
-        confirmacion.showAndWait().ifPresent(res -> {
-            if (res == ButtonType.YES) {
-                Task<Void> task = new Task<>() {
-                    @Override
-                    protected Void call() throws Exception {
-                        doctorDAO.eliminar(aEliminar.idDoctor());
-                        return null;
-                    }
-                };
-                task.setOnSucceeded(e -> {
-                    listaDoctores.remove(aEliminar);
-                    handleLimpiarFormulario();
+            cargarObrasSocialesDesdeBD();
+        } catch (IOException e) {
+            e.printStackTrace();
+            mostrarAdvertencia("No se pudo abrir la administración de obras sociales.");
+        }
+    }
+
+    private void configurarAcciones() {
+        colAcciones.setCellFactory(columna -> new TableCell<>() {
+            private final Button btnEliminar = new Button("Eliminar");
+
+            {
+                btnEliminar.getStyleClass().add("boton-eliminar");
+                btnEliminar.setOnAction(event -> {
+                    DoctorFila doctor = getTableView().getItems().get(getIndex());
+                    eliminarDoctor(doctor);
                 });
-                task.setOnFailed(e -> mostrarAlerta("Error", "No se pudo eliminar el registro.", Alert.AlertType.ERROR));
-                new Thread(task).start();
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                setGraphic(empty ? null : btnEliminar);
+            }
+        });
+    }
+
+    private void eliminarDoctor(DoctorFila doctor) {
+        Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmacion.setTitle("Eliminar doctor");
+        confirmacion.setHeaderText(null);
+        confirmacion.setContentText("¿Deseás eliminar al doctor " + doctor.getNombre() + " " + doctor.getApellido() + "?");
+
+        confirmacion.showAndWait().ifPresent(respuesta -> {
+            if (respuesta == ButtonType.OK) {
+                doctores.remove(doctor);
+                limpiarFormulario();
             }
         });
     }
 
     @FXML
-    private void handleLimpiarFormulario() {
-        doctorSeleccionado = null;
-        tblDoctores.getSelectionModel().clearSelection();
+    private void limpiarFormulario() {
         txtNombre.clear();
         txtApellido.clear();
-        cmbEspecialidad.setValue(null);
-        lblTituloForm.setText("Registrar Nuevo Doctor");
+        txtEspecialidad.clear();
+        cmbDuracion.setValue(null);
+        limpiarChecks();
+        doctorSeleccionado = null;
+        tablaDoctores.getSelectionModel().clearSelection();
+        btnModificar.setDisable(true);
     }
 
-    private void mostrarAlerta(String t, String m, Alert.AlertType tipo) {
-        Alert a = new Alert(tipo);
-        a.setTitle(t);
-        a.setHeaderText(null);
-        a.setContentText(m);
-        a.showAndWait();
-    }
-
+    // Método añadido para solucionar el error del FXML onAction="#handleLimpiarFormulario"
     @FXML
-    public void administrarObrasSociales(ActionEvent actionEvent) {
-        // Queda pendiente para después
+    private void handleLimpiarFormulario(ActionEvent event) {
+        limpiarFormulario();
+    }
+
+    private void limpiarChecks() {
+        for (CheckBox checkBox : checksObrasSociales) {
+            checkBox.setSelected(false);
+        }
+    }
+
+    private boolean validarCampos() {
+        if (txtNombre.getText().isBlank() || txtApellido.getText().isBlank() || txtEspecialidad.getText().isBlank()) {
+            mostrarAdvertencia("Nombre, apellido y especialidad son obligatorios.");
+            return false;
+        }
+
+        if (cmbDuracion.getValue() == null) {
+            mostrarAdvertencia("Seleccioná la duración de la consulta.");
+            return false;
+        }
+
+        if (obtenerObrasSocialesSeleccionadas().isBlank()) {
+            mostrarAdvertencia("Seleccioná al menos una obra social.");
+            return false;
+        }
+
+        return true;
+    }
+
+    private void mostrarAdvertencia(String mensaje) {
+        Alert alerta = new Alert(Alert.AlertType.WARNING);
+        alerta.setHeaderText(null);
+        alerta.setContentText(mensaje);
+        alerta.showAndWait();
+    }
+
+    private void mostrarMensaje(String titulo, String mensaje) {
+        Alert alerta = new Alert(Alert.AlertType.INFORMATION);
+        alerta.setTitle(titulo);
+        alerta.setHeaderText(null);
+        alerta.setContentText(mensaje);
+        alerta.showAndWait();
+    }
+
+    private void cargarDatosDePrueba() {
+        doctores.addAll(
+                new DoctorFila(1, "Juan", "López", "Clínica Médica", "30 minutos", "PAMI, OSDE"),
+                new DoctorFila(2, "María", "Pérez", "Cardiología", "30 minutos", "PAMI"),
+                new DoctorFila(3, "Carolina", "Fernández", "Pediatría", "20 minutos", "OSDE")
+        );
+    }
+
+    public void handleEliminar(ActionEvent actionEvent) {
+    }
+
+    public void handleGuardar(ActionEvent actionEvent) {
+    }
+
+    public static class DoctorFila {
+        private int id;
+        private String nombre;
+        private String apellido;
+        private String especialidad;
+        private String duracion;
+        private String obrasSociales;
+
+        public DoctorFila(int id, String nombre, String apellido, String especialidad, String duracion, String obrasSociales) {
+            this.id = id;
+            this.nombre = nombre;
+            this.apellido = apellido;
+            this.especialidad = especialidad;
+            this.duracion = duracion;
+            this.obrasSociales = obrasSociales;
+        }
+
+        public int getId() { return id; }
+        public String getNombre() { return nombre; }
+        public void setNombre(String nombre) { this.nombre = nombre; }
+        public String getApellido() { return apellido; }
+        public void setApellido(String apellido) { this.apellido = apellido; }
+        public String getEspecialidad() { return especialidad; }
+        public void setEspecialidad(String especialidad) { this.especialidad = especialidad; }
+        public String getDuracion() { return duracion; }
+        public void setDuracion(String duracion) { this.duracion = duracion; }
+        public String getObrasSociales() { return obrasSociales; }
+        public void setObrasSociales(String obrasSociales) { this.obrasSociales = obrasSociales; }
     }
 }

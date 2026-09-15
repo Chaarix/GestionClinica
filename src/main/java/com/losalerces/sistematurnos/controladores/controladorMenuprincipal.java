@@ -11,6 +11,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
 import java.io.IOException;
@@ -101,4 +102,19 @@ public class controladorMenuprincipal implements Initializable {
     }
     //AAAAAAAAAAAAAAAAAAAA
 
+
+
+    @FXML
+    private void mostrarReportePami() {
+        try {
+            // Forma correcta de inicializar el FXMLLoader con la ruta de la vista
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/losalerces/sistematurnos/reportePami.fxml"));
+            VBox vistaReporte = loader.load();
+
+            contenedorPrincipal.getChildren().setAll(vistaReporte);
+        } catch (IOException e) {
+            System.out.println("Error al cargar la vista de Reporte PAMI: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
 }

@@ -13,6 +13,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -34,6 +35,9 @@ public class controladorTurnos {
 
     @FXML
     private ComboBox<String> cmbPaciente;
+
+    @FXML
+    private ComboBox<String> cmbFiltroEstado; // Opcional para filtrar por estado si lo agregas al FXML
 
     @FXML
     private Label lblEspecialidad;
@@ -73,32 +77,26 @@ public class controladorTurnos {
     private final TurnoDAO turnoDAO = new TurnoDAO();
     private final PacienteDAO pacienteDAO = new PacienteDAO();
     private final ObraSocialDAO obraSocialDAO = new ObraSocialDAO();
-    private final DoctorDAOImpl doctorDAO = new DoctorDAOImpl(); // Instancia del DAO de doctores provisto
+    private final DoctorDAOImpl doctorDAO = new DoctorDAOImpl();
 
-    // Mapas para pacientes
     private final Map<String, Integer> mapaPacientes = new HashMap<>();
-
-    // Mapas para traducir Obras Sociales de ID a Nombre de forma dinámica
     private final Map<Integer, String> mapaObrasSocialesIdANombre = new HashMap<>();
-
-    // Mapas dinámicos para doctores basados en los datos reales de la BD
     private final Map<String, Integer> mapaDoctoresNombreAId = new HashMap<>();
     private final Map<Integer, String> mapaDoctoresIdANombre = new HashMap<>();
     private final Map<String, String> mapaDoctoresEspecialidad = new HashMap<>();
 
     @FXML
     public void initialize() {
+        cmbFiltroEstado.getItems().addAll("Todos", "Pendiente", "Atendido", "Cancelado");
+
         dpFecha.setValue(LocalDate.now());
         actualizarFechaAgenda();
 
-        // Configuración de seguridad para el DatePicker
         dpFecha.setConverter(new javafx.util.converter.LocalDateStringConverter() {
             @Override
             public LocalDate fromString(String text) {
                 try {
-                    if (text == null || text.trim().isEmpty()) {
-                        return null;
-                    }
+                    if (text == null || text.trim().isEmpty()) return null;
                     return super.fromString(text);
                 } catch (Exception e) {
                     return null;
@@ -108,16 +106,16 @@ public class controladorTurnos {
 
         configurarTabla();
         cargarMapaObrasSociales();
-        cargarDoctoresDesdeBD(); // Carga los doctores reales usando DoctorDAOImpl
+        cargarDoctoresDesdeBD();
         cargarPacientes();
         cargarTurnosDesdeBD();
 
-        // Listener para actualizar los turnos si cambia la fecha
         dpFecha.valueProperty().addListener((obs, viejo, nuevo) -> {
             actualizarFechaAgenda();
             cargarTurnosDesdeBD();
         });
     }
+
 
     private void configurarTabla() {
         colHora.setCellValueFactory(dato -> new SimpleStringProperty(dato.getValue().getHoraTexto()));
@@ -148,18 +146,14 @@ public class controladorTurnos {
         try {
             List<ClaseDoctor> doctoresBD = doctorDAO.listarTodos();
             for (ClaseDoctor d : doctoresBD) {
-                String nombreCompleto = "Dr/a. " + d.nombre() + " " + d.apellido(); // O puedes usar solo d.nombre() segun prefieras
-                // Nota: Asegúrate de alinear el formato del nombre si en tu BD viene separado o completo.
-                // Si 'd.nombre()' ya incluye el título, úsalo directo. Aquí asumimos formato estándar:
                 String nombreFormateado = d.nombre() + " " + d.apellido();
-
                 cmbDoctor.getItems().add(nombreFormateado);
                 mapaDoctoresNombreAId.put(nombreFormateado, d.idDoctor());
                 mapaDoctoresIdANombre.put(d.idDoctor(), nombreFormateado);
                 mapaDoctoresEspecialidad.put(nombreFormateado, d.especialidad());
             }
         } catch (SQLException e) {
-            mostrarAlerta("Error de BD", "No se pudieron cargar los doctores desde la base de datos: " + e.getMessage());
+            mostrarAlerta("Error de BD", "No se pudieron cargar los doctores: " + e.getMessage());
         }
     }
 
@@ -178,26 +172,20 @@ public class controladorTurnos {
     @FXML
     private void cargarHorarios() {
         cmbHorario.getItems().clear();
-
         cmbHorario.getItems().addAll(
                 "08:00", "08:30", "09:00", "09:30",
                 "10:00", "10:30", "11:00", "11:30",
                 "14:00", "14:30", "15:00", "15:30"
         );
-
         actualizarDatosDoctor();
     }
 
     private void actualizarDatosDoctor() {
         String doctorSeleccionado = cmbDoctor.getValue();
-        if (doctorSeleccionado == null) {
-            return;
-        }
+        if (doctorSeleccionado == null) return;
 
         String especialidad = mapaDoctoresEspecialidad.getOrDefault(doctorSeleccionado, "General");
         lblEspecialidad.setText(especialidad);
-
-        // Opcional o genérico para las obras sociales que atiende el doctor
         lblObraSocial.setText("Varias / Particular");
     }
 
@@ -216,13 +204,15 @@ public class controladorTurnos {
             return;
         }
 
+        // Al crear un nuevo turno, el estado inicial por defecto es "Próximo"
         ClaseTurno nuevoTurno = new ClaseTurno(
-                0,
-                idPaciente,
-                idDoctor,
+                        0,
+                        idPaciente,
+                        idDoctor,
+                "Próximo",
                 dpFecha.getValue(),
                 LocalTime.parse(cmbHorario.getValue())
-        );
+                );
 
         boolean exito = turnoDAO.agregar(nuevoTurno);
 
@@ -270,45 +260,71 @@ public class controladorTurnos {
                     nombreDoc,
                     espDoc,
                     nombreObraSocial,
-                    "Confirmado"
+                    t.estado() // Muestra el estado real proveniente de la BD (Próximo, Atendido, Cancelado)
             ));
         }
     }
 
     private void configurarAcciones() {
         colAcciones.setCellFactory(columna -> new TableCell<>() {
-            private final Button btnEliminar = new Button("Cancelar");
+            private final Button btnAtendido = new Button("Atender");
+            private final Button btnCancelar = new Button("Cancelar");
+            private final HBox contenedorBotones = new HBox(5, btnAtendido, btnCancelar);
 
             {
-                btnEliminar.getStyleClass().add("boton-eliminar");
-                btnEliminar.setOnAction(event -> {
-                    TurnoFila turno = getTableView().getItems().get(getIndex());
-                    eliminarTurno(turno.getIdTurno());
+                btnAtendido.getStyleClass().add("boton-atendido");
+                btnCancelar.getStyleClass().add("boton-eliminar");
+
+                btnAtendido.setOnAction(event -> {
+                    TurnoFila turnoFila = getTableView().getItems().get(getIndex());
+                    actualizarEstadoTurno(turnoFila, "Atendido");
+                });
+
+                btnCancelar.setOnAction(event -> {
+                    TurnoFila turnoFila = getTableView().getItems().get(getIndex());
+                    actualizarEstadoTurno(turnoFila, "Cancelado");
                 });
             }
 
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
-                setGraphic(empty ? null : btnEliminar);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    TurnoFila turnoFila = getTableView().getItems().get(getIndex());
+                    // Ocultar botones si el turno ya fue cancelado o atendido opcionalmente, o dejarlos siempre accesibles
+                    if ("Cancelado".equals(turnoFila.getEstado())) {
+                        btnAtendido.setDisable(true);
+                        btnCancelar.setDisable(true);
+                    } else {
+                        btnAtendido.setDisable(false);
+                        btnCancelar.setDisable(false);
+                    }
+                    setGraphic(contenedorBotones);
+                }
             }
         });
     }
 
-    private void eliminarTurno(int idTurno) {
-        Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
-        confirmacion.setHeaderText(null);
-        confirmacion.setContentText("¿Deseás cancelar/eliminar este turno?");
+    private void actualizarEstadoTurno(TurnoFila turnoFila, String nuevoEstado) {
+        ClaseTurno turnoBD = turnoDAO.buscarPorId(turnoFila.getIdTurno());
+        if (turnoBD != null) {
+            ClaseTurno turnoModificado = new ClaseTurno(
+                                turnoBD.idTurno(),
+                                turnoBD.idPaciente(),
+                                turnoBD.idDoctor(),
+                    nuevoEstado,
+                    turnoBD.fechaTurno(),
+                    turnoBD.horaTurno()
+                        );
 
-        confirmacion.showAndWait().ifPresent(respuesta -> {
-            if (respuesta == ButtonType.OK) {
-                if (turnoDAO.eliminar(idTurno)) {
-                    cargarTurnosDesdeBD();
-                } else {
-                    mostrarAlerta("Error", "No se pudo eliminar el turno.");
-                }
+            if (turnoDAO.modificar(turnoModificado)) {
+                cargarTurnosDesdeBD();
+            } else {
+                mostrarAlerta("Error", "No se pudo actualizar el estado del turno.");
             }
-        });
+        }
     }
 
     @FXML
@@ -390,5 +406,13 @@ public class controladorTurnos {
         public String getEspecialidad() { return especialidad; }
         public String getObraSocial() { return obraSocial; }
         public String getEstado() { return estado; }
+    }
+    @FXML
+    private void filtrarPorEstadoTabla() {
+        // Aquí implementas la lógica para filtrar la tabla de turnos según el estado seleccionado en el ComboBox
+        String estadoSeleccionado = cmbFiltroEstado.getValue();
+        if (estadoSeleccionado != null) {
+            // Ejemplo: filtrar tu lista observable en base a 'estadoSeleccionado'
+        }
     }
 }

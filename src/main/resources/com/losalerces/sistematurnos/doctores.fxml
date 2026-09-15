@@ -27,212 +27,87 @@
     <!-- ===================================== -->
 
     <HBox alignment="CENTER_LEFT">
-
         <VBox spacing="2">
-
-            <Label text="Doctores"
-                   styleClass="titulo-vista"/>
-
-            <Label fx:id="lblTituloForm"
-                   text="Registro y administración de médicos"
-                   styleClass="subtitulo-vista"/>
-
+            <Label text="Doctores" styleClass="titulo-vista"/>
+            <Label text="Registro y administración de médicos" styleClass="subtitulo-vista"/>
         </VBox>
-
     </HBox>
-
 
     <!-- ===================================== -->
     <!-- FORMULARIO -->
     <!-- ===================================== -->
 
-    <VBox spacing="12"
-          styleClass="panel-formulario">
+    <VBox spacing="12" styleClass="panel-formulario">
 
-        <Label text="Datos del doctor"
-               styleClass="titulo-seccion"/>
+        <Label text="Datos del doctor" styleClass="titulo-seccion"/>
 
-
-        <GridPane hgap="14"
-                  vgap="10">
+        <GridPane hgap="14" vgap="10">
 
             <!-- NOMBRE -->
-
-            <Label text="Nombre"
-                   styleClass="label-campo"
-                   GridPane.columnIndex="0"
-                   GridPane.rowIndex="0"/>
-
-            <TextField fx:id="txtNombre"
-                       promptText="Nombre"
-                       GridPane.columnIndex="0"
-                       GridPane.rowIndex="1"/>
-
+            <Label text="Nombre" styleClass="label-campo" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+            <TextField fx:id="txtNombre" promptText="Nombre" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
 
             <!-- APELLIDO -->
+            <Label text="Apellido" styleClass="label-campo" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+            <TextField fx:id="txtApellido" promptText="Apellido" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
 
-            <Label text="Apellido"
-                   styleClass="label-campo"
-                   GridPane.columnIndex="1"
-                   GridPane.rowIndex="0"/>
+            <!-- ESPECIALIDAD -->
+            <Label text="Especialidad" styleClass="label-campo" GridPane.columnIndex="2" GridPane.rowIndex="0"/>
+            <TextField fx:id="txtEspecialidad" promptText="Especialidad" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
 
-            <TextField fx:id="txtApellido"
-                       promptText="Apellido"
-                       GridPane.columnIndex="1"
-                       GridPane.rowIndex="1"/>
-
-
-            <!-- DNI (Añadido para que coincida con el controlador) -->
-
-            <Label text="DNI"
-                   styleClass="label-campo"
-                   GridPane.columnIndex="2"
-                   GridPane.rowIndex="0"/>
-
-            <TextField fx:id="txtDni"
-                       promptText="DNI"
-                       GridPane.columnIndex="2"
-                       GridPane.rowIndex="1"/>
-
-
-            <!-- TELÉFONO -->
-
-            <Label text="Teléfono"
-                   styleClass="label-campo"
-                   GridPane.columnIndex="0"
-                   GridPane.rowIndex="2"/>
-
-            <TextField fx:id="txtTelefono"
-                       promptText="Teléfono"
-                       GridPane.columnIndex="0"
-                       GridPane.rowIndex="3"/>
-
-
-            <!-- CORREO -->
-
-            <Label text="Correo"
-                   styleClass="label-campo"
-                   GridPane.columnIndex="1"
-                   GridPane.rowIndex="2"/>
-
-            <TextField fx:id="txtCorreo"
-                       promptText="Correo electrónico"
-                       GridPane.columnIndex="1"
-                       GridPane.rowIndex="3"/>
-
-
-            <!-- ESPECIALIDAD (ComboBox en lugar de TextField según tu controlador) -->
-
-            <Label text="Especialidad"
-                   styleClass="label-campo"
-                   GridPane.columnIndex="2"
-                   GridPane.rowIndex="2"/>
-
-            <ComboBox fx:id="cmbEspecialidad"
-                      promptText="Seleccionar especialidad"
-                      maxWidth="Infinity"
-                      GridPane.columnIndex="2"
-                      GridPane.rowIndex="3"/>
+            <!-- DURACIÓN DE CONSULTA -->
+            <Label text="Duración de consulta" styleClass="label-campo" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+            <ComboBox fx:id="cmbDuracion" promptText="Seleccione duración" maxWidth="Infinity" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
 
         </GridPane>
-
 
         <!-- ===================================== -->
         <!-- OBRAS SOCIALES -->
         <!-- ===================================== -->
 
         <VBox spacing="8">
-
-            <HBox alignment="CENTER_LEFT"
-                  spacing="12">
-
-                <Label text="Obras sociales que acepta"
-                       styleClass="label-campo"/>
-
-                <Button text="+ Administrar obras sociales"
-                        onAction="#administrarObrasSociales"
-                        styleClass="boton-secundario"/>
-
+            <HBox alignment="CENTER_LEFT" spacing="12">
+                <Label text="Obras sociales que acepta" styleClass="label-campo"/>
+                <Button text="+ Administrar obras sociales" onAction="#administrarObrasSociales" styleClass="boton-secundario"/>
             </HBox>
 
-
-            <FlowPane fx:id="contenedorObrasSociales"
-                      hgap="18"
-                      vgap="8"
-                      prefWrapLength="700"/>
-
+            <FlowPane fx:id="contenedorObrasSociales" hgap="18" vgap="8" prefWrapLength="700"/>
         </VBox>
-
 
         <!-- ===================================== -->
         <!-- BOTONES -->
         <!-- ===================================== -->
 
-        <HBox spacing="10"
-              alignment="CENTER_RIGHT">
-
-            <Button text="Limpiar"
-                    onAction="#handleLimpiarFormulario"
-                    styleClass="boton-secundario"/>
-
-            <Button fx:id="btnEliminar"
-                    text="Eliminar"
-                    onAction="#handleEliminar"
-                    styleClass="boton-secundario"/>
-
-            <Button fx:id="btnGuardar"
-                    text="Guardar doctor"
-                    onAction="#handleGuardar"
-                    styleClass="boton-principal"/>
-
+        <HBox spacing="10" alignment="CENTER_RIGHT">
+            <Button text="Limpiar" onAction="#handleLimpiarFormulario" styleClass="boton-secundario"/>
+            <Button fx:id="btnModificar" text="Modificar" onAction="#modificarDoctor" styleClass="boton-secundario"/>
+            <Button text="Guardar doctor" onAction="#guardarDoctor" styleClass="boton-principal"/>
         </HBox>
 
     </VBox>
-
 
     <!-- ===================================== -->
     <!-- BUSCADOR -->
     <!-- ===================================== -->
 
-    <HBox spacing="10"
-          alignment="CENTER_LEFT">
-
-        <TextField fx:id="txtBuscar"
-                   promptText="Buscar por apellido o DNI..."
-                   HBox.hgrow="ALWAYS"
-                   styleClass="buscador"/>
-
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <TextField fx:id="txtBuscar" promptText="Buscar por nombre, apellido o especialidad..." HBox.hgrow="ALWAYS" onKeyReleased="#buscarDoctor" styleClass="buscador"/>
     </HBox>
-
 
     <!-- ===================================== -->
     <!-- TABLA -->
     <!-- ===================================== -->
 
-    <TableView fx:id="tblDoctores"
-               VBox.vgrow="ALWAYS"
-               styleClass="tabla-agenda">
-
+    <TableView fx:id="tablaDoctores" VBox.vgrow="ALWAYS" styleClass="tabla-agenda">
         <columns>
-
-            <TableColumn fx:id="colDni"
-                         text="DNI"
-                         prefWidth="100"/>
-
-            <TableColumn fx:id="colNombre"
-                         text="Nombre"
-                         prefWidth="120"/>
-
-            <TableColumn fx:id="colApellido"
-                         text="Apellido"
-                         prefWidth="120"/>
-
-            <TableColumn fx:id="colEspecialidad"
-                         text="Especialidad"
-                         prefWidth="150"/>
-
+            <TableColumn fx:id="colId" text="ID" prefWidth="50"/>
+            <TableColumn fx:id="colNombre" text="Nombre" prefWidth="110"/>
+            <TableColumn fx:id="colApellido" text="Apellido" prefWidth="110"/>
+            <TableColumn fx:id="colEspecialidad" text="Especialidad" prefWidth="130"/>
+            <TableColumn fx:id="colDuracion" text="Duración" prefWidth="90"/>
+            <TableColumn fx:id="colObrasSociales" text="Obras Sociales" prefWidth="180"/>
+            <TableColumn fx:id="colAcciones" text="Acciones" prefWidth="90"/>
         </columns>
-
     </TableView>
 
 </VBox>

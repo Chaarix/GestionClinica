@@ -72,4 +72,29 @@ public class DoctorDAOImpl{
             stmt.executeUpdate();
         }
     }
+    public ClaseDoctor buscarPorId(int idDoctor) {
+        String sql = "SELECT id_doctor, nombre, apellido FROM doctores WHERE id_doctor = ?";
+
+        try (Connection conexion = BaseDatos.getConnection();
+             PreparedStatement ps = conexion.prepareStatement(sql)) {
+
+            ps.setInt(1, idDoctor);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    // Aquí adaptas según cómo tengas construida tu clase ClaseDoctor
+                    return new ClaseDoctor(
+                            rs.getInt("id_doctor"),
+                            rs.getString("nombre"),
+                            rs.getString("apellido"),
+                            rs.getString("especialidad")
+                    );
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al buscar doctor por ID: " + e.getMessage());
+        }
+
+        return null; // Retorna null si no encuentra el doctor
+    }
 }

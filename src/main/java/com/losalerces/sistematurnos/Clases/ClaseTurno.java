@@ -8,13 +8,25 @@ public class ClaseTurno {
     private int idTurno;
     private int idPaciente;
     private int idDoctor;
+
+    public String estado() {
+        return estado;
+    }
+
+    public ClaseTurno setEstado(String estado) {
+        this.estado = estado;
+        return this;
+    }
+
+    private String estado;
     private LocalDate fechaTurno;
     private LocalTime horaTurno;
 
-    public ClaseTurno(int idTurno, int idPaciente, int idDoctor, LocalDate fechaTurno, LocalTime horaTurno) {
+    public ClaseTurno(int idTurno, int idPaciente, int idDoctor, String estado, LocalDate fechaTurno, LocalTime horaTurno) {
         this.idTurno = idTurno;
         this.idPaciente = idPaciente;
         this.idDoctor = idDoctor;
+        this.estado = estado;
         this.fechaTurno = fechaTurno;
         this.horaTurno = horaTurno;
     }

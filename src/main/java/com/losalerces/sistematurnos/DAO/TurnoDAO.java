@@ -14,8 +14,8 @@ public class TurnoDAO {
     public boolean agregar(ClaseTurno turno) {
         String sql = """
                 INSERT INTO turnos
-                (id_paciente, id_doctor, fecha_turno, hora_turno)
-                VALUES (?, ?, ?, ?)
+                (id_paciente, id_doctor, fecha_turno, hora_turno, estado)
+                VALUES (?, ?, ?, ?, ?)
                 """;
 
         try (Connection conexion = BaseDatos.getConnection();
@@ -25,6 +25,7 @@ public class TurnoDAO {
             ps.setInt(2, turno.idDoctor());
             ps.setString(3, turno.fechaTurno() != null ? turno.fechaTurno().toString() : "");
             ps.setString(4, turno.horaTurno() != null ? turno.horaTurno().toString() : "");
+            ps.setString(5, turno.estado() != null ? turno.estado() : "Próximo");
 
             ps.executeUpdate();
             return true;
@@ -37,7 +38,7 @@ public class TurnoDAO {
 
     public List<ClaseTurno> listar() {
         List<ClaseTurno> turnos = new ArrayList<>();
-        String sql = "SELECT id_turno, id_paciente, id_doctor, fecha_turno, hora_turno FROM turnos";
+        String sql = "SELECT id_turno, id_paciente, id_doctor, fecha_turno, hora_turno, estado FROM turnos";
 
         try (Connection conexion = BaseDatos.getConnection();
              PreparedStatement ps = conexion.prepareStatement(sql);
@@ -55,7 +56,7 @@ public class TurnoDAO {
     }
 
     public ClaseTurno buscarPorId(int idTurno) {
-        String sql = "SELECT id_turno, id_paciente, id_doctor, fecha_turno, hora_turno FROM turnos WHERE id_turno = ?";
+        String sql = "SELECT id_turno, id_paciente, id_doctor, fecha_turno, hora_turno, estado FROM turnos WHERE id_turno = ?";
 
         try (Connection conexion = BaseDatos.getConnection();
              PreparedStatement ps = conexion.prepareStatement(sql)) {
@@ -77,7 +78,7 @@ public class TurnoDAO {
 
     public List<ClaseTurno> listarPorDoctor(int idDoctor) {
         List<ClaseTurno> turnos = new ArrayList<>();
-        String sql = "SELECT id_turno, id_paciente, id_doctor, fecha_turno, hora_turno FROM turnos WHERE id_doctor = ?";
+        String sql = "SELECT id_turno, id_paciente, id_doctor, fecha_turno, hora_turno, estado FROM turnos WHERE id_doctor = ?";
 
         try (Connection conexion = BaseDatos.getConnection();
              PreparedStatement ps = conexion.prepareStatement(sql)) {
@@ -99,7 +100,7 @@ public class TurnoDAO {
 
     public List<ClaseTurno> listarPorPaciente(int idPaciente) {
         List<ClaseTurno> turnos = new ArrayList<>();
-        String sql = "SELECT id_turno, id_paciente, id_doctor, fecha_turno, hora_turno FROM turnos WHERE id_paciente = ?";
+        String sql = "SELECT id_turno, id_paciente, id_doctor, fecha_turno, hora_turno, estado FROM turnos WHERE id_paciente = ?";
 
         try (Connection conexion = BaseDatos.getConnection();
              PreparedStatement ps = conexion.prepareStatement(sql)) {
@@ -119,13 +120,47 @@ public class TurnoDAO {
         return turnos;
     }
 
+    // Método clave para filtrar turnos combinando la Obra Social y el Estado específico
+    // Método corregido para apuntar a la tabla "obra_social"
+    public List<ClaseTurno> listarPorObraSocialYEstado(String nombreObraSocial, String estado) {
+        List<ClaseTurno> turnos = new ArrayList<>();
+        // Usamos UPPER y LIKE para que sea flexible con mayúsculas y posibles variaciones de texto
+        String sql = """
+                SELECT t.id_turno, t.id_paciente, t.id_doctor, t.fecha_turno, t.hora_turno, t.estado
+                FROM turnos t
+                JOIN pacientes p ON t.id_paciente = p.id_paciente
+                JOIN obra_social o ON p.id_obra_social = o.id_obra_social
+                WHERE UPPER(o.nombre) LIKE ? AND UPPER(t.estado) = UPPER(?)
+                """;
+
+        try (Connection conexion = BaseDatos.getConnection();
+             PreparedStatement ps = conexion.prepareStatement(sql)) {
+
+            // El '%' permite que busque "PAMI" aunque tenga espacios o texto adicional
+            ps.setString(1, "%" + nombreObraSocial.toUpperCase() + "%");
+            ps.setString(2, estado);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    turnos.add(mappearTurno(rs));
+                }
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error al listar turnos por obra social y estado: " + e.getMessage());
+        }
+
+        return turnos;
+    }
+
     public boolean modificar(ClaseTurno turno) {
         String sql = """
                 UPDATE turnos
                 SET id_paciente = ?,
                     id_doctor = ?,
                     fecha_turno = ?,
-                    hora_turno = ?
+                    hora_turno = ?,
+                    estado = ?
                 WHERE id_turno = ?
                 """;
 
@@ -136,7 +171,8 @@ public class TurnoDAO {
             ps.setInt(2, turno.idDoctor());
             ps.setString(3, turno.fechaTurno() != null ? turno.fechaTurno().toString() : "");
             ps.setString(4, turno.horaTurno() != null ? turno.horaTurno().toString() : "");
-            ps.setInt(5, turno.idTurno());
+            ps.setString(5, turno.estado() != null ? turno.estado() : "Próximo");
+            ps.setInt(6, turno.idTurno());
 
             return ps.executeUpdate() > 0;
 
@@ -165,14 +201,18 @@ public class TurnoDAO {
     private ClaseTurno mappearTurno(ResultSet rs) throws SQLException {
         String fechaStr = rs.getString("fecha_turno");
         String horaStr = rs.getString("hora_turno");
+        String estadoStr = rs.getString("estado");
 
         LocalDate fecha = (fechaStr != null && !fechaStr.isEmpty()) ? LocalDate.parse(fechaStr) : null;
         LocalTime hora = (horaStr != null && !horaStr.isEmpty()) ? LocalTime.parse(horaStr) : null;
+        String estado = (estadoStr != null && !estadoStr.isEmpty()) ? estadoStr : "Próximo";
 
         return new ClaseTurno(
                 rs.getInt("id_turno"),
                 rs.getInt("id_paciente"),
+
                 rs.getInt("id_doctor"),
+                estado,
                 fecha,
                 hora
         );

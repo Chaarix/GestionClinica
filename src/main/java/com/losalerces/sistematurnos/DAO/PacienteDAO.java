@@ -103,4 +103,35 @@ public class PacienteDAO {
                 rs.getInt("id_obra_social")
         );
     }
+
+    public List<ClasePaciente> listarPacientesPamiConTurnosCumplidos() {
+        List<ClasePaciente> lista = new ArrayList<>();
+
+        // Consulta SQL adaptada exactamente a los campos reales de tu imagen:
+        String sql = "SELECT DISTINCT p.id_paciente, p.nombre, p.apellido, p.fecha_nacimiento, p.telefono, p.email, p.id_obra_social " +
+                "FROM pacientes p " +
+                "JOIN obra_social os ON p.id_obra_social = os.id_obra_social " +
+                "JOIN turnos t ON p.id_paciente = t.id_paciente " +
+                "WHERE UPPER(os.nombre) LIKE '%PAMI%' AND t.fecha_turno <= DATE('now')";
+
+        try (Connection conn = BaseDatos.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                lista.add(new ClasePaciente(
+                        rs.getInt("id_paciente"),
+                        rs.getString("nombre"),
+                        rs.getString("apellido"),
+                        rs.getString("fecha_nacimiento"), // Coincide con el nombre real de la columna
+                        rs.getString("telefono"),
+                        rs.getString("email"),
+                        rs.getInt("id_obra_social")
+                ));
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al listar pacientes PAMI con turnos cumplidos: " + e.getMessage());
+        }
+        return lista;
+    }
 }

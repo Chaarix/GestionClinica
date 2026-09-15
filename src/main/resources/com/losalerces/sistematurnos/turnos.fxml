@@ -131,6 +131,26 @@
 
     </HBox>
 
+    <!-- En la sección de la Agenda del FXML de turnos, añade el ComboBox de filtro -->
+    <HBox alignment="CENTER_LEFT" spacing="10">
+        <VBox spacing="2">
+            <Label text="Agenda del día" styleClass="titulo-seccion"/>
+            <Label fx:id="lblFechaAgenda" text="Turnos programados" styleClass="subtitulo-vista"/>
+        </VBox>
+
+        <HBox HBox.hgrow="ALWAYS"/>
+
+        <!-- NUEVO: ComboBox para filtrar estados en tiempo real -->
+        <ComboBox fx:id="cmbFiltroEstado"
+                  promptText="Estado"
+                  prefWidth="130"
+                  onAction="#filtrarPorEstadoTabla"/>
+
+        <Button text="‹" onAction="#diaAnterior" styleClass="boton-mini"/>
+        <Button text="Hoy" onAction="#irHoy" styleClass="boton-mini"/>
+        <Button text="›" onAction="#diaSiguiente" styleClass="boton-mini"/>
+    </HBox>
+
     <!-- AGENDA -->
     <VBox spacing="8"
           VBox.vgrow="ALWAYS">

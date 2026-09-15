@@ -20,248 +20,132 @@
     <!-- ================================================= -->
     <!-- CABECERA -->
     <!-- ================================================= -->
-
     <top>
-
         <HBox alignment="CENTER_LEFT"
               styleClass="header"
               spacing="15">
-
             <padding>
-                <Insets top="8"
-                        right="22"
-                        bottom="8"
-                        left="22"/>
+                <Insets top="8" right="22" bottom="8" left="22"/>
             </padding>
 
-            <!-- LOGO -->
-
-            <ImageView fx:id="imageView"
+            <!-- LOGO (Cambiado a iv para que coincida con el controlador) -->
+            <ImageView fx:id="iv"
                        fitWidth="250"
                        fitHeight="75"
                        preserveRatio="true"/>
 
-            <!-- ESPACIADOR -->
-
             <StackPane HBox.hgrow="ALWAYS"/>
 
-            <!-- FECHA / HORA -->
-
-            <VBox alignment="CENTER_RIGHT"
-                  spacing="2">
-
-                <Label fx:id="lblFecha"
-                       text="Miércoles, 9 de septiembre de 2026"
-                       styleClass="fecha"/>
-
-                <Label fx:id="lblHora"
-                       text="19:50"
-                       styleClass="hora"/>
-
+            <VBox alignment="CENTER_RIGHT" spacing="2">
+                <Label fx:id="lblFecha" text="Miércoles, 9 de septiembre de 2026" styleClass="fecha"/>
+                <Label fx:id="lblHora" text="19:50" styleClass="hora"/>
             </VBox>
-
         </HBox>
-
     </top>
-
 
     <!-- ================================================= -->
     <!-- CONTENIDO -->
     <!-- ================================================= -->
-
     <center>
-
-        <VBox spacing="14"
-              styleClass="contenido-principal">
-
+        <VBox spacing="14" styleClass="contenido-principal">
             <padding>
-                <Insets top="14"
-                        right="14"
-                        bottom="14"
-                        left="14"/>
+                <Insets top="14" right="14" bottom="14" left="14"/>
             </padding>
-
 
             <!-- ================================================= -->
             <!-- TARJETAS DE NAVEGACIÓN -->
             <!-- ================================================= -->
-
             <HBox spacing="14">
 
-
                 <!-- NUEVO TURNO -->
-
                 <HBox onMouseClicked="#mostrarTurnos"
-                      alignment="CENTER_LEFT"
-                      spacing="14"
-                      HBox.hgrow="ALWAYS"
-                      maxWidth="Infinity"
+                      alignment="CENTER_LEFT" spacing="14"
+                      HBox.hgrow="ALWAYS" maxWidth="Infinity"
                       styleClass="card-navegacion">
-
-                    <Label text="▣"
-                           styleClass="icono-card"/>
-
+                    <Label text="▣" styleClass="icono-card"/>
                     <VBox spacing="3">
-
-                        <Label text="Nuevo Turno"
-                               styleClass="titulo-card"/>
-
-                        <Label text="Asignar un turno rápidamente"
-                               styleClass="descripcion-card"/>
-
+                        <Label text="Nuevo Turno" styleClass="titulo-card"/>
+                        <Label text="Asignar un turno rápidamente" styleClass="descripcion-card"/>
                     </VBox>
-
                     <StackPane HBox.hgrow="ALWAYS"/>
-
-                    <Label text="›"
-                           styleClass="flecha-card"/>
-
+                    <Label text="›" styleClass="flecha-card"/>
                 </HBox>
-
 
                 <!-- DOCTORES -->
-
                 <HBox onMouseClicked="#mostrarDoctores"
-                      alignment="CENTER_LEFT"
-                      spacing="14"
-                      HBox.hgrow="ALWAYS"
-                      maxWidth="Infinity"
+                      alignment="CENTER_LEFT" spacing="14"
+                      HBox.hgrow="ALWAYS" maxWidth="Infinity"
                       styleClass="card-navegacion">
-
-                    <Label text="⚕"
-                           styleClass="icono-card"/>
-
+                    <Label text="⚕" styleClass="icono-card"/>
                     <VBox spacing="3">
-
-                        <Label text="Doctores"
-                               styleClass="titulo-card"/>
-
-                        <Label text="Médicos, especialidades y obras sociales"
-                               styleClass="descripcion-card"/>
-
+                        <Label text="Doctores" styleClass="titulo-card"/>
+                        <Label text="Médicos, especialidades y obras sociales" styleClass="descripcion-card"/>
                     </VBox>
-
                     <StackPane HBox.hgrow="ALWAYS"/>
-
-                    <Label text="›"
-                           styleClass="flecha-card"/>
-
+                    <Label text="›" styleClass="flecha-card"/>
                 </HBox>
 
-
                 <!-- PACIENTES -->
-
                 <HBox onMouseClicked="#mostrarPacientes"
-                      alignment="CENTER_LEFT"
-                      spacing="14"
-                      HBox.hgrow="ALWAYS"
-                      maxWidth="Infinity"
+                      alignment="CENTER_LEFT" spacing="14"
+                      HBox.hgrow="ALWAYS" maxWidth="Infinity"
                       styleClass="card-navegacion">
-
-                    <Label text="👤"
-                           styleClass="icono-card"/>
-
+                    <Label text="👤" styleClass="icono-card"/>
                     <VBox spacing="3">
-
-                        <Label text="Pacientes"
-                               styleClass="titulo-card"/>
-
-                        <Label text="Alta, baja y consulta de pacientes"
-                               styleClass="descripcion-card"/>
-
+                        <Label text="Pacientes" styleClass="titulo-card"/>
+                        <Label text="Alta, baja y consulta de pacientes" styleClass="descripcion-card"/>
                     </VBox>
-
                     <StackPane HBox.hgrow="ALWAYS"/>
+                    <Label text="›" styleClass="flecha-card"/>
+                </HBox>
 
-                    <Label text="›"
-                           styleClass="flecha-card"/>
-
+                <!-- REPORTE PAMI -->
+                <HBox onMouseClicked="#mostrarReportePami"
+                      alignment="CENTER_LEFT" spacing="14"
+                      HBox.hgrow="ALWAYS" maxWidth="Infinity"
+                      styleClass="card-navegacion">
+                    <Label text="📋" styleClass="icono-card"/>
+                    <VBox spacing="3">
+                        <Label text="Reporte PAMI" styleClass="titulo-card"/>
+                        <Label text="Pacientes PAMI con turnos cumplidos" styleClass="descripcion-card"/>
+                    </VBox>
+                    <StackPane HBox.hgrow="ALWAYS"/>
+                    <Label text="›" styleClass="flecha-card"/>
                 </HBox>
 
             </HBox>
 
-
             <!-- ================================================= -->
             <!-- PANEL DONDE CAMBIAN LAS VISTAS -->
             <!-- ================================================= -->
+            <StackPane fx:id="contenedorPrincipal" VBox.vgrow="ALWAYS">
 
-            <StackPane fx:id="contenedorPrincipal"
-                       VBox.vgrow="ALWAYS">
-
-
-                <!-- ================================================= -->
                 <!-- AGENDA PRINCIPAL -->
-                <!-- ================================================= -->
-
-                <VBox fx:id="panelAgenda"
-                      spacing="10"
-                      styleClass="contenedor-vistas">
-
-                    <!-- TÍTULO -->
-
+                <VBox fx:id="panelAgenda" spacing="10" styleClass="contenedor-vistas">
                     <HBox alignment="CENTER_LEFT">
-
                         <VBox spacing="1">
-
-                            <Label text="Agenda de hoy"
-                                   styleClass="titulo-agenda"/>
-
-                            <Label fx:id="lblFechaAgenda"
-                                   text="Miércoles, 9 de septiembre de 2026"
-                                   styleClass="subtitulo-agenda"/>
-
+                            <Label text="Agenda de hoy" styleClass="titulo-agenda"/>
+                            <Label fx:id="lblFechaAgenda" text="Miércoles, 9 de septiembre de 2026" styleClass="subtitulo-agenda"/>
                         </VBox>
-
                         <StackPane HBox.hgrow="ALWAYS"/>
-
-                        <Label text="Actualización automática"
-                               styleClass="actualizacion"/>
-
+                        <Label text="Actualización automática" styleClass="actualizacion"/>
                     </HBox>
 
-
-                    <!-- TABLA -->
-
-                    <TableView fx:id="tablaAgenda"
-                               VBox.vgrow="ALWAYS"
-                               styleClass="tabla-agenda">
-
+                    <TableView fx:id="tablaAgenda" VBox.vgrow="ALWAYS" styleClass="tabla-agenda">
                         <columns>
-
-                            <TableColumn fx:id="colHora"
-                                         text="Hora"
-                                         prefWidth="80"/>
-
-                            <TableColumn fx:id="colPaciente"
-                                         text="Paciente"
-                                         prefWidth="180"/>
-
-                            <TableColumn fx:id="colDoctor"
-                                         text="Doctor"
-                                         prefWidth="165"/>
-
-                            <TableColumn fx:id="colEspecialidad"
-                                         text="Especialidad"
-                                         prefWidth="175"/>
-
-                            <TableColumn fx:id="colEstado"
-                                         text="Estado"
-                                         prefWidth="130"/>
-
-                            <TableColumn fx:id="colAcciones"
-                                         text="Acciones"
-                                         prefWidth="100"/>
-
+                            <TableColumn fx:id="colHora" text="Hora" prefWidth="80"/>
+                            <TableColumn fx:id="colPaciente" text="Paciente" prefWidth="180"/>
+                            <TableColumn fx:id="colDoctor" text="Doctor" prefWidth="165"/>
+                            <TableColumn fx:id="colEspecialidad" text="Especialidad" prefWidth="175"/>
+                            <TableColumn fx:id="colEstado" text="Estado" prefWidth="130"/>
+                            <TableColumn fx:id="colAcciones" text="Acciones" prefWidth="100"/>
                         </columns>
-
                     </TableView>
-
                 </VBox>
 
             </StackPane>
 
         </VBox>
-
     </center>
 
 </BorderPane>
