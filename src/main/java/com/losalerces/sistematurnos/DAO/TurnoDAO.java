@@ -198,7 +198,7 @@ public class TurnoDAO {
             ps.setInt(2, turno.getIdDoctor());
             ps.setString(3, turno.getFechaTurno().toString());
             ps.setString(4, turno.getHoraTurno().toString());
-            ps.setInt(5, turno.getIdTurno()); // Corregido el índice a 5
+            ps.setInt(5, turno.getIdTurno());
 
             return ps.executeUpdate() > 0;
 
