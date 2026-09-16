@@ -1,7 +1,8 @@
-package com.losalerces.sistematurnos.Controladores;
+package com.losalerces.sistematurnos.controladores;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -9,9 +10,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
 import java.io.IOException;
@@ -62,10 +61,7 @@ public class controladorMenuprincipal implements Initializable {
         cargarVista("doctores.fxml");
     }
 
-    @FXML
-    private void mostrarPacientes(MouseEvent actionEvent) {
-        cargarVista("pacientes.fxml");
-    }
+
 
     private void cargarVista(String archivo) {
         try {
@@ -94,27 +90,13 @@ public class controladorMenuprincipal implements Initializable {
 
         java.io.InputStream stream = getClass().getResourceAsStream("/imagen/logo_clinica.png");
 
-        if (stream != null && iv != null) {
+        if (stream != null) {
             iv.setImage(new Image(stream));
         } else {
             System.err.println("Error crítico: No se encontró el archivo");
         }
     }
-    //AAAAAAAAAAAAAAAAAAAA
 
-
-
-    @FXML
-    private void mostrarReportePami() {
-        try {
-            // Forma correcta de inicializar el FXMLLoader con la ruta de la vista
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/losalerces/sistematurnos/reportePami.fxml"));
-            VBox vistaReporte = loader.load();
-
-            contenedorPrincipal.getChildren().setAll(vistaReporte);
-        } catch (IOException e) {
-            System.out.println("Error al cargar la vista de Reporte PAMI: " + e.getMessage());
-            e.printStackTrace();
-        }
+    public void mostrarPacientes(ActionEvent actionEvent) {
     }
 }
