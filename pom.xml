@@ -40,6 +40,18 @@
             <artifactId>javafx-media</artifactId>
             <version>${javafx.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>5.5.1</version>
+        </dependency>
+
+        <!-- Apache POI OOXML para archivos Excel modernos (.xlsx) -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>5.5.1</version>
+        </dependency>
 
         <!-- SE ELIMINÓ JAVAFX-WEB PARA SOLUCIONAR EL ERROR DE CONFLICTO DE MÓDULOS -->
 

@@ -8,10 +8,12 @@ import com.losalerces.sistematurnos.DAO.TurnoDAO;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class controladorReportePami {
@@ -98,6 +100,44 @@ public class controladorReportePami {
         }
         System.out.println(">>> Filas añadidas a la tabla: " + listaReporte.size());
     }
+
+    public void exportarExcel(ActionEvent actionEvent) {
+
+            if (listaReporte.isEmpty()) {
+                System.out.println(">>> No hay datos para exportar.");
+                return;
+            }
+
+            try {
+                javafx.stage.FileChooser fileChooser = new javafx.stage.FileChooser();
+                fileChooser.setTitle("Guardar Reporte PAMI");
+                fileChooser.getExtensionFilters().add(
+                        new javafx.stage.FileChooser.ExtensionFilter("Archivos Excel (*.xlsx)", "*.xlsx")
+                );
+                fileChooser.setInitialFileName("Reporte_Turnos_PAMI_" + LocalDate.now() + ".xlsx");
+
+                // Obtener la ventana actual desde la tabla
+                java.io.File archivoDestino = fileChooser.showSaveDialog(tablaReportePami.getScene().getWindow());
+
+                if (archivoDestino != null) {
+                    // Llamamos al generador de Excel pasando la carpeta del archivo seleccionado
+                    com.losalerces.sistematurnos.Excel.Excel.generarReportePami(listaReporte, archivoDestino.getParent());
+
+                    // Opcional: Renombrar si el usuario eligió un nombre distinto al predeterminado por el método
+                    java.io.File generado = new java.io.File(archivoDestino.getParent(), "Reporte_Turnos_PAMI.xlsx");
+                    if (generado.exists() && !generado.equals(archivoDestino)) {
+                        if (archivoDestino.exists()) archivoDestino.delete();
+                        generado.renameTo(archivoDestino);
+                    }
+
+                    System.out.println(">>> Reporte exportado con éxito en: " + archivoDestino.getAbsolutePath());
+                }
+            } catch (Exception e) {
+                System.err.println(">>> Error al exportar el Excel: " + e.getMessage());
+                e.printStackTrace();
+            }
+    }
+
 
     public static class FilaReportePami {
         private final String fecha;

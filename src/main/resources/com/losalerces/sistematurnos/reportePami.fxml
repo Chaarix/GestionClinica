@@ -18,13 +18,18 @@
     </padding>
 
     <!-- ENCABEZADO -->
-    <HBox alignment="CENTER_LEFT">
+    <HBox alignment="CENTER_LEFT" spacing="10">
         <VBox spacing="2">
             <Label text="Reporte PAMI" styleClass="titulo-vista"/>
             <Label text="Listado oficial de pacientes PAMI con turnos atendidos" styleClass="subtitulo-vista"/>
         </VBox>
 
         <HBox HBox.hgrow="ALWAYS"/>
+
+        <!-- NUEVO BOTÓN EXCEL -->
+        <Button text="Generar Excel"
+                onAction="#exportarExcel"
+                styleClass="boton-principal"/>
 
         <Button text="Actualizar Reporte"
                 onAction="#actualizarReporte"
