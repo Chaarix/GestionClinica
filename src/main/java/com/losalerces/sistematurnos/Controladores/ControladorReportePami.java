@@ -16,7 +16,7 @@ import javafx.scene.control.TableView;
 import java.time.LocalDate;
 import java.util.List;
 
-public class controladorReportePami {
+public class ControladorReportePami {
 
     @FXML
     private TableView<FilaReportePami> tablaReportePami;

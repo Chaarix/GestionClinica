@@ -22,7 +22,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-public class controladorMenuprincipal implements Initializable {
+public class ControladorMenuprincipal implements Initializable {
 
     @FXML
     private StackPane contenedorPrincipal;

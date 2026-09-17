@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 
 <BorderPane xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.losalerces.sistematurnos.Controladores.controladorMenuprincipal"
+            fx:controller="com.losalerces.sistematurnos.Controladores.ControladorMenuprincipal"
             prefWidth="950"
             prefHeight="620"
             stylesheets="@style.css"

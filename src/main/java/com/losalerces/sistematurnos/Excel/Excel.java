@@ -2,6 +2,7 @@ package com.losalerces.sistematurnos.Excel;
 
 import com.losalerces.sistematurnos.Clases.ClaseObraSocial;
 import com.losalerces.sistematurnos.Clases.ClasePaciente;
+import com.losalerces.sistematurnos.Controladores.ControladorReportePami;
 import com.losalerces.sistematurnos.DAO.ObraSocialDAO;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
@@ -153,7 +154,7 @@ public class Excel {
     /**
      * Genera el reporte en Excel procesando la lista de FilaReportePami con diseño optimizado.
      */
-    public static File generarReportePami(List<com.losalerces.sistematurnos.Controladores.controladorReportePami.FilaReportePami> listaReporte, String carpetaDestino) throws Exception {
+    public static File generarReportePami(List<ControladorReportePami.FilaReportePami> listaReporte, String carpetaDestino) throws Exception {
 
         File carpeta = new File(carpetaDestino);
         if (!carpeta.exists()) {
