@@ -427,12 +427,55 @@
 
 .date-picker,
 .combo-box {
-    -fx-background-color: #FFFFFF;
+    -fx-background-color: #FFFFFF; /* Fondo totalmente blanco plano */
 
-    -fx-border-color: #D7E1DA;
+    -fx-border-color: #D7E1DA;     /* Tu color de borde gris verdoso estándar */
+    -fx-border-width: 1px;
+    -fx-border-radius: 8px;        /* Bordes redondeados idénticos a tus botones */
+    -fx-background-radius: 8px;
 
-    -fx-border-radius: 7px;
-    -fx-background-radius: 7px;
+    -fx-padding: 2px 5px;
+    -fx-font-family: "Georgia";    /* Tipografía unificada del sistema */
+    -fx-font-size: 13px;
+    -fx-text-fill: #3D5752;        /* Color de texto suave */
+}
+
+/* Efecto Hover: Cuando el usuario posiciona el mouse sobre el campo */
+.date-picker:hover,
+.combo-box:hover {
+    -fx-border-color: #ADC8B8;     /* El mismo verde de tus cartas en Hover */
+    -fx-background-color: #FBFCFB;
+}
+
+/* Efecto Focus: Cuando el campo está seleccionado o desplegado */
+.date-picker:focused,
+.combo-box:focused,
+.combo-box:showing {
+    -fx-border-color: #17675A;     /* Verde intermedio destacado de tus íconos */
+    -fx-border-width: 1.5px;       /* Un borde ligeramente más grueso al marcarlo */
+}
+
+/* ========================================================================= */
+/* ESTILOS INTERNOS DE LOS COMBOBOX Y DATEPICKER (Quitar flechas grises)       */
+/* ========================================================================= */
+
+/* Quita el fondo gris de la flechita del ComboBox y del icono del DatePicker */
+.combo-box .arrow-button,
+.date-picker .arrow-button {
+    -fx-background-color: transparent;
+}
+
+/* Pinta las flechitas internas con tu verde oscuro corporativo */
+.combo-box .arrow,
+.date-picker .arrow {
+    -fx-background-color: #124E45;
+}
+
+/* Asegura el fondo blanco del campo de texto interno del DatePicker */
+.date-picker .text-field {
+    -fx-background-color: transparent;
+    -fx-font-family: "Georgia";
+    -fx-text-fill: #3D5752;
 }
 /* ======================================= */
 /* PACIENTES */
@@ -665,4 +708,27 @@
     -fx-border-color: #17675A !important; /* Tu color verde intermedio */
     -fx-border-width: 1px !important;
     -fx-border-radius: 5px;
+}
+/* ========================================================================= */
+/* ESTILO PARA LA LISTA DESPLEGABLE DE LOS COMBOBOX (LIST-VIEW POPUP)       */
+
+/* Cambia la selección azul por tu verde oscuro corporativo */
+.combo-box-popup .list-view .list-cell:filled:selected {
+    -fx-background-color: #124E45 !important;
+    -fx-text-fill: #FFFFFF !important;
+    -fx-font-weight: bold !important;
+}
+
+/* Efecto al pasar el mouse (Hover) por las opciones */
+.combo-box-popup .list-view .list-cell:filled:hover {
+    -fx-background-color: #EDF5F0 !important;
+    -fx-text-fill: #174C43 !important;
+}
+
+/* Redondeado del marco flotante de la lista */
+.combo-box-popup .list-view {
+    -fx-background-radius: 8px !important;
+    -fx-border-radius: 8px !important;
+    -fx-border-color: #D7E1DA !important;
+    -fx-background-color: #FFFFFF !important;
 }
