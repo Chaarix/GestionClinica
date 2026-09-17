@@ -78,29 +78,42 @@
                        GridPane.rowIndex="1"/>
 
 
-            <!-- FECHA -->
+            <!-- DNI -->
 
-            <Label text="Fecha de nacimiento"
+            <Label text="DNI"
                    styleClass="label-campo"
                    GridPane.columnIndex="2"
                    GridPane.rowIndex="0"/>
 
+            <TextField fx:id="txtDni"
+                       promptText="DNI"
+                       GridPane.columnIndex="2"
+                       GridPane.rowIndex="1"/>
+
+
+            <!-- FECHA NACIMIENTO -->
+
+            <Label text="Fecha de nacimiento"
+                   styleClass="label-campo"
+                   GridPane.columnIndex="0"
+                   GridPane.rowIndex="2"/>
+
             <DatePicker fx:id="dpFechaNacimiento"
                         maxWidth="Infinity"
-                        GridPane.columnIndex="2"
-                        GridPane.rowIndex="1"/>
+                        GridPane.columnIndex="0"
+                        GridPane.rowIndex="3"/>
 
 
             <!-- TELÉFONO -->
 
             <Label text="Teléfono"
                    styleClass="label-campo"
-                   GridPane.columnIndex="0"
+                   GridPane.columnIndex="1"
                    GridPane.rowIndex="2"/>
 
             <TextField fx:id="txtTelefono"
                        promptText="Teléfono"
-                       GridPane.columnIndex="0"
+                       GridPane.columnIndex="1"
                        GridPane.rowIndex="3"/>
 
 
@@ -108,12 +121,12 @@
 
             <Label text="Email"
                    styleClass="label-campo"
-                   GridPane.columnIndex="1"
+                   GridPane.columnIndex="2"
                    GridPane.rowIndex="2"/>
 
             <TextField fx:id="txtEmail"
                        promptText="correo@ejemplo.com"
-                       GridPane.columnIndex="1"
+                       GridPane.columnIndex="2"
                        GridPane.rowIndex="3"/>
 
 
@@ -121,29 +134,28 @@
 
             <Label text="Obra social"
                    styleClass="label-campo"
-                   GridPane.columnIndex="2"
-                   GridPane.rowIndex="2"/>
+                   GridPane.columnIndex="0"
+                   GridPane.rowIndex="4"/>
 
             <ComboBox fx:id="cmbObraSocial"
                       promptText="Seleccionar obra social"
                       maxWidth="Infinity"
-                      GridPane.columnIndex="2"
-                      GridPane.rowIndex="3"/>
+                      GridPane.columnIndex="0"
+                      GridPane.rowIndex="5"/>
 
 
             <!-- DURACIÓN CONSULTA -->
 
             <Label text="Duración de consulta"
                    styleClass="label-campo"
-                   GridPane.columnIndex="0"
+                   GridPane.columnIndex="1"
                    GridPane.rowIndex="4"/>
 
             <ComboBox fx:id="cmbDuracionConsulta"
                       promptText="Seleccionar duración"
                       maxWidth="Infinity"
-                      GridPane.columnIndex="0"
+                      GridPane.columnIndex="1"
                       GridPane.rowIndex="5"/>
-
         </GridPane>
 
 
@@ -206,6 +218,10 @@
             <TableColumn fx:id="colApellido"
                          text="Apellido"
                          prefWidth="110"/>
+
+            <TableColumn fx:id="colDni"
+                         text="DNI"
+                         prefWidth="95"/>
 
             <TableColumn fx:id="colFechaNacimiento"
                          text="Nacimiento"

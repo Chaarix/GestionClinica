@@ -2,15 +2,24 @@ package com.losalerces.sistematurnos.Clases;
 
 public class ClasePaciente {
 
-   private int idPaciente;
-   private String nombre;
-   private String apellido;
-   private String fechaNacimiento;
-   private String telefono;
-   private String email;
-   private int idObraSocial;
+    private int idPaciente;
+    private String nombre;
+    private String apellido;
+    private String fechaNacimiento;
+    private String telefono;
+    private String email;
+    private int idObraSocial;
+    private String dni;
 
-    public ClasePaciente(int idPaciente, String nombre, String apellido, String fechaNacimiento, String telefono, String email, int idObraSocial) {
+    public ClasePaciente(int idPaciente,
+                         String nombre,
+                         String apellido,
+                         String fechaNacimiento,
+                         String telefono,
+                         String email,
+                         int idObraSocial,
+                         String dni) {
+
         this.idPaciente = idPaciente;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -18,6 +27,7 @@ public class ClasePaciente {
         this.telefono = telefono;
         this.email = email;
         this.idObraSocial = idObraSocial;
+        this.dni = dni;
     }
 
     public ClasePaciente() {
@@ -83,6 +93,15 @@ public class ClasePaciente {
 
     public ClasePaciente setIdObraSocial(int idObraSocial) {
         this.idObraSocial = idObraSocial;
+        return this;
+    }
+
+    public String dni() {
+        return dni;
+    }
+
+    public ClasePaciente setDni(String dni) {
+        this.dni = dni;
         return this;
     }
 }
