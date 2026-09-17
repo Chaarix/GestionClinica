@@ -1,4 +1,4 @@
-package com.losalerces.sistematurnos.Controladores;
+package com.losalerces.sistematurnos.controladores;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -10,7 +10,6 @@ import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 
@@ -22,7 +21,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-public class ControladorMenuprincipal implements Initializable {
+public class controladorMenuprincipal implements Initializable {
 
     @FXML
     private StackPane contenedorPrincipal;
@@ -99,8 +98,5 @@ public class ControladorMenuprincipal implements Initializable {
     }
 
     public void mostrarPacientes(ActionEvent actionEvent) {
-    }
-
-    public void mostrarReportePami(MouseEvent mouseEvent) {
     }
 }
