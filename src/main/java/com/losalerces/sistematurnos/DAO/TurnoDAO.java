@@ -145,7 +145,7 @@ public class TurnoDAO {
                     turnos.add(mappearTurno(rs));
                 }
             }
-
+//asd
         } catch (SQLException e) {
             System.out.println("Error al listar turnos por obra social y estado: " + e.getMessage());
         }
