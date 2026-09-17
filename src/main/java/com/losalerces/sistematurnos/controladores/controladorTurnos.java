@@ -1,29 +1,5 @@
 package com.losalerces.sistematurnos.Controladores;
 
-/*
-import com.losalerces.sistematurnos.Clases.ClaseDoctor;
-import com.losalerces.sistematurnos.Clases.ClaseObraSocial;
-import com.losalerces.sistematurnos.Clases.ClasePaciente;
-import com.losalerces.sistematurnos.Clases.ClaseTurno;
-import com.losalerces.sistematurnos.DAO.DoctorDAOImpl;
-import com.losalerces.sistematurnos.DAO.ObraSocialDAO;
-import com.losalerces.sistematurnos.DAO.PacienteDAO;
-import com.losalerces.sistematurnos.DAO.TurnoDAO;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
-import javafx.scene.control.*;
-import javafx.scene.layout.HBox;
-
-import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
- */
 import com.losalerces.sistematurnos.Clases.ClaseDoctor;
 import com.losalerces.sistematurnos.Clases.ClaseObraSocial;
 import com.losalerces.sistematurnos.Clases.ClasePaciente;
@@ -47,7 +23,6 @@ import java.util.List;
 import java.util.Map;
 
 public class controladorTurnos {
-    /*
 
     @FXML
     private DatePicker dpFecha;
@@ -62,70 +37,7 @@ public class controladorTurnos {
     private ComboBox<String> cmbPaciente;
 
     @FXML
-    private ComboBox<String> cmbFiltroEstado; // Opcional para filtrar por estado si lo agregas al FXML
-
-    @FXML
-    private Label lblEspecialidad;
-
-    @FXML
-    private Label lblObraSocial;
-
-    @FXML
-    private Label lblFechaAgenda;
-
-    @FXML
-    private TableView<TurnoFila> tablaTurnos;
-
-    @FXML
-    private TableColumn<TurnoFila, String> colHora;
-
-    @FXML
-    private TableColumn<TurnoFila, String> colPaciente;
-
-    @FXML
-    private TableColumn<TurnoFila, String> colDoctor;
-
-    @FXML
-    private TableColumn<TurnoFila, String> colEspecialidad;
-
-    @FXML
-    private TableColumn<TurnoFila, String> colObraSocial;
-
-    @FXML
-    private TableColumn<TurnoFila, String> colEstado;
-
-    @FXML
-    private TableColumn<TurnoFila, Void> colAcciones;
-
-    private final ObservableList<TurnoFila> listaTurnos = FXCollections.observableArrayList();
-
-    private final TurnoDAO turnoDAO = new TurnoDAO();
-    private final PacienteDAO pacienteDAO = new PacienteDAO();
-    private final ObraSocialDAO obraSocialDAO = new ObraSocialDAO();
-    private final DoctorDAOImpl doctorDAO = new DoctorDAOImpl();
-
-    private final Map<String, Integer> mapaPacientes = new HashMap<>();
-    private final Map<Integer, String> mapaObrasSocialesIdANombre = new HashMap<>();
-    private final Map<String, Integer> mapaDoctoresNombreAId = new HashMap<>();
-    private final Map<Integer, String> mapaDoctoresIdANombre = new HashMap<>();
-    private final Map<String, String> mapaDoctoresEspecialidad = new HashMap<>();
-
-     */
-    @FXML
-    private DatePicker dpFecha;
-
-    @FXML
-    private ComboBox<String> cmbDoctor;
-
-    @FXML
-    private ComboBox<String> cmbHorario;
-
-    @FXML
-    private ComboBox<String> cmbPaciente;
-
-    @FXML
-    private ComboBox<String> cmbFiltroEstado; // Opcional para filtrar por estado si lo agregas al FXML
-
+    private ComboBox<String> cmbFiltroEstado;
     @FXML
     private Label lblEspecialidad;
 
