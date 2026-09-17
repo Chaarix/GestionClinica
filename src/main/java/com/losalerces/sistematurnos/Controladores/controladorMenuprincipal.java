@@ -1,8 +1,7 @@
-package com.losalerces.sistematurnos.controladores;
+package com.losalerces.sistematurnos.Controladores;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -61,7 +60,15 @@ public class controladorMenuprincipal implements Initializable {
         cargarVista("doctores.fxml");
     }
 
+    @FXML
+    private void mostrarPacientes() {
+        cargarVista("pacientes.fxml");
+    }
 
+    @FXML
+    private void mostrarReportePami() {
+        cargarVista("reportePami.fxml");
+    }
 
     private void cargarVista(String archivo) {
         try {
@@ -97,6 +104,4 @@ public class controladorMenuprincipal implements Initializable {
         }
     }
 
-    public void mostrarPacientes(ActionEvent actionEvent) {
-    }
 }
