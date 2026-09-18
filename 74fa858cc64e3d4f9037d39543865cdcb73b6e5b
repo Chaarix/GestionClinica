@@ -1,0 +1,342 @@
+[33mcommit 74fa858cc64e3d4f9037d39543865cdcb73b6e5b[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mOscar[m[33m, [m[1;31morigin/Oscar[m[33m)[m
+Author: honored-star <odiaz7186@gmail.com>
+Date:   Wed Sep 16 21:41:01 2026 -0300
+
+    se actualizo las vistas de todos los botones
+
+[33mcommit 3f15013a35d9733efb7f77a72d904b24789277c9[m
+Author: honored-star <odiaz7186@gmail.com>
+Date:   Wed Sep 16 21:24:03 2026 -0300
+
+    se actualizo el calendario
+
+[33mcommit 545e35a657fd56e9444a790413951b9c25da05d4[m
+Author: honored-star <odiaz7186@gmail.com>
+Date:   Wed Sep 16 21:23:50 2026 -0300
+
+    se actualizo el calendario
+
+[33mcommit 254a13b7d20e5bc236b009887aaedebbde8a8b27[m
+Author: honored-star <odiaz7186@gmail.com>
+Date:   Wed Sep 16 20:48:34 2026 -0300
+
+    se actualizo el calendario
+
+[33mcommit 352795f4dce83b2f1ebc2baa2357c1090e145505[m
+Author: honored-star <odiaz7186@gmail.com>
+Date:   Tue Sep 15 21:10:54 2026 -0300
+
+    se agrego Lombok a todas las clases
+
+[33mcommit 6e810646fb6a004f1e740a502b34f1890b16ad85[m
+Author: honored-star <odiaz7186@gmail.com>
+Date:   Tue Sep 15 20:58:35 2026 -0300
+
+    se agrego Lombok a todas las clases
+
+[33mcommit 749b2f976e5e12cdc408101a39b8f8bed4ba361b[m
+Author: honored-star <odiaz7186@gmail.com>
+Date:   Tue Sep 15 19:16:10 2026 -0300
+
+    se agrego Lombok a todas las clases
+
+[33mcommit 291657f36af230ece7f3f5efa826f060317f54cc[m
+Author: honored-star <odiaz7186@gmail.com>
+Date:   Tue Sep 15 19:11:17 2026 -0300
+
+    se agrego Lombok a todas las clases
+
+[33mcommit d66bfdfd0e1c9ffdb95478976ddae42d71ff2a69[m
+Author: honored-star <odiaz7186@gmail.com>
+Date:   Tue Sep 15 19:07:46 2026 -0300
+
+    se agrego Lombok a todas las clases
+
+[33mcommit 2b03a995a55f87ea1088841d28e24b30a72914cf[m
+Author: honored-star <odiaz7186@gmail.com>
+Date:   Tue Sep 15 19:07:35 2026 -0300
+
+    se agrego Lombok a todas las clases
+
+[33mcommit 8529d210b6ed186b3f512e85deb3f549242e8e97[m
+Author: honored-star <odiaz7186@gmail.com>
+Date:   Thu Sep 10 21:49:57 2026 -0300
+
+    se actualizó la funcion de agregar y eliminar
+
+[33mcommit 605143adecaf9a226be9a0c374d29b4772df81f6[m
+Author: honored-star <odiaz7186@gmail.com>
+Date:   Thu Sep 10 21:05:17 2026 -0300
+
+    se actualizó la funcion de agregar y eliminar
+
+[33mcommit 61c4030d69c642b6551e81186736bed3b2517de0[m
+Author: honored-star <odiaz7186@gmail.com>
+Date:   Thu Sep 10 20:05:09 2026 -0300
+
+    commit
+
+[33mcommit c300aec48ac2d31e31498e39cdfea6d4badf5e66[m
+Author: honored-star <odiaz7186@gmail.com>
+Date:   Thu Sep 10 19:32:40 2026 -0300
+
+    commit
+
+[33mcommit 559fd12c8b1d6a63e15659a4dc6c8da6eca152fc[m
+Author: honored-star <odiaz7186@gmail.com>
+Date:   Thu Sep 10 19:22:48 2026 -0300
+
+    commit
+
+[33mcommit 9a43fd37d363fa762faa98c61fde4c0226e29af0[m
+Author: honored-star <odiaz7186@gmail.com>
+Date:   Thu Sep 10 19:15:34 2026 -0300
+
+    commit
+
+[33mcommit 5d876516eccadf54f3eca73ffc5438c70f47978e[m
+Merge: f1a0bc8 25f3fac
+Author: honored-star <odiaz7186@gmail.com>
+Date:   Thu Sep 10 19:14:32 2026 -0300
+
+    Merge branch 'main' of https://github.com/Chaarix/GestionClinica
+
+[33mcommit f1a0bc8f6baaf77c929c8b504452c1840166eb81[m
+Author: honored-star <odiaz7186@gmail.com>
+Date:   Thu Sep 10 19:04:07 2026 -0300
+
+    commit
+
+[33mcommit 25f3faca8128dcf4085c9e41306dfe63b53da9ac[m
+Merge: a5a2b0b 5e7283b
+Author: Chaarix <1eliseotorres2007@gmail.com>
+Date:   Thu Sep 10 18:50:01 2026 -0300
+
+    Merge remote-tracking branch 'origin/main'
+
+[33mcommit a5a2b0bffc5c2740e92fd09ed448ca07ec166052[m
+Author: xluuleex <lucia.mllmn@gmail.com>
+Date:   Thu Sep 10 18:44:35 2026 -0300
+
+    interfazzzz
+
+[33mcommit 5e7283b0a6936c45fbe2ffc769fcc55c5c4dcd85[m[33m ([m[1;32moscar2[m[33m)[m
+Author: xluuleex <lucia.mllmn@gmail.com>
+Date:   Thu Sep 10 18:44:35 2026 -0300
+
+    interfazzzz
+
+[33mcommit f9a901dda187e37965807d7614ad7cd56952ecd9[m
+Merge: 0ab2654 68bf1c3
+Author: xluuleex <lucia.mllmn@gmail.com>
+Date:   Thu Sep 10 18:43:40 2026 -0300
+
+    Merge branch 'refs/heads/interfaz'
+    
+    # Conflicts:
+    #       src/main/java/module-info.java
+
+[33mcommit 0ab2654dba74f710596423038a133c39fb8d18d8[m
+Merge: 290831e adf9575
+Author: xluuleex <lucia.mllmn@gmail.com>
+Date:   Thu Sep 10 18:43:12 2026 -0300
+
+    Merge branch 'main' of https://github.com/Chaarix/GestionClinica
+    
+    # Conflicts:
+    #       src/main/java/com/losalerces/sistematurnos/HelloApplication.java
+    #       src/main/java/module-info.java
+
+[33mcommit 68bf1c310cd9e8bb1e5107b6d0eec1a092204162[m
+Author: xluuleex <lucia.mllmn@gmail.com>
+Date:   Thu Sep 10 18:41:26 2026 -0300
+
+    interfazzzz
+
+[33mcommit adf9575f830d53e6fff6d8144767d5b181195af8[m
+Merge: 9abbf44 9328ba3
+Author: Ariel79 <ariel.fanjul@gmail.com>
+Date:   Wed Sep 9 21:37:36 2026 -0300
+
+    Merge branch 'Ariel'
+    
+    # Conflicts:
+    #       .idea/misc.xml
+    #       src/main/java/module-info.java
+
+[33mcommit 9abbf440fc8ac1a63e17c0ba59bd135f5d118ab0[m
+Author: Chaarix <1eliseotorres2007@gmail.com>
+Date:   Wed Sep 9 21:39:31 2026 -0300
+
+    Agregar controladores e interfaz de turnos
+
+[33mcommit d8df4f1cc3f19cd53263648588660eba493ed8d9[m
+Author: Chaarix <1eliseotorres2007@gmail.com>
+Date:   Wed Sep 9 21:33:11 2026 -0300
+
+    DAO de Turno, Paciente DoctorObraSocial
+    
+    # Conflicts:
+    #       src/main/java/com/losalerces/sistematurnos/HelloApplication.java
+
+[33mcommit 9328ba3e1f7bf7e1146f7a3d1118233a220042a9[m
+Author: Ariel79 <ariel.fanjul@gmail.com>
+Date:   Wed Sep 9 21:35:06 2026 -0300
+
+    Ariel
+
+[33mcommit a88238712295b79c20090c71f6c56e8e1bc661e1[m
+Author: Ariel79 <ariel.fanjul@gmail.com>
+Date:   Wed Sep 9 21:34:57 2026 -0300
+
+    Ariel
+
+[33mcommit 290831ed0f8d78f22efd2ce7d333e07e991ef5d7[m
+Merge: 656fa83 576b2ac
+Author: xluuleex <lucia.mllmn@gmail.com>
+Date:   Wed Sep 9 20:59:29 2026 -0300
+
+    Merge branch 'refs/heads/interfaz'
+    
+    # Conflicts:
+    #       src/main/java/module-info.java
+
+[33mcommit 576b2ac32dacfbeff0551c4f2d01b17205430965[m
+Author: xluuleex <lucia.mllmn@gmail.com>
+Date:   Wed Sep 9 20:57:07 2026 -0300
+
+    preview (2)interfaz
+
+[33mcommit 656fa83c60ec6a5dbbae6915ada0698cf5f9fd11[m
+Merge: 29cd5d9 23a6729
+Author: honored-star <odiaz7186@gmail.com>
+Date:   Wed Sep 9 20:07:12 2026 -0300
+
+    Merge branch 'main' of https://github.com/Chaarix/GestionClinica
+    
+    # Conflicts:
+    #       pom.xml
+    #       src/main/java/com/losalerces/sistematurnos/HelloApplication.java
+    #       src/main/java/com/losalerces/sistematurnos/Launcher.java
+    #       src/main/java/module-info.java
+
+[33mcommit 29cd5d996cde4c6a507ed0fa5e08ac14a707461a[m
+Author: honored-star <odiaz7186@gmail.com>
+Date:   Wed Sep 9 20:06:02 2026 -0300
+
+    se implemento ObraSocialDAO y el ControladorObraSocials
+
+[33mcommit 23a6729371b9b888c20ecd9076f7183f868add37[m
+Merge: b980321 1693258
+Author: xluuleex <lucia.mllmn@gmail.com>
+Date:   Wed Sep 9 19:36:40 2026 -0300
+
+    Merge branch 'interfaz'
+    
+    # Conflicts:
+    #       pom.xml
+    #       src/main/java/module-info.java
+
+[33mcommit 16932581688253ce21e45dda4e53b676df01d470[m
+Author: xluuleex <lucia.mllmn@gmail.com>
+Date:   Wed Sep 9 19:34:52 2026 -0300
+
+    preview interfaz
+
+[33mcommit 21fe3842e88f1e5cb80b76d9be5861113c38505a[m
+Author: Ariel79 <ariel.fanjul@gmail.com>
+Date:   Wed Sep 9 19:32:13 2026 -0300
+
+    Ariel
+
+[33mcommit 6cdbb6281437983ed6fb9d2027878ac4de4b5524[m
+Merge: 41d7d23 b980321
+Author: honored-star <odiaz7186@gmail.com>
+Date:   Wed Sep 9 19:18:39 2026 -0300
+
+    Merge branch 'main' into Oscar
+    
+    # Conflicts:
+    #       .idea/misc.xml
+
+[33mcommit 41d7d2315b37228a49d74ccdeabcc7ac29cbe657[m
+Author: honored-star <odiaz7186@gmail.com>
+Date:   Wed Sep 9 19:17:21 2026 -0300
+
+    se implemento ObraSocialDAO y la carpeta controladores
+
+[33mcommit b980321b5376ef5911a0035c6a6cbe1846e7241f[m
+Author: Chaarix <1eliseotorres2007@gmail.com>
+Date:   Wed Sep 9 19:15:25 2026 -0300
+
+    Clases
+
+[33mcommit 03d6275c27dbef606ab497bc2c07f68b21f9defe[m
+Author: Chaarix <1eliseotorres2007@gmail.com>
+Date:   Wed Sep 9 19:10:06 2026 -0300
+
+    Clases
+
+[33mcommit a87d87f597345b17f2de3a07b4c2a5bf9ed2926c[m
+Merge: e98271f e79bdad
+Author: Chaarix <1eliseotorres2007@gmail.com>
+Date:   Wed Sep 9 19:06:00 2026 -0300
+
+    Merge branch 'Clases'
+
+[33mcommit e79bdad6efd8d7bdd42b58a336c3c0935f03fe32[m
+Merge: fc53b63 3b90bd4
+Author: Chaarix <1eliseotorres2007@gmail.com>
+Date:   Wed Sep 9 19:05:41 2026 -0300
+
+    Merge remote-tracking branch 'origin/Clases' into Clases
+
+[33mcommit fc53b639a5b16969fde37f0bbfaadb437f4c44b3[m
+Author: Chaarix <1eliseotorres2007@gmail.com>
+Date:   Wed Sep 9 18:52:02 2026 -0300
+
+    Clases
+
+[33mcommit 43d44acb80bf3f7c901adce582fb89b4a4d9b3fc[m
+Merge: 045f8de e98271f
+Author: honored-star <odiaz7186@gmail.com>
+Date:   Wed Sep 9 19:00:14 2026 -0300
+
+    Merge branch 'main' into Oscar
+    
+    # Conflicts:
+    #       src/main/java/module-info.java
+
+[33mcommit 045f8de7be00a93c80338b5ba92e43a1ecac93b6[m
+Author: honored-star <odiaz7186@gmail.com>
+Date:   Wed Sep 9 18:58:10 2026 -0300
+
+    error inicio
+
+[33mcommit e98271fec39c2b69455a4d278cac0cda80f1c15a[m
+Merge: 2ec474e 3b90bd4
+Author: Chaarix <1eliseotorres2007@gmail.com>
+Date:   Wed Sep 9 18:53:40 2026 -0300
+
+    Merge branch 'Clases'
+    
+    # Conflicts:
+    #       .idea/misc.xml
+
+[33mcommit 3b90bd463f75749088da4db2bc8ab81bc3b738b5[m
+Author: Chaarix <1eliseotorres2007@gmail.com>
+Date:   Wed Sep 9 18:52:02 2026 -0300
+
+    Clases
+
+[33mcommit 2ec474ed09d7cb625b55b4adf6c0c0eff06a289c[m
+Author: xluuleex <lucia.mllmn@gmail.com>
+Date:   Tue Sep 8 21:29:00 2026 -0300
+
+    hice bd
+
+[33mcommit 4c0e4263cfc9ebb5577b0e6da8f34ecc575384d1[m
+Author: Chaarix <1eliseotorres2007@gmail.com>
+Date:   Tue Sep 8 20:52:49 2026 -0300
+
+    first commit
