@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 
 <VBox xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.losalerces.sistematurnos.Controladores.controladorTurnos"
+      fx:controller="com.losalerces.sistematurnos.Controladores.ControladorTurnos"
       spacing="14"
       styleClass="vista-base">
 

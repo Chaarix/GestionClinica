@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 
 <VBox xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.losalerces.sistematurnos.Controladores.controladorReportePami"
+      fx:controller="com.losalerces.sistematurnos.Controladores.ControladorReportePami"
       spacing="14"
       styleClass="vista-base">
 
