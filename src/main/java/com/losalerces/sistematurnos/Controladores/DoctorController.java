@@ -542,75 +542,48 @@ public class DoctorController {
             DoctorFila doctor
     ) {
 
-        doctorSeleccionado =
-                doctor;
-
+        doctorSeleccionado = doctor;
 
         txtNombre.setText(
                 doctor.getNombre()
         );
 
-
         txtApellido.setText(
                 doctor.getApellido()
         );
-
 
         txtEspecialidad.setText(
                 doctor.getEspecialidad()
         );
 
-
         // Primero limpiar todos
         limpiarChecks();
 
+        // Cargar obras sociales reales desde SQLite
+        List<Integer> idsObrasSociales =
+                doctorDAO.listarIdsObrasSocialesPorDoctor(
+                        doctor.getId()
+                );
 
-        // Después cargar los reales desde SQLite
-        try {
+        for (CheckBox checkBox : checksObrasSociales) {
 
-            List<Integer> idsObrasSociales =
-                    doctorDAO
-                            .listarIdsObrasSocialesPorDoctor(
-                                    doctor.getId()
-                            );
+            Object dato =
+                    checkBox.getUserData();
 
+            if (
+                    dato instanceof Integer
+                            &&
+                            idsObrasSociales.contains(
+                                    (Integer) dato
+                            )
+            ) {
 
-            for (CheckBox checkBox :
-                    checksObrasSociales) {
-
-                Object dato =
-                        checkBox.getUserData();
-
-
-                if (
-                        dato instanceof Integer
-                                &&
-                                idsObrasSociales.contains(
-                                        (Integer) dato
-                                )
-                ) {
-
-                    checkBox.setSelected(
-                            true
-                    );
-                }
+                checkBox.setSelected(true);
             }
-
-        } catch (SQLException e) {
-
-            mostrarAdvertencia(
-                    "No se pudieron cargar las obras sociales del médico."
-            );
-
-            e.printStackTrace();
         }
 
-
-        btnModificar.setDisable(
-                false
-        );
+        btnModificar.setDisable(false);
     }
-
 
     // =====================================
     // OBTENER NOMBRES OBRAS SOCIALES
