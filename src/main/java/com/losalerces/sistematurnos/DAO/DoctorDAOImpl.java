@@ -29,7 +29,7 @@ public class DoctorDAOImpl {
         return doctores;
     }
 
-    public void insertar(ClaseDoctor doctor) throws SQLException {
+    public void insertar(ClaseDoctor doctor, List<Integer> obrasSeleccionadas) throws SQLException {
         String sql = "INSERT INTO doctores (nombre, apellido, especialidad) VALUES (?, ?, ?)";
         try (Connection conn = BaseDatos.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -47,7 +47,7 @@ public class DoctorDAOImpl {
         }
     }
 
-    public void actualizar(ClaseDoctor doctor) throws SQLException {
+    public void actualizar(ClaseDoctor doctor, List<Integer> obrasSeleccionadas) throws SQLException {
         String sql = "UPDATE doctores SET nombre = ?, apellido = ?, especialidad = ? WHERE id_doctor = ?";
         try (Connection conn = BaseDatos.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -93,5 +93,13 @@ public class DoctorDAOImpl {
         }
 
         return null; // Retorna null si no encuentra el doctor
+    }
+
+    public String obtenerNombresObrasSociales(int i) {
+        return "";
+    }
+
+    public List<Integer> listarIdsObrasSocialesPorDoctor(int id) {
+        return List.of();
     }
 }

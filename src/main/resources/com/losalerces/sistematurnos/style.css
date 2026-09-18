@@ -596,3 +596,97 @@
  .dialog-pane .button:default:hover {
      -fx-background-color: #DCEBE1;
  }
+ /* ========================================================================= */
+  /* ESTILO CORPORATIVO PARA EL CALENDARIO (DATEPICKER)                        */
+  /* ========================================================================= */
+
+  /* 1. Marco exterior del menú desplegable del calendario */
+  .date-picker-popup {
+      -fx-background-color: #FFFFFF;
+      -fx-border-color: #DDE6DF; /* El mismo gris verdoso de tus bordes */
+      -fx-border-width: 1px;
+      -fx-background-radius: 10px;
+      -fx-border-radius: 10px;
+      -fx-font-family: "Georgia"; /* Mantiene tu tipografía principal */
+  }
+
+  /* 2. Barra superior (Donde dice el Mes y el Año) */
+  .date-picker-popup > .month-year-pane {
+      -fx-background-color: #EAF2ED; /* El mismo verde claro de las cabeceras de tus tablas */
+      -fx-background-radius: 9px 9px 0 0;
+      -fx-padding: 6px;
+  }
+
+  /* Texto del mes/año y botones de las flechitas */
+  .date-picker-popup > .month-year-pane .label {
+      -fx-font-weight: bold;
+      -fx-text-fill: #124E45; /* El verde oscuro de tus .titulo-card */
+      -fx-font-size: 13px;
+  }
+
+  .date-picker-popup > .month-year-pane .button .left-arrow,
+  .date-picker-popup > .month-year-pane .button .right-arrow {
+      -fx-background-color: #124E45; /* Flechas del mismo verde oscuro */
+  }
+
+  .date-picker-popup > .month-year-pane .button:hover {
+      -fx-background-color: #DCEBE1; /* Hover suave para las flechitas */
+  }
+
+  /* 3. Fila con los nombres de los días (Lun, Mar, Mié...) */
+  .date-picker-popup > .calendar-grid > .day-name-cell {
+      -fx-background-color: #FBFCFB; /* El fondo intercalado de tus filas */
+      -fx-text-fill: #244F47; /* El color de las letras de las cabeceras de tus tablas */
+      -fx-font-weight: bold;
+      -fx-font-size: 11px;
+  }
+  /* 4. Celda del día seleccionado (Fuerza la eliminación del cuadrado azul de JavaFX) */
+  .date-picker-popup > .calendar-grid > .day-cell:selected {
+      -fx-background-color: #124E45 !important; /* Tu verde oscuro corporativo (o podés usar #17675A) */
+      -fx-text-fill: #FFFFFF !important;        /* El número en blanco para que resalte perfecto */
+      -fx-font-weight: bold;
+      -fx-background-radius: 6px;               /* Bordes apenas redondeados haciendo juego */
+  }
+
+  /* Regala extra por si el foco del teclado mantiene el azul */
+  .date-picker-popup > .calendar-grid > .day-cell:focused {
+      -fx-background-color: #E8F3EC !important; /* Fondo verde claro cuando solo está posicionado */
+      -fx-text-fill: #124E45 !important;
+  }
+
+  /* 5. Efecto al pasar el mouse por encima de los días válidos (Hover) */
+  .date-picker-popup > .calendar-grid > .day-cell:hover {
+      -fx-background-color: #EDF5F0; /* Tu color estándar de .boton-mini:hover */
+      -fx-text-fill: #174C43;
+      -fx-background-radius: 5px;
+  }
+ /* 6. Indicador del día de HOY - Borde verde corporativo sutil */
+ .date-picker-popup > .calendar-grid > .today {
+     -fx-border-color: #17675A !important; /* Tu color verde intermedio */
+     -fx-border-width: 1px !important;
+     -fx-border-radius: 5px;
+ }
+ /* ========================================================================= */
+ /* ESTILO PARA LA LISTA DESPLEGABLE DE LOS COMBOBOX (LIST-VIEW POPUP)       */
+
+ /* Cambia la selección azul por tu verde oscuro corporativo */
+ .combo-box-popup .list-view .list-cell:filled:selected {
+     -fx-background-color: #124E45 !important;
+     -fx-text-fill: #FFFFFF !important;
+     -fx-font-weight: bold !important;
+ }
+
+ /* Efecto al pasar el mouse (Hover) por las opciones */
+ .combo-box-popup .list-view .list-cell:filled:hover {
+     -fx-background-color: #EDF5F0 !important;
+     -fx-text-fill: #174C43 !important;
+ }
+
+ /* Redondeado del marco flotante de la lista */
+ .combo-box-popup .list-view {
+     -fx-background-radius: 8px !important;
+     -fx-border-radius: 8px !important;
+     -fx-border-color: #D7E1DA !important;
+     -fx-background-color: #FFFFFF !important;
+ }
+ /*hola
